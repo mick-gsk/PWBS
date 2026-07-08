@@ -26,9 +26,9 @@ const STATUS_OPTIONS: {
   label: string;
   icon: typeof Clock;
 }[] = [
-  { value: "pending", label: "Ausstehend", icon: Clock },
-  { value: "made", label: "Entschieden", icon: CheckCircle2 },
-  { value: "revised", label: "Revidiert", icon: RotateCcw },
+  { value: "pending", label: "Pending", icon: Clock },
+  { value: "made", label: "Decided", icon: CheckCircle2 },
+  { value: "revised", label: "Revised", icon: RotateCcw },
 ];
 
 function ArgumentList({
@@ -52,7 +52,7 @@ function ArgumentList({
         </span>
       </h3>
       {items.length === 0 ? (
-        <p className="text-xs text-text-tertiary italic">Keine Einträge</p>
+        <p className="text-xs text-text-tertiary italic">No entries</p>
       ) : (
         <ul className="space-y-2">
           {items.map((item, i) => (
@@ -108,7 +108,7 @@ export function DecisionDetail({ id }: { id: string }) {
     return (
       <div role="status" className="flex justify-center py-12">
         <Spinner />
-        <span className="sr-only">Wird geladen</span>
+        <span className="sr-only">Loading</span>
       </div>
     );
   }
@@ -116,7 +116,7 @@ export function DecisionDetail({ id }: { id: string }) {
   if (error || !decision) {
     return (
       <ErrorCard
-        message="Entscheidung konnte nicht geladen werden."
+        message="Failed to load decision."
         onRetry={() => refetch()}
       />
     );
@@ -136,7 +136,7 @@ export function DecisionDetail({ id }: { id: string }) {
         <button
           onClick={() => router.push("/decisions")}
           className="mt-1 rounded p-1 text-text-tertiary hover:text-text-secondary"
-          aria-label="Zurück zur Übersicht"
+          aria-label="Back to overview"
         >
           <ArrowLeft aria-hidden="true" className="h-5 w-5" />
         </button>
@@ -146,15 +146,15 @@ export function DecisionDetail({ id }: { id: string }) {
           </h1>
           <div className="mt-1 flex flex-wrap items-center gap-3 text-sm text-text-tertiary">
             {decision.decided_by && (
-              <span>Entschieden von: {decision.decided_by}</span>
+              <span>Decided by: {decision.decided_by}</span>
             )}
             {decision.decided_at && (
               <span>
-                am {new Date(decision.decided_at).toLocaleDateString("de-DE")}
+                on {new Date(decision.decided_at).toLocaleDateString("de-DE")}
               </span>
             )}
             <span>
-              Erstellt:{" "}
+              Created:{" "}
               {new Date(decision.created_at).toLocaleDateString("de-DE")}
             </span>
           </div>
@@ -188,7 +188,7 @@ export function DecisionDetail({ id }: { id: string }) {
               <button
                 onClick={() => setEditingStatus(false)}
                 className="ml-1 rounded p-1 text-text-tertiary hover:text-text-secondary"
-                aria-label="Status-Bearbeitung abbrechen"
+                aria-label="Cancel status editing"
               >
                 <X aria-hidden="true" className="h-4 w-4" />
               </button>
@@ -215,13 +215,13 @@ export function DecisionDetail({ id }: { id: string }) {
       {/* Pro/Contra Columns */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <ArgumentList
-          title="Pro-Argumente"
+          title="Pros"
           items={decision.pro_arguments}
           icon={ThumbsUp}
           iconColor="text-green-600"
         />
         <ArgumentList
-          title="Contra-Argumente"
+          title="Cons"
           items={decision.contra_arguments}
           icon={ThumbsDown}
           iconColor="text-red-500"
@@ -231,13 +231,13 @@ export function DecisionDetail({ id }: { id: string }) {
       {/* Assumptions & Dependencies */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <MetadataList
-          title="Annahmen"
+          title="Assumptions"
           items={decision.assumptions}
           icon={AlertTriangle}
           iconColor="text-amber-500"
         />
         <MetadataList
-          title="Abh&auml;ngigkeiten"
+          title="Dependencies"
           items={decision.dependencies}
           icon={GitBranch}
           iconColor="text-purple-500"
@@ -246,7 +246,7 @@ export function DecisionDetail({ id }: { id: string }) {
 
       {/* Timestamps */}
       <div className="text-xs text-text-tertiary">
-        Zuletzt aktualisiert:{" "}
+        Last updated:{" "}
         {new Date(decision.updated_at).toLocaleString("de-DE")}
       </div>
     </div>

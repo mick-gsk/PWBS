@@ -30,10 +30,10 @@ import type { ConnectorType, ConnectionStatus } from "@/types/api";
 type WizardStep = "welcome" | "connector" | "sync" | "briefing";
 
 const STEPS: { key: WizardStep; label: string; icon: React.ElementType }[] = [
-  { key: "welcome", label: "Willkommen", icon: Sparkles },
-  { key: "connector", label: "Datenquelle", icon: Cable },
-  { key: "sync", label: "Synchronisation", icon: RefreshCw },
-  { key: "briefing", label: "Erstes Briefing", icon: FileText },
+  { key: "welcome", label: "Welcome", icon: Sparkles },
+  { key: "connector", label: "Data source", icon: Cable },
+  { key: "sync", label: "Sync", icon: RefreshCw },
+  { key: "briefing", label: "First briefing", icon: FileText },
 ];
 
 // ---------------------------------------------------------------------------
@@ -46,7 +46,7 @@ function StepIndicator({ current }: { current: WizardStep }) {
   return (
     <nav
       className="flex items-center justify-center gap-2"
-      aria-label="Onboarding-Schritte"
+      aria-label="Onboarding steps"
     >
       {STEPS.map((step, idx) => {
         const Icon = step.icon;
@@ -93,21 +93,20 @@ function StepWelcome({ onNext }: { onNext: () => void }) {
       <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-100">
         <Sparkles className="h-8 w-8 text-indigo-600" />
       </div>
-      <h2 className="mb-3 text-2xl font-bold text-text">Willkommen bei PWBS</h2>
+      <h2 className="mb-3 text-2xl font-bold text-text">Welcome to PWBS</h2>
       <p className="mb-2 max-w-md text-text-secondary">
-        Dein Persoenliches Wissens-Betriebssystem verbindet deine Datenquellen,
-        analysiert Zusammenhaenge und liefert dir taeglich kontextbezogene
-        Briefings.
+        Your Personal Knowledge Operating System connects your data sources,
+        analyzes relationships, and delivers contextual briefings every day.
       </p>
       <p className="mb-8 max-w-md text-sm text-text-tertiary">
-        In wenigen Schritten verbindest du deine erste Datenquelle und erhaeltst
-        dein erstes Briefing. Das dauert weniger als 5 Minuten.
+        In just a few steps, you&apos;ll connect your first data source and
+        receive your first briefing. It takes less than 5 minutes.
       </p>
       <button
         onClick={onNext}
         className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-6 py-3 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
       >
-        Los geht&apos;s
+        Get started
         <ArrowRight aria-hidden="true" className="h-4 w-4" />
       </button>
     </div>
@@ -147,7 +146,7 @@ function StepConnector({
     return (
       <div className="flex items-center justify-center py-12" role="status">
         <Loader2 className="h-6 w-6 animate-spin text-text-tertiary" />
-        <span className="sr-only">Lade Konnektoren...</span>
+        <span className="sr-only">Loading connectors...</span>
       </div>
     );
   }
@@ -155,11 +154,11 @@ function StepConnector({
   return (
     <div className="flex flex-col items-center text-center">
       <h2 className="mb-2 text-xl font-bold text-text">
-        Verbinde deine erste Datenquelle
+        Connect your first data source
       </h2>
       <p className="mb-6 max-w-md text-sm text-text-secondary">
-        Waehle eine Datenquelle aus, um dein Wissens-Betriebssystem zu fuellen.
-        Du kannst spaeter weitere Quellen hinzufuegen.
+        Choose a data source to populate your knowledge operating system. You
+        can add more sources later.
       </p>
 
       <div className="mb-6 grid w-full max-w-md grid-cols-1 gap-3 sm:grid-cols-2">
@@ -187,13 +186,13 @@ function StepConnector({
           className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-text-secondary hover:bg-surface-secondary"
         >
           <ArrowLeft aria-hidden="true" className="h-4 w-4" />
-          Zurueck
+          Back
         </button>
         <button
           onClick={onNext}
           className="text-sm text-text-tertiary underline hover:text-text-secondary"
         >
-          Ueberspringen
+          Skip
         </button>
       </div>
     </div>
@@ -242,30 +241,30 @@ function StepSync({
     return (
       <div className="flex items-center justify-center py-12" role="status">
         <Loader2 className="h-6 w-6 animate-spin text-text-tertiary" />
-        <span className="sr-only">Lade Status...</span>
+        <span className="sr-only">Loading status...</span>
       </div>
     );
   }
 
   const estimateText = isSyncing
     ? elapsed < 30
-      ? "Geschätzte Restdauer: ca. 1–2 Minuten"
+      ? "Estimated time remaining: about 1–2 minutes"
       : elapsed < 90
-        ? "Geschätzte Restdauer: weniger als 1 Minute"
-        : "Fast fertig…"
+        ? "Estimated time remaining: less than 1 minute"
+        : "Almost done…"
     : null;
 
   return (
     <div className="flex flex-col items-center text-center">
       <h2 className="mb-2 text-xl font-bold text-text">
-        Daten werden synchronisiert
+        Syncing your data
       </h2>
       <p className="mb-4 max-w-md text-sm text-text-secondary">
         {isSyncing
-          ? "Deine Daten werden importiert. Das kann einen Moment dauern..."
+          ? "Your data is being imported. This may take a moment..."
           : activeConnections.length > 0
-            ? "Synchronisierung abgeschlossen! Du kannst jetzt dein erstes Briefing generieren."
-            : "Noch keine Datenquelle verbunden. Du kannst trotzdem fortfahren."}
+            ? "Sync complete! You can now generate your first briefing."
+            : "No data source connected yet. You can still continue."}
       </p>
 
       {/* Progress bar */}
@@ -278,7 +277,7 @@ function StepSync({
             />
           </div>
           <div className="mt-1 flex items-center justify-between text-xs text-text-tertiary">
-            <span>{totalDocs} Dokumente importiert</span>
+            <span>{totalDocs} documents imported</span>
             <span>{estimateText}</span>
           </div>
         </div>
@@ -287,7 +286,7 @@ function StepSync({
       {/* Completed summary */}
       {!isSyncing && activeConnections.length > 0 && (
         <p className="mb-4 text-sm font-medium text-green-600">
-          {totalDocs} Dokumente erfolgreich importiert
+          {totalDocs} documents imported successfully
         </p>
       )}
 
@@ -312,13 +311,13 @@ function StepSync({
               {c.type}
             </span>
             <span className="ml-auto text-xs text-text-tertiary">
-              {c.doc_count} Dokumente
+              {c.doc_count} documents
             </span>
           </div>
         ))}
         {activeConnections.length === 0 && (
           <p className="text-sm text-text-tertiary">
-            Keine aktiven Verbindungen.
+            No active connections.
           </p>
         )}
       </div>
@@ -329,13 +328,13 @@ function StepSync({
           className="inline-flex items-center gap-2 rounded-lg border border-border px-4 py-2 text-sm font-medium text-text-secondary hover:bg-surface-secondary"
         >
           <ArrowLeft aria-hidden="true" className="h-4 w-4" />
-          Zurueck
+          Back
         </button>
         <button
           onClick={onNext}
           className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
         >
-          Weiter
+          Continue
           <ArrowRight aria-hidden="true" className="h-4 w-4" />
         </button>
       </div>
@@ -381,11 +380,11 @@ function StepBriefing({
       <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-green-100">
         <FileText className="h-8 w-8 text-green-600" />
       </div>
-      <h2 className="mb-2 text-xl font-bold text-text">Dein erstes Briefing</h2>
+      <h2 className="mb-2 text-xl font-bold text-text">Your first briefing</h2>
       <p className="mb-6 max-w-md text-sm text-text-secondary">
         {generated
-          ? "Dein Briefing wurde erstellt! Du kannst es jetzt ansehen."
-          : "Generiere jetzt dein erstes Morgenbriefing basierend auf deinen verbundenen Daten."}
+          ? "Your briefing has been created! You can view it now."
+          : "Generate your first morning briefing based on your connected data."}
       </p>
 
       {!generated ? (
@@ -405,12 +404,12 @@ function StepBriefing({
             {generate.isPending ? (
               <>
                 <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
-                Wird generiert...
+                Generating...
               </>
             ) : (
               <>
                 <FileText aria-hidden="true" className="h-4 w-4" />
-                Briefing generieren
+                Generate briefing
               </>
             )}
           </button>
@@ -435,15 +434,14 @@ function StepBriefing({
             className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-6 py-3 text-sm font-medium text-white shadow-sm hover:bg-green-700"
           >
             <CheckCircle2 aria-hidden="true" className="h-4 w-4" />
-            Onboarding abschliessen
+            Finish onboarding
           </button>
         </div>
       )}
 
       {generate.isError && (
         <p className="mt-4 text-sm text-red-600">
-          Briefing konnte nicht generiert werden. Du kannst es spaeter erneut
-          versuchen.
+          The briefing could not be generated. You can try again later.
         </p>
       )}
     </div>
@@ -491,14 +489,14 @@ export function OnboardingWizard() {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
-      aria-label="Onboarding-Wizard"
+      aria-label="Onboarding wizard"
     >
       <div className="relative mx-4 w-full max-w-2xl rounded-2xl bg-surface p-6 shadow-2xl sm:p-10">
         {/* Skip / Close */}
         <button
           onClick={handleSkip}
           className="absolute right-4 top-4 rounded-full p-1.5 text-text-tertiary hover:bg-surface-secondary hover:text-text-secondary"
-          aria-label="Onboarding ueberspringen"
+          aria-label="Skip onboarding"
         >
           <X aria-hidden="true" className="h-5 w-5" />
         </button>

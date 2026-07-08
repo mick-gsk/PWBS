@@ -23,10 +23,10 @@ import type {
 } from "@/types/api";
 
 const BRIEFING_TYPE_LABELS: Record<BriefingType, string> = {
-  morning: "Morgen-Briefing",
-  meeting: "Meeting-Briefing",
-  project: "Projekt-Briefing",
-  weekly: "Wochen-Briefing",
+  morning: "Morning Briefing",
+  meeting: "Meeting Briefing",
+  project: "Project Briefing",
+  weekly: "Weekly Briefing",
 };
 
 function BriefingRow({ item }: { item: BriefingListItem }) {
@@ -47,7 +47,7 @@ function BriefingRow({ item }: { item: BriefingListItem }) {
             {BRIEFING_TYPE_LABELS[item.briefing_type]}
           </span>
           <Calendar aria-hidden="true" className="h-3 w-3" />
-          <span>{new Date(item.generated_at).toLocaleDateString("de-DE")}</span>
+          <span>{new Date(item.generated_at).toLocaleDateString("en-US")}</span>
         </div>
       </div>
       <ChevronRight
@@ -68,12 +68,12 @@ function DemoBriefingBanner({
       <div className="mb-2 flex items-center gap-2">
         <Sparkles aria-hidden="true" className="h-4 w-4 text-amber-600" />
         <span className="text-sm font-semibold text-amber-800">
-          Demo-Briefing – Vorschau
+          Demo Briefing – Preview
         </span>
       </div>
       <p className="mb-3 text-xs text-amber-700">
-        So sieht ein echtes Briefing aus. Sobald deine Datenquellen verbunden
-        sind, erhältst du personalisierte Inhalte.
+        This is what a real briefing looks like. Once your data sources are
+        connected, you will receive personalized content.
       </p>
       <div className="rounded-lg border border-amber-100 bg-white p-4">
         <h3 className="mb-1 text-sm font-semibold text-text">
@@ -98,7 +98,7 @@ export default function BriefingsPage() {
         <div>
           <h1 className="text-2xl font-bold text-text">Briefings</h1>
           <p className="mt-1 text-sm text-text-secondary">
-            Deine KI-generierten Wissens-Briefings
+            Your AI-generated knowledge briefings
           </p>
         </div>
         <button
@@ -110,7 +110,7 @@ export default function BriefingsPage() {
           className="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-600/25 hover:bg-indigo-500 disabled:opacity-50"
         >
           <Plus aria-hidden="true" className="h-4 w-4" />
-          Neues Briefing
+          New Briefing
         </button>
       </div>
 
@@ -126,7 +126,7 @@ export default function BriefingsPage() {
             aria-hidden="true"
             className="h-8 w-8 animate-spin text-text-tertiary"
           />
-          <span className="sr-only">Wird geladen</span>
+          <span className="sr-only">Loading</span>
         </div>
       ) : data && data.briefings.length > 0 ? (
         <div className="space-y-2">

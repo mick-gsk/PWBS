@@ -33,12 +33,12 @@ export function InstallDialog({
             id="install-dialog-title"
             className="text-lg font-semibold text-text"
           >
-            Plugin installieren
+            Install Plugin
           </h2>
           <button
             onClick={onCancel}
             className="rounded-lg p-1 text-text-tertiary hover:bg-surface-secondary hover:text-text-secondary"
-            aria-label="Schliessen"
+            aria-label="Close"
           >
             <X aria-hidden="true" className="h-5 w-5" />
           </button>
@@ -46,14 +46,14 @@ export function InstallDialog({
 
         <div className="px-6 py-4">
           <p className="mb-3 text-sm text-text-secondary">
-            <strong>{plugin.name}</strong> (v{plugin.version}) wird installiert.
+            <strong>{plugin.name}</strong> (v{plugin.version}) will be installed.
           </p>
 
           {hasPermissions && (
             <div className="mb-4 rounded-lg border border-yellow-200 bg-yellow-50 p-3">
               <div className="mb-2 flex items-center gap-2 text-sm font-medium text-yellow-800">
                 <Shield aria-hidden="true" className="h-4 w-4" />
-                Angeforderte Berechtigungen
+                Requested Permissions
               </div>
               <ul className="space-y-1">
                 {plugin.permissions.map((perm) => (
@@ -80,7 +80,7 @@ export function InstallDialog({
                 onChange={(e) => setAccepted(e.target.checked)}
                 className="rounded border-border"
               />
-              Ich akzeptiere die angeforderten Berechtigungen
+              I accept the requested permissions
             </label>
           )}
         </div>
@@ -90,7 +90,7 @@ export function InstallDialog({
             onClick={onCancel}
             className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-text-secondary hover:bg-surface-secondary"
           >
-            Abbrechen
+            Cancel
           </button>
           <button
             onClick={onConfirm}
@@ -100,7 +100,7 @@ export function InstallDialog({
             {isInstalling && (
               <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
             )}
-            Installieren
+            Install
           </button>
         </div>
       </div>

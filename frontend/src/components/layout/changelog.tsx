@@ -87,7 +87,7 @@ export function ChangelogButton() {
       <button
         onClick={handleOpen}
         className="relative rounded-md p-2 text-text-tertiary hover:bg-surface-secondary hover:text-text-secondary focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        aria-label={`Neuigkeiten${unreadCount ? ` (${unreadCount} neu)` : ""}`}
+        aria-label={`What's new${unreadCount ? ` (${unreadCount} new)` : ""}`}
         aria-expanded={open}
         aria-haspopup="true"
       >
@@ -109,16 +109,16 @@ function ChangelogPanel({ entries }: { entries: ChangelogEntry[] }) {
     <div
       className="absolute right-0 top-full z-50 mt-2 w-96 max-h-[32rem] overflow-y-auto rounded-xl border border-border bg-surface shadow-lg"
       role="dialog"
-      aria-label="Neuigkeiten"
+      aria-label="What's new"
     >
       <div className="sticky top-0 border-b border-border bg-surface px-4 py-3">
-        <h3 className="text-sm font-semibold text-text">Neuigkeiten</h3>
+        <h3 className="text-sm font-semibold text-text">What&apos;s new</h3>
       </div>
 
       <div className="divide-y divide-border/50">
         {entries.length === 0 && (
           <p className="py-6 text-center text-sm text-text-tertiary">
-            Keine Eintraege vorhanden.
+            No entries yet.
           </p>
         )}
 

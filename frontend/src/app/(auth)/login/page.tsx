@@ -41,12 +41,12 @@ function LoginContent() {
     } catch (err) {
       if (err instanceof ApiClientError) {
         if (err.status === 401 || err.status === 400) {
-          setError("E-Mail oder Passwort falsch.");
+          setError("Incorrect email or password.");
         } else {
-          setError("Verbindungsfehler. Bitte prüfe deine Internetverbindung.");
+          setError("Connection error. Please check your internet connection.");
         }
       } else {
-        setError("Verbindungsfehler. Bitte prüfe deine Internetverbindung.");
+        setError("Connection error. Please check your internet connection.");
       }
     } finally {
       setLoading(false);
@@ -59,16 +59,16 @@ function LoginContent() {
         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500 shadow-lg shadow-indigo-500/25">
           <Sparkles className="h-6 w-6 text-white" />
         </div>
-        <h1 className="text-2xl font-bold text-white">Willkommen zurück</h1>
+        <h1 className="text-2xl font-bold text-white">Welcome back</h1>
         <p className="mt-1 text-sm text-slate-400">
-          Melde dich an, um fortzufahren
+          Sign in to continue
         </p>
       </div>
 
       <div className="rounded-2xl border border-white/10 bg-surface/5 p-8 shadow-xl backdrop-blur-xl">
         {expired && (
           <div className="mb-4 rounded-xl bg-amber-500/10 border border-amber-500/20 p-3 text-sm text-amber-300">
-            Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.
+            Your session has expired. Please sign in again.
           </div>
         )}
 
@@ -84,7 +84,7 @@ function LoginContent() {
               htmlFor="email"
               className="block text-sm font-medium text-slate-300"
             >
-              E-Mail
+              Email
             </label>
             <input
               id="email"
@@ -103,7 +103,7 @@ function LoginContent() {
               htmlFor="password"
               className="block text-sm font-medium text-slate-300"
             >
-              Passwort
+              Password
             </label>
             <input
               id="password"
@@ -122,7 +122,7 @@ function LoginContent() {
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:opacity-50"
           >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-            {loading ? "Anmelden…" : "Anmelden"}
+            {loading ? "Signing in…" : "Sign in"}
           </button>
         </form>
 
@@ -132,7 +132,7 @@ function LoginContent() {
               <div className="w-full border-t border-white/10" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-transparent px-3 text-slate-500">oder</span>
+              <span className="bg-transparent px-3 text-slate-500">or</span>
             </div>
           </div>
 
@@ -158,17 +158,17 @@ function LoginContent() {
                 fill="#EA4335"
               />
             </svg>
-            Mit Google anmelden
+            Sign in with Google
           </a>
         </div>
 
         <p className="mt-6 text-center text-sm text-slate-400">
-          Noch kein Konto?{" "}
+          Don&apos;t have an account?{" "}
           <Link
             href="/register"
             className="font-medium text-indigo-400 hover:text-indigo-300"
           >
-            Registrieren
+            Sign up
           </Link>
         </p>
       </div>

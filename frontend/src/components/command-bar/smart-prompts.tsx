@@ -25,9 +25,9 @@ function getTimeOfDay(): "morning" | "afternoon" | "evening" {
 
 function getGreeting(): string {
   const time = getTimeOfDay();
-  if (time === "morning") return "Guten Morgen";
-  if (time === "afternoon") return "Guten Tag";
-  return "Guten Abend";
+  if (time === "morning") return "Good morning";
+  if (time === "afternoon") return "Good afternoon";
+  return "Good evening";
 }
 
 function getContextualPrompts(): QuickPrompt[] {
@@ -39,14 +39,14 @@ function getContextualPrompts(): QuickPrompt[] {
 
   if (time === "morning") {
     prompts.push({
-      label: "Morgen-Briefing",
-      prompt: "Morgen-Briefing generieren",
+      label: "Morning briefing",
+      prompt: "Morning briefing",
       icon: <Sparkles className="h-4 w-4" />,
       color: "bg-indigo-50 text-indigo-600 hover:bg-indigo-100",
     });
     prompts.push({
-      label: "Meetings heute",
-      prompt: "Was steht heute an?",
+      label: "Today's meetings",
+      prompt: "What's on today?",
       icon: <CalendarDays className="h-4 w-4" />,
       color: "bg-amber-50 text-amber-600 hover:bg-amber-100",
     });
@@ -54,8 +54,8 @@ function getContextualPrompts(): QuickPrompt[] {
 
   if (time === "afternoon") {
     prompts.push({
-      label: "Meeting vorbereiten",
-      prompt: "Bereite mich auf mein nächstes Meeting vor",
+      label: "Prepare a meeting",
+      prompt: "Prepare me for my next meeting",
       icon: <CalendarDays className="h-4 w-4" />,
       color: "bg-amber-50 text-amber-600 hover:bg-amber-100",
     });
@@ -63,8 +63,8 @@ function getContextualPrompts(): QuickPrompt[] {
 
   if (isFriday) {
     prompts.push({
-      label: "Wochenrückblick",
-      prompt: "Wochen-Briefing generieren",
+      label: "Weekly review",
+      prompt: "Weekly briefing",
       icon: <TrendingUp className="h-4 w-4" />,
       color: "bg-emerald-50 text-emerald-600 hover:bg-emerald-100",
     });
@@ -72,8 +72,8 @@ function getContextualPrompts(): QuickPrompt[] {
 
   if (isMonday) {
     prompts.push({
-      label: "Wochenstart",
-      prompt: "Was war letzte Woche wichtig?",
+      label: "Week kickoff",
+      prompt: "What mattered last week?",
       icon: <TrendingUp className="h-4 w-4" />,
       color: "bg-emerald-50 text-emerald-600 hover:bg-emerald-100",
     });
@@ -81,14 +81,14 @@ function getContextualPrompts(): QuickPrompt[] {
 
   // Always available
   prompts.push({
-    label: "Projekt-Status",
-    prompt: "Briefing für Projekt ",
+    label: "Project status",
+    prompt: "Briefing for project ",
     icon: <FolderKanban className="h-4 w-4" />,
     color: "bg-violet-50 text-violet-600 hover:bg-violet-100",
   });
 
   prompts.push({
-    label: "Wissen durchsuchen",
+    label: "Search knowledge",
     prompt: "",
     icon: <Search className="h-4 w-4" />,
     color: "bg-sky-50 text-sky-600 hover:bg-sky-100",
@@ -133,7 +133,7 @@ export function DashboardGreeting({ className = "" }: { className?: string }) {
   return (
     <div className={className}>
       <h1 className="text-2xl font-bold text-text sm:text-3xl">{greeting}</h1>
-      <p className="mt-1 text-text-secondary">Was kann ich für dich tun?</p>
+      <p className="mt-1 text-text-secondary">What can I help you with?</p>
     </div>
   );
 }

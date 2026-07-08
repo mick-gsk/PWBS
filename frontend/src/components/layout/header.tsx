@@ -21,7 +21,7 @@ export function Header({ title }: HeaderProps) {
         <button
           onClick={toggle}
           className="flex h-9 w-9 items-center justify-center rounded-lg text-text-secondary hover:bg-surface-secondary hover:text-text md:hidden"
-          aria-label="Navigation oeffnen"
+          aria-label="Open navigation"
         >
           <Menu aria-hidden="true" className="h-5 w-5" />
         </button>

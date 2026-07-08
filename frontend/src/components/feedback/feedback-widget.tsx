@@ -12,9 +12,9 @@ const FEEDBACK_TYPES: {
   label: string;
   icon: typeof Bug;
 }[] = [
-  { value: "bug", label: "Bug melden", icon: Bug },
-  { value: "feature", label: "Feature-Wunsch", icon: Lightbulb },
-  { value: "praise", label: "Lob", icon: ThumbsUp },
+  { value: "bug", label: "Report a bug", icon: Bug },
+  { value: "feature", label: "Feature request", icon: Lightbulb },
+  { value: "praise", label: "Praise", icon: ThumbsUp },
 ];
 
 function getContextMeta() {
@@ -67,7 +67,7 @@ export function FeedbackWidget() {
         setTimeout(handleClose, 1500);
       } catch {
         setError(
-          "Feedback konnte nicht gesendet werden. Bitte versuche es erneut.",
+          "Feedback could not be sent. Please try again.",
         );
       } finally {
         setSubmitting(false);
@@ -83,7 +83,7 @@ export function FeedbackWidget() {
         type="button"
         onClick={() => setOpen(true)}
         className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg transition-transform hover:scale-105 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        aria-label="Feedback geben"
+        aria-label="Give feedback"
       >
         <MessageSquarePlus className="h-5 w-5" />
       </button>
@@ -101,14 +101,14 @@ export function FeedbackWidget() {
             onKeyDown={(e) => e.key === "Escape" && handleClose()}
             role="button"
             tabIndex={-1}
-            aria-label="Schließen"
+            aria-label="Close"
           />
 
           {/* Dialog */}
           <div
             role="dialog"
             aria-modal="true"
-            aria-label="Feedback senden"
+            aria-label="Send feedback"
             className="relative z-10 w-full max-w-md rounded-xl bg-surface p-6 shadow-2xl"
           >
             {/* Header */}
@@ -118,7 +118,7 @@ export function FeedbackWidget() {
                 type="button"
                 onClick={handleClose}
                 className="rounded-lg p-1.5 text-text-tertiary hover:bg-surface-secondary hover:text-text-secondary"
-                aria-label="Schließen"
+                aria-label="Close"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -128,7 +128,7 @@ export function FeedbackWidget() {
               <div className="py-8 text-center">
                 <ThumbsUp className="mx-auto mb-3 h-8 w-8 text-green-500" />
                 <p className="text-sm text-text-secondary">
-                  Danke für dein Feedback!
+                  Thank you for your feedback!
                 </p>
               </div>
             ) : (
@@ -156,7 +156,7 @@ export function FeedbackWidget() {
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Dein Feedback..."
+                  placeholder="Your feedback..."
                   rows={4}
                   maxLength={5000}
                   required
@@ -174,11 +174,11 @@ export function FeedbackWidget() {
                   disabled={submitting || !message.trim()}
                   className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  {submitting ? "Wird gesendet..." : "Absenden"}
+                  {submitting ? "Sending..." : "Submit"}
                 </button>
 
                 <p className="mt-2 text-center text-xs text-text-tertiary">
-                  Kontext (URL, Browser) wird automatisch angehängt
+                  Context (URL, browser) is attached automatically
                 </p>
               </form>
             )}

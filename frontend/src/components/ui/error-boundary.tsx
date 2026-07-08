@@ -41,18 +41,17 @@ export class ErrorBoundary extends Component<Props, State> {
             className="mx-auto mb-3 h-8 w-8 text-red-400"
           />
           <h3 className="mb-1 text-sm font-semibold text-red-900">
-            Unerwarteter Fehler
+            Unexpected error
           </h3>
           <p className="text-sm text-red-700">
-            Etwas ist schiefgelaufen. Bitte versuche es erneut oder lade die
-            Seite neu.
+            Something went wrong. Please try again or reload the page.
           </p>
           <button
             onClick={this.handleRetry}
             className="mt-3 inline-flex items-center gap-1.5 rounded-md border border-red-300 bg-surface px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-50"
           >
             <RefreshCw aria-hidden="true" className="h-4 w-4" />
-            Erneut versuchen
+            Try again
           </button>
         </div>
       );

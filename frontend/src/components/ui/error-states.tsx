@@ -20,8 +20,8 @@ interface ErrorCardProps {
 }
 
 export function ErrorCard({
-  title = "Fehler aufgetreten",
-  message = "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+  title = "Something went wrong",
+  message = "An error occurred. Please try again.",
   onRetry,
 }: ErrorCardProps) {
   return (
@@ -38,7 +38,7 @@ export function ErrorCard({
           className="mt-3 inline-flex items-center gap-1.5 rounded-md border border-red-300 bg-surface px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-50"
         >
           <RefreshCw aria-hidden="true" className="h-4 w-4" />
-          Erneut versuchen
+          Try again
         </button>
       )}
     </div>
@@ -65,7 +65,7 @@ function renderAction(action: ErrorAction, onRetry?: () => void) {
           className="mt-3 inline-flex items-center gap-1.5 rounded-md border border-red-300 bg-surface px-3 py-1.5 text-sm font-medium text-red-700 hover:bg-red-50"
         >
           <RefreshCw aria-hidden="true" className="h-4 w-4" />
-          {action.label ?? "Erneut versuchen"}
+          {action.label ?? "Try again"}
         </button>
       );
     case "link":
@@ -132,7 +132,7 @@ export function NetworkErrorBanner() {
       className="fixed top-0 left-0 right-0 z-50 bg-yellow-600 px-4 py-2 text-center text-sm font-medium text-white"
     >
       <WifiOff aria-hidden="true" className="mr-2 inline h-4 w-4" />
-      Keine Internetverbindung. Einige Funktionen sind eingeschränkt.
+      No internet connection. Some features are unavailable.
     </div>
   );
 }

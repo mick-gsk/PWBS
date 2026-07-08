@@ -26,184 +26,184 @@ export type ErrorAction =
 const ERROR_MAP: Record<string, ErrorMapping> = {
   // --- OAuth Errors ---
   ACCESS_DENIED: {
-    title: "Zugriff nicht erteilt",
+    title: "Access not granted",
     message:
-      "Du hast die Verbindung abgelehnt. Ohne Zugriff auf deine Daten kann PWBS kein Briefing erstellen.",
-    recovery: "Du kannst es jederzeit erneut versuchen.",
-    action: { type: "retry", label: "Erneut verbinden" },
+      "The connection was declined. Without access to your data, PWBS cannot create a briefing.",
+    recovery: "You can try again at any time.",
+    action: { type: "retry", label: "Reconnect" },
   },
   TOKEN_EXCHANGE_FAILED: {
-    title: "Verbindung fehlgeschlagen",
+    title: "Connection failed",
     message:
-      "Die Verbindung konnte nicht hergestellt werden. Das liegt möglicherweise an einer kurzzeitigen Störung.",
-    recovery: "Bitte versuche es in einer Minute erneut.",
-    action: { type: "retry", label: "Erneut versuchen" },
+      "The connection could not be established. This may be due to a temporary outage.",
+    recovery: "Please try again in a minute.",
+    action: { type: "retry", label: "Try again" },
   },
   TOKEN_EXCHANGE_NETWORK_ERROR: {
-    title: "Verbindung fehlgeschlagen",
+    title: "Connection failed",
     message:
-      "Die Verbindung konnte nicht hergestellt werden. Das liegt möglicherweise an einer kurzzeitigen Störung.",
-    recovery: "Bitte versuche es in einer Minute erneut.",
-    action: { type: "retry", label: "Erneut versuchen" },
+      "The connection could not be established. This may be due to a temporary outage.",
+    recovery: "Please try again in a minute.",
+    action: { type: "retry", label: "Try again" },
   },
   GOOGLE_TOKEN_EXCHANGE_FAILED: {
-    title: "Google-Verbindung fehlgeschlagen",
+    title: "Google connection failed",
     message:
-      "Die Verbindung zu Google konnte nicht hergestellt werden. Bitte versuche es erneut.",
-    action: { type: "retry", label: "Erneut versuchen" },
+      "The connection to Google could not be established. Please try again.",
+    action: { type: "retry", label: "Try again" },
   },
   POPUP_BLOCKED: {
-    title: "Pop-up blockiert",
+    title: "Pop-up blocked",
     message:
-      "Dein Browser hat das Anmeldefenster blockiert. Bitte erlaube Pop-ups für diese Seite und versuche es erneut.",
+      "Your browser blocked the sign-in window. Please allow pop-ups for this site and try again.",
     recovery:
-      "So erlaubst du Pop-ups: Browser-Einstellungen  Pop-ups erlauben",
-    action: { type: "retry", label: "Erneut versuchen" },
+      "To allow pop-ups: browser settings  allow pop-ups",
+    action: { type: "retry", label: "Try again" },
   },
   GOOGLE_OAUTH_NOT_CONFIGURED: {
-    title: "Google-Anmeldung nicht verfügbar",
+    title: "Google sign-in unavailable",
     message:
-      "Die Google-Anmeldung ist derzeit nicht konfiguriert. Bitte nutze E-Mail und Passwort.",
+      "Google sign-in is currently not configured. Please use email and password instead.",
   },
   INVALID_STATE: {
-    title: "Sitzung abgelaufen",
+    title: "Session expired",
     message:
-      "Die Verbindungsanfrage ist abgelaufen. Bitte starte den Vorgang erneut.",
-    action: { type: "retry", label: "Erneut versuchen" },
+      "The connection request has expired. Please start the process again.",
+    action: { type: "retry", label: "Try again" },
   },
   NO_OAUTH_SUPPORT: {
-    title: "OAuth nicht unterstützt",
+    title: "OAuth not supported",
     message:
-      "Dieser Konnektor unterstützt keine automatische Verbindung. Bitte nutze die manuelle Konfiguration.",
+      "This connector does not support automatic connection. Please use manual configuration.",
   },
 
   // --- Connector / Sync Errors ---
   CONNECTION_NOT_FOUND: {
-    title: "Verbindung nicht gefunden",
+    title: "Connection not found",
     message:
-      "Die angeforderte Datenquelle wurde nicht gefunden. Möglicherweise wurde sie bereits entfernt.",
+      "The requested data source was not found. It may have already been removed.",
     action: {
       type: "link",
       href: "/connectors",
-      label: "Zu den Datenquellen",
+      label: "Go to data sources",
     },
   },
   CONNECTION_NOT_ACTIVE: {
-    title: "Verbindung inaktiv",
+    title: "Connection inactive",
     message:
-      "Diese Datenquelle ist derzeit nicht aktiv. Bitte stelle die Verbindung wieder her.",
-    action: { type: "retry", label: "Erneut verbinden" },
+      "This data source is currently inactive. Please reconnect it.",
+    action: { type: "retry", label: "Reconnect" },
   },
   CONNECTION_EXISTS: {
-    title: "Bereits verbunden",
-    message: "Diese Datenquelle ist bereits mit deinem Konto verbunden.",
+    title: "Already connected",
+    message: "This data source is already connected to your account.",
   },
   SYNC_RATE_LIMITED: {
-    title: "Synchronisierung zu häufig",
+    title: "Syncing too frequently",
     message:
-      "Bitte warte einen Moment, bevor du erneut synchronisierst. Der automatische Sync läuft weiterhin im Hintergrund.",
+      "Please wait a moment before syncing again. Automatic sync continues to run in the background.",
   },
   NO_MARKDOWN_FILES: {
-    title: "Kein Obsidian-Vault gefunden",
+    title: "No Obsidian vault found",
     message:
-      "Der angegebene Pfad enthält keinen gültigen Obsidian-Vault. Bitte prüfe, ob der Pfad korrekt ist und Markdown-Dateien enthält.",
+      "The specified path does not contain a valid Obsidian vault. Please check that the path is correct and contains Markdown files.",
     recovery:
-      'Ein Obsidian-Vault enthält einen ".obsidian"-Ordner und ".md"-Dateien.',
-    action: { type: "retry", label: "Pfad korrigieren" },
+      'An Obsidian vault contains an ".obsidian" folder and ".md" files.',
+    action: { type: "retry", label: "Fix path" },
   },
   UNKNOWN_CONNECTOR_TYPE: {
-    title: "Unbekannte Datenquelle",
+    title: "Unknown data source",
     message:
-      "Dieser Datenquellen-Typ wird nicht unterstützt. Bitte wähle eine andere Quelle.",
+      "This data source type is not supported. Please choose a different source.",
     action: {
       type: "link",
       href: "/connectors",
-      label: "Verfügbare Quellen anzeigen",
+      label: "View available sources",
     },
   },
 
   // --- Briefing Errors ---
   BRIEFING_NOT_FOUND: {
-    title: "Briefing nicht gefunden",
+    title: "Briefing not found",
     message:
-      "Das angeforderte Briefing konnte nicht gefunden werden. Möglicherweise wurde es bereits gelöscht.",
+      "The requested briefing could not be found. It may have already been deleted.",
   },
   LLM_TIMEOUT: {
-    title: "Erstellung dauert etwas länger",
+    title: "Generation is taking a bit longer",
     message:
-      "Dein Briefing wird gerade erzeugt, aber der KI-Dienst braucht etwas mehr Zeit.",
-    recovery: "Du kannst warten oder es später erneut versuchen.",
-    action: { type: "retry", label: "Erneut versuchen" },
+      "Your briefing is being generated, but the AI service needs a little more time.",
+    recovery: "You can wait or try again later.",
+    action: { type: "retry", label: "Try again" },
   },
   LLM_ERROR: {
-    title: "Briefing konnte nicht erstellt werden",
+    title: "Briefing could not be created",
     message:
-      "Der KI-Dienst ist vorübergehend nicht verfügbar. Dein Briefing wird automatisch erstellt, sobald der Dienst wieder erreichbar ist.",
-    action: { type: "retry", label: "Erneut versuchen" },
+      "The AI service is temporarily unavailable. Your briefing will be created automatically as soon as the service is reachable again.",
+    action: { type: "retry", label: "Try again" },
   },
   DEPENDENCY_MISSING: {
-    title: "Dienst nicht verfügbar",
+    title: "Service unavailable",
     message:
-      "Ein benötigter Dienst ist vorübergehend nicht erreichbar. Bitte versuche es in Kürze erneut.",
-    action: { type: "retry", label: "Erneut versuchen" },
+      "A required service is temporarily unreachable. Please try again shortly.",
+    action: { type: "retry", label: "Try again" },
   },
 
   // --- Auth Errors ---
   INVALID_CREDENTIALS: {
-    title: "Anmeldung fehlgeschlagen",
-    message: "E-Mail oder Passwort falsch. Bitte versuche es erneut.",
-    action: { type: "retry", label: "Erneut versuchen" },
+    title: "Sign-in failed",
+    message: "Incorrect email or password. Please try again.",
+    action: { type: "retry", label: "Try again" },
   },
   INVALID_PASSWORD: {
-    title: "Ungültiges Passwort",
+    title: "Invalid password",
     message:
-      "Das Passwort erfüllt nicht die Anforderungen. Mindestens 8 Zeichen mit Groß-/Kleinbuchstaben und Zahl.",
+      "The password does not meet the requirements. At least 8 characters with uppercase and lowercase letters and a number.",
   },
   SESSION_EXPIRED: {
-    title: "Sitzung abgelaufen",
+    title: "Session expired",
     message:
-      "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an, um fortzufahren. Deine Daten und Einstellungen sind sicher gespeichert.",
-    action: { type: "redirect", href: "/login?expired=1", label: "Zur Anmeldung" },
+      "Your session has expired. Please sign in again to continue. Your data and settings are safely stored.",
+    action: { type: "redirect", href: "/login?expired=1", label: "Go to sign-in" },
   },
   ADMIN_REQUIRED: {
-    title: "Keine Berechtigung",
+    title: "Permission required",
     message:
-      "Du benötigst Administratorrechte, um diese Aktion auszuführen.",
+      "You need administrator privileges to perform this action.",
   },
   FORBIDDEN: {
-    title: "Zugriff verweigert",
-    message: "Du hast keine Berechtigung für diese Aktion.",
+    title: "Access denied",
+    message: "You do not have permission to perform this action.",
   },
 
   // --- Rate Limiting ---
   RATE_LIMIT_EXCEEDED: {
-    title: "Zu viele Anfragen",
+    title: "Too many requests",
     message:
-      "Um die Qualität für alle Nutzer sicherzustellen, gibt es ein kurzes Limit. Bitte warte einen Moment und versuche es dann erneut.",
+      "To ensure quality for all users, a short limit applies. Please wait a moment and then try again.",
   },
   RATE_LIMITED: {
-    title: "Zu viele Anfragen",
+    title: "Too many requests",
     message:
-      "Bitte warte einen Moment und versuche es dann erneut.",
+      "Please wait a moment and then try again.",
   },
 
   // --- Validation Errors ---
   VALIDATION_ERROR: {
-    title: "Ungültige Eingabe",
-    message: "Bitte überprüfe deine Eingaben und versuche es erneut.",
+    title: "Invalid input",
+    message: "Please check your input and try again.",
   },
 
   // --- System / Generic Errors ---
   INTERNAL_ERROR: {
-    title: "Interner Fehler",
+    title: "Internal error",
     message:
-      "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut. Falls das Problem bestehen bleibt, kontaktiere den Support.",
-    action: { type: "retry", label: "Erneut versuchen" },
+      "An unexpected error occurred. Please try again. If the problem persists, contact support.",
+    action: { type: "retry", label: "Try again" },
   },
   NETWORK_ERROR: {
-    title: "Keine Internetverbindung",
+    title: "No internet connection",
     message:
-      "Bitte prüfe deine Netzwerkverbindung. PWBS benötigt eine aktive Internetverbindung, um deine Daten zu synchronisieren und Briefings zu erstellen.",
+      "Please check your network connection. PWBS requires an active internet connection to sync your data and create briefings.",
   },
 };
 
@@ -212,8 +212,8 @@ const ERROR_MAP: Record<string, ErrorMapping> = {
 // ---------------------------------------------------------------------------
 
 const FALLBACK: ErrorMapping = {
-  title: "Fehler aufgetreten",
-  message: "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+  title: "An error occurred",
+  message: "Something went wrong. Please try again.",
   action: { type: "retry" },
 };
 

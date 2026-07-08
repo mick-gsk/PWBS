@@ -18,7 +18,7 @@ function ProjectBriefingCard({ item }: { item: BriefingListItem }) {
           {item.title}
         </p>
         <p className="mt-0.5 text-xs text-text-tertiary">
-          {new Date(item.generated_at).toLocaleDateString("de-DE", {
+          {new Date(item.generated_at).toLocaleDateString("en-US", {
             day: "2-digit",
             month: "long",
             year: "numeric",
@@ -61,7 +61,7 @@ export default function ProjectDetailPage() {
         <button
           onClick={() => router.back()}
           className="rounded-md p-1.5 text-text-tertiary hover:bg-surface-secondary hover:text-text-secondary"
-          aria-label="Zurück"
+          aria-label="Back"
         >
           <ArrowLeft className="h-5 w-5" />
         </button>
@@ -72,10 +72,10 @@ export default function ProjectDetailPage() {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-lg font-semibold text-text">
-              Projekt-Briefing
+              Project Briefing
             </h2>
             <p className="mt-1 text-sm text-text-tertiary">
-              On-Demand-Briefing mit Entscheidungen, Timeline und Beteiligten.
+              On-demand briefing with decisions, timeline, and stakeholders.
             </p>
           </div>
           <button
@@ -86,12 +86,12 @@ export default function ProjectDetailPage() {
             {generate.isPending ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
-                Generiere…
+                Generating…
               </>
             ) : (
               <>
                 <FileText className="h-4 w-4" />
-                Briefing generieren
+                Generate Briefing
               </>
             )}
           </button>
@@ -99,21 +99,21 @@ export default function ProjectDetailPage() {
 
         {generate.isSuccess && (
           <div className="mt-4 rounded-md bg-green-50 p-3 text-sm text-green-800">
-            Briefing wird im Hintergrund generiert. Es erscheint in Kürze
-            unten.
+            Your briefing is being generated in the background. It will appear
+            below shortly.
           </div>
         )}
 
         {generate.isError && (
           <div className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-800">
-            Fehler beim Generieren. Bitte versuche es später erneut.
+            Failed to generate briefing. Please try again later.
           </div>
         )}
       </div>
 
       <div>
         <h2 className="mb-3 text-lg font-semibold text-text">
-          Bisherige Projekt-Briefings
+          Previous Project Briefings
         </h2>
         {isLoading ? (
           <div className="flex items-center justify-center py-8">
@@ -129,7 +129,7 @@ export default function ProjectDetailPage() {
           <div className="rounded-lg border border-border bg-surface p-6 text-center">
             <FileText className="mx-auto mb-2 h-8 w-8 text-gray-300" />
             <p className="text-sm text-text-tertiary">
-              Noch keine Briefings für dieses Projekt.
+              No briefings for this project yet.
             </p>
           </div>
         )}

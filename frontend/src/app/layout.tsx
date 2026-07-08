@@ -13,9 +13,9 @@ const plausibleSrc =
   process.env.NEXT_PUBLIC_PLAUSIBLE_SRC ?? "https://plausible.io/js/script.js";
 
 export const metadata: Metadata = {
-  title: "PWBS – Persönliches Wissens-Betriebssystem",
+  title: "PWBS – Personal Knowledge Operating System",
   description:
-    "Kognitive Infrastruktur für Wissensarbeiter: Briefings, semantische Suche und Knowledge Graph.",
+    "Cognitive infrastructure for knowledge workers: briefings, semantic search, and a knowledge graph.",
 };
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="de">
+    <html lang="en">
       <body className={inter.className}>
         {plausibleDomain && (
           <Script

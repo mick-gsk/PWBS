@@ -15,7 +15,7 @@ import type { LlmUsageEntry } from "@/types/api";
 
 function formatDate(iso: string | null): string {
   if (!iso) return "\u2013";
-  return new Date(iso).toLocaleDateString("de-DE", {
+  return new Date(iso).toLocaleDateString("en-US", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -55,10 +55,10 @@ function SourceCard({
       </div>
       <div className="mt-2 text-xs text-text-tertiary">
         <div>
-          {"&#196;ltestes: "}
+          {"Oldest: "}
           {formatDate(source.oldest_document)}
         </div>
-        <div>Neuestes: {formatDate(source.newest_document)}</div>
+        <div>Newest: {formatDate(source.newest_document)}</div>
       </div>
     </div>
   );
@@ -68,7 +68,7 @@ function LlmUsageTable({ entries }: { entries: LlmUsageEntry[] }) {
   if (entries.length === 0) {
     return (
       <p className="text-sm text-text-tertiary">
-        Keine LLM-Aufrufe protokolliert.
+        No LLM calls logged.
       </p>
     );
   }
@@ -79,13 +79,13 @@ function LlmUsageTable({ entries }: { entries: LlmUsageEntry[] }) {
         <thead>
           <tr className="border-b border-border">
             <th className="py-2 text-left font-medium text-text-secondary">
-              Zeitpunkt
+              Time
             </th>
             <th className="py-2 text-left font-medium text-text-secondary">
               Provider
             </th>
             <th className="py-2 text-left font-medium text-text-secondary">
-              Modell
+              Model
             </th>
             <th className="py-2 text-right font-medium text-text-secondary">
               Input
@@ -94,7 +94,7 @@ function LlmUsageTable({ entries }: { entries: LlmUsageEntry[] }) {
               Output
             </th>
             <th className="py-2 text-left font-medium text-text-secondary">
-              Zweck
+              Purpose
             </th>
           </tr>
         </thead>
@@ -146,7 +146,7 @@ export default function DataTransparencyPage() {
           aria-hidden="true"
           className="h-8 w-8 animate-spin text-text-tertiary"
         />
-        <span className="sr-only">Wird geladen</span>
+        <span className="sr-only">Loading</span>
       </div>
     );
   }
@@ -155,7 +155,7 @@ export default function DataTransparencyPage() {
     return (
       <div className="mx-auto max-w-4xl p-6">
         <p className="text-red-500">
-          Fehler beim Laden des Transparenzberichts.
+          Failed to load transparency report.
         </p>
       </div>
     );
@@ -165,11 +165,11 @@ export default function DataTransparencyPage() {
     <div className="mx-auto max-w-4xl space-y-8 p-6">
       <div>
         <h1 className="text-2xl font-bold text-text">
-          Datentransparenz
+          Data transparency
         </h1>
         <p className="mt-1 text-sm text-text-tertiary">
           {
-            "&#220;bersicht &#252;ber Ihre gespeicherten Daten und KI-Nutzung (DSGVO Art. 15)."
+            "Overview of your stored data and AI usage (GDPR Art. 15)."
           }
         </p>
       </div>
@@ -179,7 +179,7 @@ export default function DataTransparencyPage() {
         <div className="flex items-center gap-2 mb-4">
           <Database aria-hidden="true" className="h-5 w-5 text-indigo-600" />
           <h2 className="text-lg font-semibold text-text">
-            Dokumente ({report?.total_documents ?? 0} gesamt)
+            Documents ({report?.total_documents ?? 0} total)
           </h2>
         </div>
         {report && report.sources.length > 0 ? (
@@ -189,7 +189,7 @@ export default function DataTransparencyPage() {
             ))}
           </div>
         ) : (
-          <p className="text-sm text-text-tertiary">Keine Dokumente vorhanden.</p>
+          <p className="text-sm text-text-tertiary">No documents available.</p>
         )}
       </section>
 
@@ -198,7 +198,7 @@ export default function DataTransparencyPage() {
         <div className="flex items-center gap-2 mb-4">
           <RefreshCw aria-hidden="true" className="h-5 w-5 text-green-600" />
           <h2 className="text-lg font-semibold text-text">
-            Verbindungen
+            Connections
           </h2>
         </div>
         {report && report.connections.length > 0 ? (
@@ -221,14 +221,14 @@ export default function DataTransparencyPage() {
                   >
                     {c.status}
                   </span>
-                  <span>Letzter Sync: {formatDate(c.last_sync)}</span>
+                  <span>Last sync: {formatDate(c.last_sync)}</span>
                 </div>
               </div>
             ))}
           </div>
         ) : (
           <p className="text-sm text-text-tertiary">
-            Keine Verbindungen konfiguriert.
+            No connections configured.
           </p>
         )}
       </section>
@@ -238,7 +238,7 @@ export default function DataTransparencyPage() {
         <div className="flex items-center gap-2 mb-4">
           <Cpu aria-hidden="true" className="h-5 w-5 text-purple-600" />
           <h2 className="text-lg font-semibold text-text">
-            KI-Nutzung (Zusammenfassung)
+            AI usage (summary)
           </h2>
         </div>
         {report && report.llm_provider_usage.length > 0 ? (
@@ -253,19 +253,19 @@ export default function DataTransparencyPage() {
                 </div>
                 <div className="mt-2 grid grid-cols-3 gap-2 text-sm text-text-tertiary">
                   <div>
-                    <span className="block text-xs">Aufrufe</span>
+                    <span className="block text-xs">Calls</span>
                     <span className="font-semibold text-text">
                       {u.call_count}
                     </span>
                   </div>
                   <div>
-                    <span className="block text-xs">Input-Tokens</span>
+                    <span className="block text-xs">Input tokens</span>
                     <span className="font-semibold text-text">
                       {formatTokens(u.total_input_tokens)}
                     </span>
                   </div>
                   <div>
-                    <span className="block text-xs">Output-Tokens</span>
+                    <span className="block text-xs">Output tokens</span>
                     <span className="font-semibold text-text">
                       {formatTokens(u.total_output_tokens)}
                     </span>
@@ -276,7 +276,7 @@ export default function DataTransparencyPage() {
           </div>
         ) : (
           <p className="text-sm text-text-tertiary">
-            Keine KI-Aufrufe protokolliert.
+            No AI calls logged.
           </p>
         )}
       </section>
@@ -291,7 +291,7 @@ export default function DataTransparencyPage() {
           <div className="flex items-center gap-2">
             <Cpu aria-hidden="true" className="h-5 w-5 text-purple-600" />
             <span className="text-lg font-semibold text-text">
-              LLM-Audit-Log ({llmUsage?.total ?? 0} Eintr&#228;ge)
+              LLM audit log ({llmUsage?.total ?? 0} entries)
             </span>
           </div>
           {llmExpanded ? (
@@ -308,7 +308,7 @@ export default function DataTransparencyPage() {
                   aria-hidden="true"
                   className="h-6 w-6 animate-spin text-text-tertiary"
                 />
-                <span className="sr-only">Wird geladen</span>
+                <span className="sr-only">Loading</span>
               </div>
             ) : (
               <LlmUsageTable entries={llmUsage?.entries ?? []} />

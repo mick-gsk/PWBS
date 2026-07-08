@@ -6,8 +6,8 @@ import { AverageRating } from "@/components/marketplace/rating-stars";
 import type { PluginSummary } from "@/types/marketplace";
 
 const TYPE_LABELS: Record<string, string> = {
-  connector: "Konnektor",
-  briefing_template: "Briefing-Template",
+  connector: "Connector",
+  briefing_template: "Briefing Template",
   processing: "Processing",
   agent: "Agent",
 };
@@ -34,7 +34,7 @@ export function PluginCard({ plugin }: { plugin: PluginSummary }) {
             </h3>
             {plugin.is_verified && (
               <CheckCircle2
-                aria-label="Verifiziert"
+                aria-label="Verified"
                 className="h-4 w-4 shrink-0 text-indigo-500"
               />
             )}
@@ -47,7 +47,7 @@ export function PluginCard({ plugin }: { plugin: PluginSummary }) {
       </div>
 
       <p className="mb-3 line-clamp-2 text-sm text-text-secondary">
-        {plugin.description || "Keine Beschreibung."}
+        {plugin.description || "No description."}
       </p>
 
       <div className="flex items-center justify-between">

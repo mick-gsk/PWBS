@@ -61,9 +61,9 @@ export function EmptyDashboard() {
   return (
     <EmptyState
       icon={<Plug className="h-6 w-6" />}
-      title="Dein Wissenssystem wartet auf dich"
-      description="Verbinde deine erste Datenquelle, und PWBS erstellt dir automatisch ein t\u00e4gliches Kontextbriefing f\u00fcr deinen Arbeitstag."
-      action={<CtaLink href="/connectors">Erste Quelle verbinden</CtaLink>}
+      title="Your knowledge system is ready"
+      description="Connect your first data source and PWBS will automatically create a daily context briefing for your workday."
+      action={<CtaLink href="/connectors">Connect your first source</CtaLink>}
     />
   );
 }
@@ -72,9 +72,9 @@ export function EmptyBriefings() {
   return (
     <EmptyState
       icon={<FileText className="h-6 w-6" />}
-      title="Noch keine Briefings erstellt"
-      description="Briefings werden automatisch jeden Morgen generiert, sobald du mindestens eine Datenquelle verbunden hast. Du kannst auch jederzeit manuell ein Briefing anfordern."
-      action={<CtaLink href="/connectors">Datenquelle verbinden</CtaLink>}
+      title="No briefings yet"
+      description="Briefings are generated automatically every morning once at least one data source is connected. You can also request a briefing manually at any time."
+      action={<CtaLink href="/connectors">Connect a data source</CtaLink>}
     />
   );
 }
@@ -83,8 +83,8 @@ export function EmptyConnectors() {
   return (
     <EmptyState
       icon={<Cable className="h-6 w-6" />}
-      title="Verbinde deine Werkzeuge mit PWBS"
-      description="PWBS kann Daten aus Google Calendar, Notion, Zoom und Obsidian importieren. Je mehr Quellen du verbindest, desto hilfreicher werden deine Briefings und die Suche."
+      title="Connect your tools to PWBS"
+      description="PWBS can import data from Google Calendar, Notion, Zoom, and Obsidian. The more sources you connect, the more helpful your briefings and search become."
     />
   );
 }
@@ -93,8 +93,8 @@ export function EmptySearch() {
   return (
     <EmptyState
       icon={<Search className="h-6 w-6" />}
-      title="Keine Ergebnisse gefunden"
-      description="Versuche es mit anderen Begriffen oder weniger spezifischen Filtern. PWBS durchsucht alle deine verbundenen Quellen semantisch \u2013 stelle deine Frage gerne in nat\u00fcrlicher Sprache."
+      title="No results found"
+      description="Try different terms or less specific filters. PWBS searches all your connected sources semantically \u2013 feel free to ask your question in natural language."
     />
   );
 }
@@ -103,9 +103,9 @@ export function EmptySearchNoDocuments() {
   return (
     <EmptyState
       icon={<Search className="h-6 w-6" />}
-      title="Noch keine Dokumente vorhanden"
-      description="Verbinde eine Datenquelle, damit PWBS deine Inhalte indexieren und durchsuchbar machen kann. Die Suche wird automatisch aktiv, sobald deine ersten Dokumente verarbeitet sind."
-      action={<CtaLink href="/connectors">Datenquelle verbinden</CtaLink>}
+      title="No documents yet"
+      description="Connect a data source so PWBS can index your content and make it searchable. Search becomes available automatically once your first documents have been processed."
+      action={<CtaLink href="/connectors">Connect a data source</CtaLink>}
     />
   );
 }
@@ -114,9 +114,9 @@ export function EmptyDocuments() {
   return (
     <EmptyState
       icon={<FileText className="h-6 w-6" />}
-      title="Noch keine Dokumente"
-      description="Verbinde eine Datenquelle, um Dokumente zu importieren."
-      action={<CtaLink href="/connectors">Datenquelle verbinden</CtaLink>}
+      title="No documents yet"
+      description="Connect a data source to import documents."
+      action={<CtaLink href="/connectors">Connect a data source</CtaLink>}
     />
   );
 }
@@ -125,9 +125,9 @@ export function EmptyEntities() {
   return (
     <EmptyState
       icon={<Network className="h-6 w-6" />}
-      title="Dein Wissensgraph entsteht automatisch"
-      description="Sobald PWBS Dokumente verarbeitet, erkennt es automatisch Personen, Projekte und Themen und verkn\u00fcpft sie miteinander. Verbinde weitere Quellen, um ein reicheres Wissensnetz aufzubauen."
-      action={<CtaLink href="/connectors">Quellen verwalten</CtaLink>}
+      title="Your knowledge graph builds itself"
+      description="As PWBS processes documents, it automatically detects people, projects, and topics and links them together. Connect more sources to build a richer knowledge network."
+      action={<CtaLink href="/connectors">Manage sources</CtaLink>}
     />
   );
 }
@@ -136,9 +136,9 @@ export function EmptyDecisions() {
   return (
     <EmptyState
       icon={<Gavel className="h-6 w-6" />}
-      title="Noch keine Entscheidungen erfasst"
-      description="PWBS extrahiert Entscheidungen aus deinen Meeting-Transkripten und Notizen. Verbinde Zoom oder Notion, um Entscheidungen automatisch zu erkennen."
-      action={<CtaLink href="/connectors">Datenquelle verbinden</CtaLink>}
+      title="No decisions captured yet"
+      description="PWBS extracts decisions from your meeting transcripts and notes. Connect Zoom or Notion to detect decisions automatically."
+      action={<CtaLink href="/connectors">Connect a data source</CtaLink>}
     />
   );
 }
@@ -147,9 +147,9 @@ export function EmptyProjects() {
   return (
     <EmptyState
       icon={<FolderKanban className="h-6 w-6" />}
-      title="Noch keine Projekte erkannt"
-      description="PWBS erkennt Projekte automatisch aus deinen Datenquellen. Verbinde Google Calendar und Notion, um Projekte und ihre Zusammenh\u00e4nge zu entdecken."
-      action={<CtaLink href="/connectors">Datenquelle verbinden</CtaLink>}
+      title="No projects detected yet"
+      description="PWBS detects projects automatically from your data sources. Connect Google Calendar and Notion to discover projects and how they relate."
+      action={<CtaLink href="/connectors">Connect a data source</CtaLink>}
     />
   );
 }

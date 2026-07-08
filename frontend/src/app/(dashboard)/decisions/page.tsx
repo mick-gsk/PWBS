@@ -9,10 +9,10 @@ import { ErrorCard } from "@/components/ui/error-states";
 import type { DecisionStatus } from "@/types/api";
 
 const STATUS_FILTERS: { value: string; label: string }[] = [
-  { value: "", label: "Alle" },
-  { value: "pending", label: "Ausstehend" },
-  { value: "made", label: "Entschieden" },
-  { value: "revised", label: "Revidiert" },
+  { value: "", label: "All" },
+  { value: "pending", label: "Pending" },
+  { value: "made", label: "Decided" },
+  { value: "revised", label: "Revised" },
 ];
 
 const PAGE_SIZE = 20;
@@ -33,12 +33,12 @@ export default function DecisionsPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-text">Entscheidungen</h1>
+      <h1 className="text-2xl font-bold text-text">Decisions</h1>
 
       {/* Status Filter Tabs */}
       <div
         role="tablist"
-        aria-label="Status-Filter"
+        aria-label="Status filter"
         className="flex gap-1 rounded-xl bg-surface-secondary p-1"
       >
         {STATUS_FILTERS.map((f) => (
@@ -65,11 +65,11 @@ export default function DecisionsPage() {
       {isLoading ? (
         <div role="status" className="flex justify-center py-12">
           <Spinner />
-          <span className="sr-only">Wird geladen</span>
+          <span className="sr-only">Loading</span>
         </div>
       ) : error ? (
         <ErrorCard
-          message="Entscheidungen konnten nicht geladen werden."
+          message="Failed to load decisions."
           onRetry={() => refetch()}
         />
       ) : data ? (

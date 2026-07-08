@@ -56,15 +56,15 @@ export default function RegisterPage() {
     } catch (err) {
       if (err instanceof ApiClientError) {
         if (err.status === 409) {
-          setError("Diese E-Mail-Adresse wird bereits verwendet.");
+          setError("This email address is already in use.");
         } else if (err.status >= 500) {
-          setError("Verbindungsfehler. Bitte prüfe deine Internetverbindung.");
+          setError("Connection error. Please check your internet connection.");
         } else {
-          const msg = err.data?.message ?? "Registrierung fehlgeschlagen.";
+          const msg = err.data?.message ?? "Registration failed.";
           setError(msg);
         }
       } else {
-        setError("Verbindungsfehler. Bitte prüfe deine Internetverbindung.");
+        setError("Connection error. Please check your internet connection.");
       }
     } finally {
       setLoading(false);
@@ -79,24 +79,24 @@ export default function RegisterPage() {
             <Sparkles className="h-7 w-7 text-emerald-400" />
           </div>
           <h1 className="mb-2 text-2xl font-bold text-white">
-            Willkommen bei PWBS!
+            Welcome to PWBS!
           </h1>
           <p className="mb-6 text-sm text-slate-400">
-            Dein Konto wurde erstellt. Verbinde jetzt deine ersten Datenquellen,
-            damit PWBS dir personalisierte Briefings erstellen kann.
+            Your account has been created. Connect your first data sources now
+            so PWBS can create personalized briefings for you.
           </p>
           <div className="space-y-3">
             <button
               onClick={() => router.push("/connectors")}
               className="w-full rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 hover:bg-indigo-500"
             >
-              Konnektoren einrichten
+              Set up connectors
             </button>
             <button
               onClick={() => router.push("/")}
               className="w-full rounded-xl border border-white/10 bg-surface/5 px-4 py-2.5 text-sm font-medium text-slate-300 hover:bg-surface/10"
             >
-              Später einrichten
+              Set up later
             </button>
           </div>
         </div>
@@ -110,9 +110,9 @@ export default function RegisterPage() {
         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-500 shadow-lg shadow-indigo-500/25">
           <Sparkles className="h-6 w-6 text-white" />
         </div>
-        <h1 className="text-2xl font-bold text-white">Konto erstellen</h1>
+        <h1 className="text-2xl font-bold text-white">Create account</h1>
         <p className="mt-1 text-sm text-slate-400">
-          Starte mit deinem persönlichen Wissens-Betriebssystem
+          Get started with your personal knowledge operating system
         </p>
       </div>
 
@@ -129,7 +129,7 @@ export default function RegisterPage() {
               htmlFor="display-name"
               className="block text-sm font-medium text-slate-300"
             >
-              Anzeigename
+              Display name
             </label>
             <input
               id="display-name"
@@ -139,7 +139,7 @@ export default function RegisterPage() {
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
               className="mt-1 block w-full rounded-xl border border-white/10 bg-surface/5 px-4 py-2.5 text-white placeholder-slate-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-              placeholder="Max Mustermann"
+              placeholder="Jane Doe"
             />
           </div>
 
@@ -148,7 +148,7 @@ export default function RegisterPage() {
               htmlFor="reg-email"
               className="block text-sm font-medium text-slate-300"
             >
-              E-Mail
+              Email
             </label>
             <input
               id="reg-email"
@@ -167,7 +167,7 @@ export default function RegisterPage() {
               htmlFor="reg-password"
               className="block text-sm font-medium text-slate-300"
             >
-              Passwort
+              Password
             </label>
             <input
               id="reg-password"
@@ -182,13 +182,13 @@ export default function RegisterPage() {
               <ul className="mt-2 space-y-1">
                 <CriterionLine
                   met={criteria.minLength}
-                  label="Mindestens 12 Zeichen"
+                  label="At least 12 characters"
                 />
                 <CriterionLine
                   met={criteria.uppercase}
-                  label="Ein Großbuchstabe"
+                  label="One uppercase letter"
                 />
-                <CriterionLine met={criteria.digit} label="Eine Zahl" />
+                <CriterionLine met={criteria.digit} label="One number" />
               </ul>
             )}
           </div>
@@ -199,17 +199,17 @@ export default function RegisterPage() {
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-lg shadow-indigo-600/25 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:opacity-50"
           >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-            {loading ? "Registrieren…" : "Registrieren"}
+            {loading ? "Creating account…" : "Create account"}
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm text-slate-400">
-          Bereits registriert?{" "}
+          Already have an account?{" "}
           <Link
             href="/login"
             className="font-medium text-indigo-400 hover:text-indigo-300"
           >
-            Anmelden
+            Sign in
           </Link>
         </p>
       </div>

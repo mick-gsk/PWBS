@@ -36,7 +36,7 @@ function BriefingCard() {
       <div className="rounded-xl border border-red-200 bg-red-50 p-6">
         <div className="flex items-center gap-2 text-red-700">
           <AlertCircle aria-hidden="true" className="h-5 w-5" />
-          <span className="text-sm">Briefing konnte nicht geladen werden.</span>
+          <span className="text-sm">Failed to load briefing.</span>
         </div>
       </div>
     );
@@ -51,10 +51,10 @@ function BriefingCard() {
           </div>
           <div>
             <h3 className="font-semibold text-text">
-              Dein erstes Briefing wartet
+              Your first briefing is waiting
             </h3>
             <p className="text-sm text-text-secondary">
-              PWBS fasst dein Wissen zusammen – in 2 Sekunden generiert.
+              PWBS summarizes your knowledge – generated in 2 seconds.
             </p>
           </div>
         </div>
@@ -64,7 +64,7 @@ function BriefingCard() {
           className="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-indigo-600/25 hover:bg-indigo-500 disabled:opacity-50"
         >
           <Sparkles aria-hidden="true" className="h-4 w-4" />
-          {generate.isPending ? "Generiere…" : "Jetzt ausprobieren"}
+          {generate.isPending ? "Generating…" : "Try it now"}
         </button>
       </div>
     );
@@ -81,10 +81,10 @@ function BriefingCard() {
         </div>
         <div className="flex-1">
           <span className="text-xs font-semibold uppercase tracking-wider text-indigo-600">
-            Morgenbriefing
+            Morning briefing
           </span>
           <span className="ml-auto block text-xs text-text-tertiary sm:inline sm:ml-3">
-            {new Date(briefing.generated_at).toLocaleString("de-DE", {
+            {new Date(briefing.generated_at).toLocaleString("en-US", {
               hour: "2-digit",
               minute: "2-digit",
             })}
@@ -116,13 +116,13 @@ function ConnectorStatusWidget() {
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Cable className="h-4 w-4 text-text-secondary" aria-hidden="true" />
-          <h3 className="text-sm font-semibold text-text">Konnektoren</h3>
+          <h3 className="text-sm font-semibold text-text">Connectors</h3>
         </div>
         <Link
           href="/connectors"
           className="text-xs font-medium text-indigo-600 hover:text-indigo-500"
         >
-          Verwalten
+          Manage
         </Link>
       </div>
       {connections.length === 0 ? (
@@ -131,15 +131,15 @@ function ConnectorStatusWidget() {
             className="mx-auto mb-2 h-8 w-8 text-indigo-400"
             aria-hidden="true"
           />
-          <p className="text-sm font-medium text-text">Wissen verbinden</p>
+          <p className="text-sm font-medium text-text">Connect your knowledge</p>
           <p className="mt-1 text-xs text-text-tertiary">
-            Verbinde deine erste Datenquelle und PWBS lernt dich kennen.
+            Connect your first data source and PWBS will get to know you.
           </p>
           <Link
             href="/connectors"
             className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-500"
           >
-            Jetzt starten <ArrowRight className="h-3 w-3" />
+            Get started <ArrowRight className="h-3 w-3" />
           </Link>
         </div>
       ) : (
@@ -172,11 +172,11 @@ function ConnectorStatusWidget() {
                 }`}
               >
                 {c.status === "active"
-                  ? "Aktiv"
+                  ? "Active"
                   : c.status === "error"
-                    ? "Fehler"
+                    ? "Error"
                     : c.status === "syncing"
-                      ? "Sync…"
+                      ? "Syncing…"
                       : c.status}
               </span>
             </li>
@@ -197,7 +197,7 @@ export default function DashboardPage() {
     // Focus the command bar input after React re-renders
     requestAnimationFrame(() => {
       const input = document.querySelector<HTMLInputElement>(
-        '[aria-label="PWBS Kommandozeile"]',
+        '[aria-label="PWBS command bar"]',
       );
       input?.focus();
     });

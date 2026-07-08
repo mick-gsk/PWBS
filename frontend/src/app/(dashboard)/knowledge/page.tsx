@@ -26,15 +26,15 @@ import { EmptyEntities } from "@/components/ui/empty-states";
 import type { EntityListItem } from "@/types/api";
 
 const ENTITY_TYPES = [
-  { value: "", label: "Alle", icon: Hash },
-  { value: "Person", label: "Personen", icon: Users },
-  { value: "Project", label: "Projekte", icon: FolderKanban },
-  { value: "Topic", label: "Themen", icon: Hash },
-  { value: "Decision", label: "Entscheidungen", icon: Gavel },
-  { value: "Goal", label: "Ziele", icon: Target },
-  { value: "Risk", label: "Risiken", icon: AlertTriangle },
-  { value: "Hypothesis", label: "Hypothesen", icon: Lightbulb },
-  { value: "OpenQuestion", label: "Offene Fragen", icon: HelpCircle },
+  { value: "", label: "All", icon: Hash },
+  { value: "Person", label: "People", icon: Users },
+  { value: "Project", label: "Projects", icon: FolderKanban },
+  { value: "Topic", label: "Topics", icon: Hash },
+  { value: "Decision", label: "Decisions", icon: Gavel },
+  { value: "Goal", label: "Goals", icon: Target },
+  { value: "Risk", label: "Risks", icon: AlertTriangle },
+  { value: "Hypothesis", label: "Hypotheses", icon: Lightbulb },
+  { value: "OpenQuestion", label: "Open Questions", icon: HelpCircle },
 ] as const;
 
 const PAGE_SIZE = 20;
@@ -121,14 +121,14 @@ function KnowledgeContent() {
         <div>
           <h1 className="text-3xl font-bold text-text">Knowledge Explorer</h1>
           <p className="mt-1 text-text-tertiary">
-            Entitäten, Beziehungen und Wissensgraph erkunden
+            Explore entities, relationships, and the knowledge graph
           </p>
         </div>
 
         {/* View toggle */}
         <div
           role="group"
-          aria-label="Ansicht"
+          aria-label="View"
           className="flex items-center gap-1 rounded-lg border border-border p-1"
         >
           <button
@@ -141,7 +141,7 @@ function KnowledgeContent() {
             }`}
           >
             <List aria-hidden="true" className="h-4 w-4" />
-            Liste
+            List
           </button>
           <button
             onClick={() => handleViewChange("graph")}
@@ -179,7 +179,8 @@ function KnowledgeContent() {
             ))}
             {entityData && (
               <span className="ml-auto text-sm text-text-tertiary">
-                {entityData.total} Entität{entityData.total !== 1 ? "en" : ""}
+                {entityData.total}{" "}
+                {entityData.total !== 1 ? "entities" : "entity"}
               </span>
             )}
           </div>
@@ -188,13 +189,13 @@ function KnowledgeContent() {
           {entitiesLoading && (
             <div role="status" className="flex justify-center py-20">
               <Spinner className="h-8 w-8" />
-              <span className="sr-only">Wird geladen</span>
+              <span className="sr-only">Loading</span>
             </div>
           )}
 
           {entitiesError && (
             <ErrorCard
-              message="Entitäten konnten nicht geladen werden."
+              message="Failed to load entities."
               onRetry={() => void refetchEntities()}
             />
           )}
@@ -210,13 +211,13 @@ function KnowledgeContent() {
                       Name
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-text-tertiary">
-                      Typ
+                      Type
                     </th>
                     <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-text-tertiary">
-                      Erwähnungen
+                      Mentions
                     </th>
                     <th className="px-6 py-3 text-right text-xs font-medium uppercase tracking-wider text-text-tertiary">
-                      Zuletzt gesehen
+                      Last seen
                     </th>
                   </tr>
                 </thead>
@@ -238,17 +239,17 @@ function KnowledgeContent() {
                 className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-text-secondary hover:bg-surface-secondary disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <ChevronLeft aria-hidden="true" className="h-4 w-4" />
-                Zurück
+                Previous
               </button>
               <span className="text-sm text-text-tertiary">
-                Seite {page} von {totalPages}
+                Page {page} of {totalPages}
               </span>
               <button
                 onClick={() => handlePageChange(page + 1)}
                 disabled={page >= totalPages}
                 className="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-medium text-text-secondary hover:bg-surface-secondary disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Weiter
+                Next
                 <ChevronRight aria-hidden="true" className="h-4 w-4" />
               </button>
             </div>
@@ -266,7 +267,7 @@ function KnowledgeContent() {
                 htmlFor="graph-depth"
                 className="text-sm font-medium text-text-secondary"
               >
-                Tiefe:
+                Depth:
               </label>
               <select
                 id="graph-depth"
@@ -287,7 +288,7 @@ function KnowledgeContent() {
                 }}
                 className="text-sm text-indigo-600 hover:text-indigo-800"
               >
-                Gesamten Graph anzeigen
+                Show full graph
               </button>
             )}
             <GraphLegend />
@@ -297,12 +298,12 @@ function KnowledgeContent() {
           {graphLoading && (
             <div role="status" className="flex justify-center py-20">
               <Spinner className="h-8 w-8" />
-              <span className="sr-only">Wird geladen</span>
+              <span className="sr-only">Loading</span>
             </div>
           )}
 
           {graphError && (
-            <ErrorCard message="Graph konnte nicht geladen werden." />
+            <ErrorCard message="Failed to load graph." />
           )}
 
           {graphData && graphData.nodes.length === 0 && (
@@ -312,10 +313,10 @@ function KnowledgeContent() {
                 className="mx-auto h-12 w-12 text-text-tertiary"
               />
               <h3 className="mt-2 text-sm font-medium text-text">
-                Keine Graph-Daten
+                No graph data
               </h3>
               <p className="mt-1 text-sm text-text-tertiary">
-                Es wurden noch keine Entitäten und Beziehungen extrahiert.
+                No entities or relationships have been extracted yet.
               </p>
             </div>
           )}
@@ -337,10 +338,10 @@ function KnowledgeContent() {
                 <div>
                   <h3 className="font-medium text-text">
                     {graphData.nodes.find((n) => n.id === graphEntityId)
-                      ?.name ?? "Entität"}
+                      ?.name ?? "Entity"}
                   </h3>
                   <p className="text-sm text-text-tertiary">
-                    Typ:{" "}
+                    Type:{" "}
                     {graphData.nodes.find((n) => n.id === graphEntityId)?.type}
                   </p>
                 </div>
@@ -348,7 +349,7 @@ function KnowledgeContent() {
                   href={`/knowledge/${encodeURIComponent(graphEntityId)}`}
                   className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-700"
                 >
-                  Details anzeigen
+                  View details
                 </Link>
               </div>
             </div>
@@ -362,9 +363,9 @@ function KnowledgeContent() {
 function EntityRow({ entity }: { entity: EntityListItem }) {
   const typeLabel: Record<string, string> = {
     Person: "Person",
-    Project: "Projekt",
-    Topic: "Thema",
-    Decision: "Entscheidung",
+    Project: "Project",
+    Topic: "Topic",
+    Decision: "Decision",
   };
 
   const typeColor: Record<string, string> = {
@@ -398,7 +399,7 @@ function EntityRow({ entity }: { entity: EntityListItem }) {
       </td>
       <td className="px-6 py-4 text-right text-sm text-text-tertiary">
         {entity.last_seen
-          ? new Date(entity.last_seen).toLocaleDateString("de-DE")
+          ? new Date(entity.last_seen).toLocaleDateString("en-US")
           : "–"}
       </td>
     </tr>

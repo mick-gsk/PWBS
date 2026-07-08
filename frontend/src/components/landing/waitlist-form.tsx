@@ -30,7 +30,7 @@ export function WaitlistForm({ className = "" }: WaitlistFormProps) {
       setEmail("");
     } catch {
       setStatus("error");
-      setMessage("Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.");
+      setMessage("Something went wrong. Please try again.");
     }
   }
 
@@ -40,7 +40,7 @@ export function WaitlistForm({ className = "" }: WaitlistFormProps) {
       className={`flex flex-col sm:flex-row gap-3 ${className}`}
     >
       <label htmlFor="waitlist-email" className="sr-only">
-        E-Mail-Adresse
+        Email address
       </label>
       <input
         id="waitlist-email"
@@ -51,7 +51,7 @@ export function WaitlistForm({ className = "" }: WaitlistFormProps) {
           setEmail(e.target.value);
           if (status !== "idle") setStatus("idle");
         }}
-        placeholder="ihre@email.de"
+        placeholder="you@email.com"
         className="flex-1 rounded-lg border border-border px-4 py-3 text-base
           focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20
           disabled:opacity-60"
@@ -65,7 +65,7 @@ export function WaitlistForm({ className = "" }: WaitlistFormProps) {
           hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/50
           disabled:opacity-60 transition-colors whitespace-nowrap"
       >
-        {status === "loading" ? "Wird gesendet..." : "Platz sichern"}
+        {status === "loading" ? "Sending..." : "Reserve your spot"}
       </button>
       {status !== "idle" && (
         <p

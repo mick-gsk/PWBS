@@ -28,8 +28,8 @@ import { InstallDialog } from "@/components/marketplace/install-dialog";
 import type { RatePluginRequest } from "@/types/marketplace";
 
 const TYPE_LABELS: Record<string, string> = {
-  connector: "Konnektor",
-  briefing_template: "Briefing-Template",
+  connector: "Connector",
+  briefing_template: "Briefing Template",
   processing: "Processing",
   agent: "Agent",
 };
@@ -85,7 +85,7 @@ export default function PluginDetailPage() {
           aria-hidden="true"
           className="h-8 w-8 animate-spin text-text-tertiary"
         />
-        <span className="sr-only">Wird geladen</span>
+        <span className="sr-only">Loading</span>
       </div>
     );
   }
@@ -94,13 +94,13 @@ export default function PluginDetailPage() {
     return (
       <div className="rounded-lg border border-red-200 bg-red-50 p-6 text-center">
         <p className="text-sm text-red-700">
-          Plugin konnte nicht geladen werden.
+          Failed to load plugin.
         </p>
         <button
           onClick={() => router.push("/marketplace")}
           className="mt-3 text-sm font-medium text-red-600 hover:underline"
         >
-          Zurück zum Marketplace
+          Back to Marketplace
         </button>
       </div>
     );
@@ -114,7 +114,7 @@ export default function PluginDetailPage() {
         className="inline-flex items-center gap-1.5 text-sm text-text-tertiary hover:text-text-secondary"
       >
         <ArrowLeft aria-hidden="true" className="h-4 w-4" />
-        Zurück zum Marketplace
+        Back to Marketplace
       </button>
 
       {/* Header */}
@@ -139,7 +139,7 @@ export default function PluginDetailPage() {
               </h1>
               {plugin.is_verified && (
                 <CheckCircle2
-                  aria-label="Verifiziert"
+                  aria-label="Verified"
                   className="h-5 w-5 text-indigo-500"
                 />
               )}
@@ -155,7 +155,7 @@ export default function PluginDetailPage() {
               />
               <span className="inline-flex items-center gap-1 text-sm text-text-tertiary">
                 <Download aria-hidden="true" className="h-4 w-4" />
-                {plugin.install_count} Installationen
+                {plugin.install_count} installs
               </span>
             </div>
           </div>
@@ -174,7 +174,7 @@ export default function PluginDetailPage() {
               ) : (
                 <Trash2 aria-hidden="true" className="h-4 w-4" />
               )}
-              Deinstallieren
+              Uninstall
             </button>
           ) : (
             <button
@@ -182,7 +182,7 @@ export default function PluginDetailPage() {
               className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
             >
               <Download aria-hidden="true" className="h-4 w-4" />
-              Installieren
+              Install
             </button>
           )}
         </div>
@@ -195,10 +195,10 @@ export default function PluginDetailPage() {
           {/* Description */}
           <section>
             <h2 className="mb-3 text-lg font-semibold text-text">
-              Beschreibung
+              Description
             </h2>
             <p className="whitespace-pre-line text-sm leading-relaxed text-text-secondary">
-              {plugin.description || "Keine Beschreibung verfügbar."}
+              {plugin.description || "No description available."}
             </p>
           </section>
 
@@ -217,14 +217,14 @@ export default function PluginDetailPage() {
           {/* Ratings & Reviews */}
           <section>
             <h2 className="mb-4 text-lg font-semibold text-text">
-              Bewertungen
+              Ratings &amp; Reviews
             </h2>
 
             {/* Write a review */}
             {isInstalled && (
               <div className="mb-6 rounded-lg border border-border bg-surface-secondary p-4">
                 <h3 className="mb-2 text-sm font-medium text-text">
-                  Bewertung abgeben
+                  Write a Review
                 </h3>
                 <div className="mb-3">
                   <RatingStars value={reviewScore} onChange={setReviewScore} />
@@ -232,7 +232,7 @@ export default function PluginDetailPage() {
                 <textarea
                   value={reviewText}
                   onChange={(e) => setReviewText(e.target.value)}
-                  placeholder="Optional: Deine Erfahrung beschreiben…"
+                  placeholder="Optional: describe your experience…"
                   rows={3}
                   className="mb-3 w-full rounded-md border border-border px-3 py-2 text-sm placeholder:text-text-tertiary focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 />
@@ -247,7 +247,7 @@ export default function PluginDetailPage() {
                       className="h-4 w-4 animate-spin"
                     />
                   )}
-                  Bewerten
+                  Submit Review
                 </button>
               </div>
             )}
@@ -263,7 +263,7 @@ export default function PluginDetailPage() {
                     <div className="mb-1 flex items-center gap-2">
                       <RatingStars value={rating.score} readonly size="sm" />
                       <span className="text-xs text-text-tertiary">
-                        {new Date(rating.rated_at).toLocaleDateString("de-DE")}
+                        {new Date(rating.rated_at).toLocaleDateString("en-US")}
                       </span>
                     </div>
                     {rating.review_text && (
@@ -276,7 +276,7 @@ export default function PluginDetailPage() {
               </div>
             ) : (
               <p className="text-sm text-text-tertiary">
-                Noch keine Bewertungen vorhanden.
+                No reviews yet.
               </p>
             )}
           </section>
@@ -292,7 +292,7 @@ export default function PluginDetailPage() {
                   aria-hidden="true"
                   className="h-4 w-4 text-yellow-500"
                 />
-                Berechtigungen
+                Permissions
               </h3>
               <ul className="space-y-1.5">
                 {plugin.permissions.map((perm) => (
@@ -319,15 +319,15 @@ export default function PluginDetailPage() {
                 <dd className="font-medium text-text">{plugin.status}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-text-tertiary">Erstellt</dt>
+                <dt className="text-text-tertiary">Created</dt>
                 <dd className="font-medium text-text">
-                  {new Date(plugin.created_at).toLocaleDateString("de-DE")}
+                  {new Date(plugin.created_at).toLocaleDateString("en-US")}
                 </dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-text-tertiary">Aktualisiert</dt>
+                <dt className="text-text-tertiary">Updated</dt>
                 <dd className="font-medium text-text">
-                  {new Date(plugin.updated_at).toLocaleDateString("de-DE")}
+                  {new Date(plugin.updated_at).toLocaleDateString("en-US")}
                 </dd>
               </div>
             </dl>

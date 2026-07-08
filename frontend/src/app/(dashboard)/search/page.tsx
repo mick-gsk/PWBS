@@ -38,7 +38,7 @@ function ResultCard({ result }: { result: SearchResult }) {
         </span>
         <span>·</span>
         <Calendar aria-hidden="true" className="h-3.5 w-3.5" />
-        <span>{new Date(result.date).toLocaleDateString("de-DE")}</span>
+        <span>{new Date(result.date).toLocaleDateString("en-US")}</span>
         <span className="ml-auto rounded-md bg-indigo-50 px-1.5 py-0.5 text-xs font-semibold text-indigo-600">
           {Math.round(result.score * 100)}%
         </span>
@@ -74,7 +74,7 @@ export default function SearchPage() {
             aria-hidden="true"
             className="h-8 w-8 animate-spin text-text-tertiary"
           />
-          <span className="sr-only">Wird geladen</span>
+          <span className="sr-only">Loading</span>
         </div>
       }
     >
@@ -155,7 +155,7 @@ function SearchContent() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-bold text-text">Suche</h1>
+      <h1 className="text-2xl font-bold text-text">Search</h1>
 
       {/* Search Input — Combobox with auto-complete, history, saved */}
       <div className="flex gap-2">
@@ -166,16 +166,16 @@ function SearchContent() {
           <button
             type="button"
             onClick={() => {
-              const name = prompt("Name für gespeicherte Suche:");
+              const name = prompt("Name for saved search:");
               if (name) {
                 saveMutation.mutate({ name, query, filters });
               }
             }}
-            title="Suche speichern"
+            title="Save search"
             className="inline-flex items-center gap-1 rounded-lg border border-border px-3 py-2 text-sm text-text-secondary hover:bg-surface-secondary"
           >
             <Bookmark aria-hidden className="h-4 w-4" />
-            <span className="hidden sm:inline">Speichern</span>
+            <span className="hidden sm:inline">Save</span>
           </button>
         )}
       </div>
@@ -196,7 +196,7 @@ function SearchContent() {
           className="inline-flex items-center gap-1 rounded-md border border-border px-3 py-1.5 text-sm text-text-secondary hover:bg-surface-secondary"
         >
           <Filter aria-hidden="true" className="h-4 w-4" />
-          Filter
+          Filters
         </button>
         {filters && (
           <button
@@ -204,7 +204,7 @@ function SearchContent() {
             className="inline-flex items-center gap-1 rounded-md text-sm text-text-tertiary hover:text-text-secondary"
           >
             <X aria-hidden="true" className="h-4 w-4" />
-            Filter entfernen
+            Clear filters
           </button>
         )}
       </div>
@@ -216,7 +216,7 @@ function SearchContent() {
             <div>
               <fieldset>
                 <legend className="mb-2 text-sm font-medium text-text-secondary">
-                  Quelltyp
+                  Source type
                 </legend>
                 <div className="space-y-1">
                   {SOURCE_TYPE_OPTIONS.map((opt) => (
@@ -241,7 +241,7 @@ function SearchContent() {
                 htmlFor="filter-date-from"
                 className="mb-2 block text-sm font-medium text-text-secondary"
               >
-                Von
+                From
               </label>
               <input
                 id="filter-date-from"
@@ -259,7 +259,7 @@ function SearchContent() {
                 htmlFor="filter-date-to"
                 className="mb-2 block text-sm font-medium text-text-secondary"
               >
-                Bis
+                To
               </label>
               <input
                 id="filter-date-to"
@@ -280,7 +280,7 @@ function SearchContent() {
       {data?.answer && (
         <div className="rounded-xl border border-indigo-200 bg-indigo-50 p-4">
           <h2 className="mb-1 text-sm font-semibold text-indigo-800">
-            KI-Zusammenfassung
+            AI summary
           </h2>
           <p className="text-sm text-indigo-900">{data.answer}</p>
         </div>
@@ -293,13 +293,13 @@ function SearchContent() {
             aria-hidden="true"
             className="h-8 w-8 animate-spin text-text-tertiary"
           />
-          <span className="sr-only">Wird geladen</span>
+          <span className="sr-only">Loading</span>
         </div>
       ) : data && data.results.length > 0 ? (
         <div className="space-y-3">
           <p className="text-sm text-text-tertiary">
-            {data.results.length} Ergebnis
-            {data.results.length !== 1 ? "se" : ""}
+            {data.results.length} result
+            {data.results.length !== 1 ? "s" : ""}
           </p>
           {data.results.map((result) => (
             <ResultCard key={result.chunk_id} result={result} />

@@ -28,22 +28,22 @@ type TabId = "profile" | "notifications" | "privacy" | "security" | "account";
 const TABS: { id: TabId; label: string; icon: React.ReactNode }[] = [
   {
     id: "profile",
-    label: "Profil",
+    label: "Profile",
     icon: <User aria-hidden="true" className="h-4 w-4" />,
   },
   {
     id: "notifications",
-    label: "Erinnerungen",
+    label: "Reminders",
     icon: <Bell aria-hidden="true" className="h-4 w-4" />,
   },
   {
     id: "privacy",
-    label: "Datenschutz",
+    label: "Privacy",
     icon: <Shield aria-hidden="true" className="h-4 w-4" />,
   },
   {
     id: "security",
-    label: "Sicherheit",
+    label: "Security",
     icon: <Shield aria-hidden="true" className="h-4 w-4" />,
   },
   {
@@ -62,7 +62,7 @@ export default function SettingsPage() {
             aria-hidden="true"
             className="h-8 w-8 animate-spin text-text-tertiary"
           />
-          <span className="sr-only">Wird geladen</span>
+          <span className="sr-only">Loading</span>
         </div>
       }
     >
@@ -82,13 +82,13 @@ function SettingsContent() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-text">Einstellungen</h1>
+      <h1 className="text-2xl font-bold text-text">Settings</h1>
 
       {/* Tab Navigation */}
       <div
         className="flex gap-1 border-b border-border"
         role="tablist"
-        aria-label="Einstellungen"
+        aria-label="Settings"
       >
         {TABS.map((tab) => (
           <button
@@ -165,7 +165,7 @@ function ProfileTab() {
           htmlFor="display-name"
           className="block text-sm font-medium text-text-secondary"
         >
-          Anzeigename
+          Display name
         </label>
         <input
           id="display-name"
@@ -181,7 +181,7 @@ function ProfileTab() {
           htmlFor="timezone"
           className="block text-sm font-medium text-text-secondary"
         >
-          Zeitzone
+          Time zone
         </label>
         <select
           id="timezone"
@@ -201,7 +201,7 @@ function ProfileTab() {
           htmlFor="language"
           className="block text-sm font-medium text-text-secondary"
         >
-          Sprache
+          Language
         </label>
         <select
           id="language"
@@ -209,7 +209,7 @@ function ProfileTab() {
           onChange={(e) => setLanguage(e.target.value)}
           className="mt-1 block w-full rounded-md border border-border bg-surface px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         >
-          <option value="de">Deutsch</option>
+          <option value="de">German</option>
           <option value="en">English</option>
         </select>
       </div>
@@ -221,7 +221,7 @@ function ProfileTab() {
           onChange={(e) => setAutoGenerate(e.target.checked)}
           className="rounded border-border accent-indigo-600"
         />
-        Briefings automatisch generieren
+        Generate briefings automatically
       </label>
 
       <button
@@ -234,7 +234,7 @@ function ProfileTab() {
         ) : update.isSuccess ? (
           <Check className="h-4 w-4" />
         ) : null}
-        Speichern
+        Save
       </button>
     </div>
   );
@@ -279,9 +279,9 @@ function NotificationsTab() {
     <div className="space-y-6 max-w-md">
       {/* E-Mail Briefing */}
       <div>
-        <h3 className="text-sm font-semibold text-text">E-Mail Briefings</h3>
+        <h3 className="text-sm font-semibold text-text">Email briefings</h3>
         <p className="mt-1 text-sm text-text-tertiary">
-          Erhalte tägliche Briefings per E-Mail zu deinem gewünschten Zeitpunkt.
+          Receive daily briefings by email at your preferred time.
         </p>
       </div>
 
@@ -292,7 +292,7 @@ function NotificationsTab() {
           onChange={(e) => setEmailEnabled(e.target.checked)}
           className="rounded border-border accent-indigo-600"
         />
-        E-Mail-Briefings aktiviert
+        Email briefings enabled
       </label>
 
       {emailEnabled && (
@@ -301,7 +301,7 @@ function NotificationsTab() {
             htmlFor="briefing-time"
             className="block text-sm font-medium text-text-secondary"
           >
-            Briefing-Zeitpunkt
+            Briefing time
           </label>
           <input
             id="briefing-time"
@@ -315,31 +315,31 @@ function NotificationsTab() {
 
       {/* Erinnerungsfrequenz */}
       <div>
-        <h3 className="text-sm font-semibold text-text">Erinnerungsfrequenz</h3>
+        <h3 className="text-sm font-semibold text-text">Reminder frequency</h3>
         <p className="mt-1 text-sm text-text-tertiary">
-          Bestimme, wie oft du proaktive Erinnerungen und
-          Follow-up-Benachrichtigungen erhalten möchtest.
+          Choose how often you want to receive proactive reminders and
+          follow-up notifications.
         </p>
       </div>
 
       <fieldset className="space-y-3">
-        <legend className="sr-only">Erinnerungsfrequenz</legend>
+        <legend className="sr-only">Reminder frequency</legend>
         {(
           [
             {
               value: "daily",
-              label: "Täglich",
-              desc: "Jeden Tag eine Zusammenfassung offener Erinnerungen",
+              label: "Daily",
+              desc: "A summary of open reminders every day",
             },
             {
               value: "weekly",
-              label: "Wöchentlich",
-              desc: "Einmal pro Woche (freitags) eine Übersicht",
+              label: "Weekly",
+              desc: "An overview once a week (on Fridays)",
             },
             {
               value: "off",
-              label: "Aus",
-              desc: "Keine proaktiven Erinnerungen – nur manuell abrufbar",
+              label: "Off",
+              desc: "No proactive reminders – available on demand only",
             },
           ] as const
         ).map((opt) => (
@@ -380,7 +380,7 @@ function NotificationsTab() {
         ) : update.isSuccess ? (
           <Check className="h-4 w-4" />
         ) : null}
-        Speichern
+        Save
       </button>
     </div>
   );
@@ -404,9 +404,9 @@ function PrivacyTab() {
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-sm font-semibold text-text">Transparenzbericht</h3>
+        <h3 className="text-sm font-semibold text-text">Transparency report</h3>
         <p className="mt-1 text-sm text-text-tertiary">
-          Detaillierte Übersicht über gespeicherte Daten und KI-Nutzung (DSGVO
+          Detailed overview of your stored data and AI usage (GDPR
           Art. 15).
         </p>
         <div className="mt-3">
@@ -415,14 +415,14 @@ function PrivacyTab() {
             className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-medium text-text-secondary hover:bg-surface-secondary"
           >
             <Database className="h-4 w-4" />
-            Transparenzbericht anzeigen
+            View transparency report
           </a>
         </div>
       </div>
       <div>
-        <h3 className="text-sm font-semibold text-text">Datenexport</h3>
+        <h3 className="text-sm font-semibold text-text">Data export</h3>
         <p className="mt-1 text-sm text-text-tertiary">
-          Exportiere alle deine Daten als JSON-Datei (DSGVO Art. 20).
+          Export all your data as a JSON file (GDPR Art. 20).
         </p>
         <div className="mt-3 flex items-center gap-3">
           <button
@@ -438,11 +438,11 @@ function PrivacyTab() {
             ) : (
               <Download className="h-4 w-4" />
             )}
-            Daten exportieren
+            Export data
           </button>
           {exportStatus && exportStatus.status !== "completed" && (
             <span className="text-sm text-text-tertiary">
-              Export wird erstellt\u2026
+              Preparing export\u2026
             </span>
           )}
           {exportStatus?.status === "completed" &&
@@ -453,7 +453,7 @@ function PrivacyTab() {
                 download
               >
                 <Download className="h-4 w-4" />
-                Herunterladen
+                Download
               </a>
             )}
         </div>
@@ -497,11 +497,11 @@ function AccountTab() {
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 text-yellow-600" />
             <p className="text-sm font-medium text-yellow-800">
-              Dein Account wird am{" "}
+              Your account will be deleted on{" "}
               {new Date(
                 deleteMutation.data.deletion_scheduled_at,
-              ).toLocaleDateString("de-DE")}{" "}
-              gel\u00f6scht.
+              ).toLocaleDateString("en-US")}
+              .
             </p>
           </div>
           <button
@@ -509,25 +509,25 @@ function AccountTab() {
             disabled={cancelMutation.isPending}
             className="mt-2 text-sm font-medium text-yellow-800 underline hover:text-yellow-900"
           >
-            L\u00f6schung abbrechen
+            Cancel deletion
           </button>
         </div>
       )}
 
       <div>
         <h3 className="text-sm font-semibold text-red-900">
-          Account l\u00f6schen
+          Delete account
         </h3>
         <p className="mt-1 text-sm text-text-tertiary">
-          Dein Account und alle Daten werden nach einer 30-Tage-Karenzzeit
-          unwiderruflich gel\u00f6scht.
+          Your account and all data will be permanently deleted after a
+          30-day grace period.
         </p>
         <button
           onClick={() => setShowDeleteDialog(true)}
           className="mt-3 inline-flex items-center gap-1.5 rounded-md border border-red-300 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50"
         >
           <Trash2 className="h-4 w-4" />
-          Account l\u00f6schen
+          Delete account
         </button>
       </div>
 
@@ -544,12 +544,11 @@ function AccountTab() {
               id="delete-dialog-title"
               className="text-lg font-bold text-red-900"
             >
-              Account endg\u00fcltig l\u00f6schen
+              Permanently delete account
             </h2>
             <p className="mt-2 text-sm text-text-secondary">
-              Alle deine Daten werden nach 30 Tagen unwiderruflich
-              gel\u00f6scht. Innerhalb der Karenzzeit kannst du die
-              L\u00f6schung abbrechen.
+              All your data will be permanently deleted after 30 days.
+              You can cancel the deletion during the grace period.
             </p>
 
             <label className="mt-4 flex items-start gap-2 text-sm">
@@ -559,8 +558,7 @@ function AccountTab() {
                 onChange={(e) => setConfirmed(e.target.checked)}
                 className="mt-0.5 rounded border-border"
               />
-              Ich verstehe, dass diese Aktion nicht r\u00fcckg\u00e4ngig gemacht
-              werden kann.
+              I understand that this action cannot be undone.
             </label>
 
             <div className="mt-3">
@@ -568,7 +566,7 @@ function AccountTab() {
                 htmlFor="delete-password"
                 className="block text-sm font-medium text-text-secondary"
               >
-                Passwort zur Best\u00e4tigung
+                Confirm with your password
               </label>
               <input
                 id="delete-password"
@@ -587,8 +585,8 @@ function AccountTab() {
                 className="rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
               >
                 {deleteMutation.isPending
-                  ? "L\u00f6sche\u2026"
-                  : "Account l\u00f6schen"}
+                  ? "Deleting\u2026"
+                  : "Delete account"}
               </button>
               <button
                 onClick={() => {
@@ -598,7 +596,7 @@ function AccountTab() {
                 }}
                 className="rounded-md border border-border px-4 py-2 text-sm font-medium text-text-secondary hover:bg-surface-secondary"
               >
-                Abbrechen
+                Cancel
               </button>
             </div>
           </div>

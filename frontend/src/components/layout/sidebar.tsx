@@ -24,11 +24,11 @@ import { useAuth } from "@/lib/providers";
 const NAV_ITEMS = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/briefings", label: "Briefings", icon: FileText },
-  { href: "/projects", label: "Projekte", icon: FolderKanban },
-  { href: "/search", label: "Suche", icon: Search },
+  { href: "/projects", label: "Projects", icon: FolderKanban },
+  { href: "/search", label: "Search", icon: Search },
   { href: "/knowledge", label: "Knowledge", icon: Network },
-  { href: "/decisions", label: "Entscheidungen", icon: Scale },
-  { href: "/connectors", label: "Konnektoren", icon: Cable },
+  { href: "/decisions", label: "Decisions", icon: Scale },
+  { href: "/connectors", label: "Connectors", icon: Cable },
   { href: "/admin", label: "Admin", icon: Shield },
 ] as const;
 
@@ -98,7 +98,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           <button
             onClick={onNavigate}
             className="flex h-9 w-9 items-center justify-center rounded-lg text-sidebar-text hover:bg-sidebar-hover md:hidden"
-            aria-label="Navigation schliessen"
+            aria-label="Close navigation"
           >
             <X aria-hidden="true" className="h-5 w-5" />
           </button>
@@ -108,7 +108,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
       {/* Navigation */}
       <nav
         className="flex-1 space-y-0.5 px-3 py-3"
-        aria-label="Hauptnavigation"
+        aria-label="Main navigation"
       >
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
           const isActive =
@@ -158,7 +158,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
             }`}
             aria-hidden="true"
           />
-          Einstellungen
+          Settings
         </Link>
       </div>
 
@@ -176,7 +176,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           <UserAvatar name={user?.display_name ?? "U"} size="md" />
           <div className="min-w-0 flex-1 text-left">
             <p className="truncate text-sm font-medium text-sidebar-text-active">
-              {user?.display_name ?? "Benutzer"}
+              {user?.display_name ?? "User"}
             </p>
             <p className="truncate text-xs text-sidebar-text">
               {user?.email ?? ""}
@@ -202,7 +202,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
               className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-sidebar-text hover:bg-sidebar-active hover:text-sidebar-text-active"
             >
               <Settings className="h-4 w-4" aria-hidden="true" />
-              Einstellungen
+              Settings
             </Link>
             <button
               onClick={() => {
@@ -212,7 +212,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
               className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-red-400 hover:bg-sidebar-active hover:text-red-300"
             >
               <LogOut className="h-4 w-4" aria-hidden="true" />
-              Abmelden
+              Sign out
             </button>
           </div>
         )}
@@ -234,7 +234,7 @@ export function Sidebar() {
       {/* Desktop Sidebar */}
       <aside
         className="hidden h-screen w-[260px] flex-shrink-0 flex-col bg-sidebar md:flex"
-        aria-label="Seitennavigation"
+        aria-label="Sidebar navigation"
       >
         <SidebarContent />
       </aside>
@@ -249,7 +249,7 @@ export function Sidebar() {
           />
           <aside
             className="fixed inset-y-0 left-0 z-50 flex w-[280px] flex-col bg-sidebar shadow-2xl md:hidden"
-            aria-label="Seitennavigation"
+            aria-label="Sidebar navigation"
             role="dialog"
             aria-modal="true"
           >

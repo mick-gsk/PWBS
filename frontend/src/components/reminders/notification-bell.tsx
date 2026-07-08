@@ -45,7 +45,7 @@ export function NotificationBell() {
       <button
         onClick={() => setOpen((prev) => !prev)}
         className="relative rounded-md p-2 text-text-tertiary hover:bg-surface-secondary hover:text-text-secondary focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        aria-label={`Erinnerungen${count ? ` (${count} offen)` : ""}`}
+        aria-label={`Reminders${count ? ` (${count} open)` : ""}`}
         aria-expanded={open}
         aria-haspopup="true"
       >
@@ -74,11 +74,11 @@ function NotificationPanel({ onClose }: { onClose: () => void }) {
     <div
       className="absolute right-0 top-full z-50 mt-2 w-96 max-h-[32rem] overflow-y-auto rounded-xl border border-border bg-surface shadow-lg"
       role="dialog"
-      aria-label="Erinnerungen"
+      aria-label="Reminders"
     >
       <div className="sticky top-0 border-b border-border bg-surface px-4 py-3">
         <h3 className="text-sm font-semibold text-text">
-          Erinnerungen
+          Reminders
           {data && data.count > 0 && (
             <span className="ml-2 rounded-full bg-surface-secondary px-2 py-0.5 text-xs text-text-secondary">
               {data.count}
@@ -96,7 +96,7 @@ function NotificationPanel({ onClose }: { onClose: () => void }) {
 
         {!isLoading && (!data || data.items.length === 0) && (
           <p className="py-6 text-center text-sm text-text-tertiary">
-            Keine offenen Erinnerungen.
+            No open reminders.
           </p>
         )}
 

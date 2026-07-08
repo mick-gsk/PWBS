@@ -34,10 +34,10 @@ const STEPS: {
   label: string;
   icon: React.ElementType;
 }[] = [
-  { key: "org", label: "Organisation", icon: Building2 },
-  { key: "members", label: "Team einladen", icon: Users },
-  { key: "connectors", label: "Konnektoren", icon: Cable },
-  { key: "confirm", label: "Bestätigung", icon: CheckCircle2 },
+  { key: "org", label: "Organization", icon: Building2 },
+  { key: "members", label: "Invite Team", icon: Users },
+  { key: "connectors", label: "Connectors", icon: Cable },
+  { key: "confirm", label: "Confirmation", icon: CheckCircle2 },
 ];
 
 // ---------------------------------------------------------------------------
@@ -48,7 +48,7 @@ function StepIndicator({ current }: { current: WizardStep }) {
   const currentIdx = STEPS.findIndex((s) => s.key === current);
 
   return (
-    <nav className="flex items-center gap-2" aria-label="Onboarding-Schritte">
+    <nav className="flex items-center gap-2" aria-label="Onboarding steps">
       {STEPS.map((step, idx) => {
         const Icon = step.icon;
         const isDone = idx < currentIdx;
@@ -96,10 +96,10 @@ function StepOrg({
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold text-text">
-        Organisation erstellen
+        Create Organization
       </h2>
       <p className="text-sm text-text-tertiary">
-        Geben Sie den Namen Ihres Teams oder Unternehmens ein.
+        Enter the name of your team or company.
       </p>
       <div>
         <label
@@ -115,7 +115,7 @@ function StepOrg({
           maxLength={100}
           value={name}
           onChange={(e) => onChange("name", e.target.value)}
-          placeholder="z.B. Acme Consulting"
+          placeholder="e.g. Acme Consulting"
           className="mt-1 w-full rounded-md border border-border px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
       </div>
@@ -124,14 +124,14 @@ function StepOrg({
           htmlFor="org-desc"
           className="block text-sm font-medium text-text-secondary"
         >
-          Beschreibung
+          Description
         </label>
         <textarea
           id="org-desc"
           rows={3}
           value={description}
           onChange={(e) => onChange("description", e.target.value)}
-          placeholder="Kurze Beschreibung der Organisation…"
+          placeholder="Brief description of the organization…"
           className="mt-1 w-full rounded-md border border-border px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
       </div>
@@ -157,11 +157,11 @@ function StepMembers({
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold text-text">
-        Team-Mitglieder einladen
+        Invite Team Members
       </h2>
       <p className="text-sm text-text-tertiary">
-        Fügen Sie E-Mail-Adressen Ihrer Kollegen hinzu (3–10 empfohlen).
-        Mitglieder müssen bereits einen PWBS-Account besitzen.
+        Add your colleagues&apos; email addresses (3–10 recommended).
+        Members must already have a PWBS account.
       </p>
 
       <div className="space-y-3">
@@ -172,24 +172,24 @@ function StepMembers({
               required
               value={inv.email}
               onChange={(e) => onChange(idx, "email", e.target.value)}
-              placeholder="nutzer@firma.de"
+              placeholder="user@company.com"
               className="flex-1 rounded-md border border-border px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
             />
             <select
               value={inv.role}
               onChange={(e) => onChange(idx, "role", e.target.value)}
               className="rounded-md border border-border px-2 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-              aria-label="Rolle auswählen"
+              aria-label="Select role"
             >
-              <option value="member">Mitglied</option>
-              <option value="viewer">Betrachter</option>
+              <option value="member">Member</option>
+              <option value="viewer">Viewer</option>
               <option value="owner">Owner</option>
             </select>
             <button
               type="button"
               onClick={() => onRemove(idx)}
               className="rounded p-1 text-text-tertiary hover:bg-red-50 hover:text-red-600"
-              aria-label="Eintrag entfernen"
+              aria-label="Remove entry"
             >
               <Trash2 aria-hidden="true" className="h-4 w-4" />
             </button>
@@ -204,7 +204,7 @@ function StepMembers({
         className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm text-text-secondary hover:bg-surface-secondary disabled:opacity-50"
       >
         <Plus aria-hidden="true" className="h-4 w-4" />
-        Weiteres Mitglied
+        Add another member
       </button>
     </div>
   );
@@ -215,19 +215,19 @@ function StepMembers({
 // ---------------------------------------------------------------------------
 
 const CONNECTOR_OPTIONS = [
-  { id: "gmail", label: "Gmail", description: "E-Mails importieren" },
-  { id: "slack", label: "Slack", description: "Channel-Nachrichten" },
+  { id: "gmail", label: "Gmail", description: "Import emails" },
+  { id: "slack", label: "Slack", description: "Channel messages" },
   {
     id: "google_docs",
     label: "Google Docs",
-    description: "Dokumente indexieren",
+    description: "Index documents",
   },
   {
     id: "google_calendar",
     label: "Google Calendar",
-    description: "Termine & Meetings",
+    description: "Events & meetings",
   },
-  { id: "notion", label: "Notion", description: "Seiten & Datenbanken" },
+  { id: "notion", label: "Notion", description: "Pages & databases" },
 ] as const;
 
 function StepConnectors({
@@ -240,11 +240,11 @@ function StepConnectors({
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold text-text">
-        Konnektoren auswählen
+        Select Connectors
       </h2>
       <p className="text-sm text-text-tertiary">
-        Wählen Sie die Datenquellen, die Ihr Team nutzen soll. Die
-        OAuth-Verbindung wird nach Abschluss des Wizards hergestellt.
+        Choose the data sources your team should use. The OAuth connection
+        is set up after the wizard is completed.
       </p>
 
       <div className="grid gap-3 sm:grid-cols-2">
@@ -287,31 +287,31 @@ function StepConfirm({
 }) {
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold text-text">Zusammenfassung</h2>
+      <h2 className="text-lg font-semibold text-text">Summary</h2>
       <div className="space-y-3 rounded-lg border border-border bg-surface-secondary p-5">
         <div className="flex items-center gap-3">
           <Building2 aria-hidden="true" className="h-5 w-5 text-indigo-600" />
           <span className="text-sm">
-            Organisation: <strong>{orgName}</strong>
+            Organization: <strong>{orgName}</strong>
           </span>
         </div>
         <div className="flex items-center gap-3">
           <Users aria-hidden="true" className="h-5 w-5 text-indigo-600" />
           <span className="text-sm">
-            {inviteCount} Mitglied{inviteCount !== 1 ? "er" : ""} einladen
+            Invite {inviteCount} member{inviteCount !== 1 ? "s" : ""}
           </span>
         </div>
         <div className="flex items-center gap-3">
           <Cable aria-hidden="true" className="h-5 w-5 text-indigo-600" />
           <span className="text-sm">
-            {connectorCount} Konnektor{connectorCount !== 1 ? "en" : ""}{" "}
-            aktivieren
+            Activate {connectorCount} connector
+            {connectorCount !== 1 ? "s" : ""}
           </span>
         </div>
       </div>
       <p className="text-sm text-text-tertiary">
-        Klicken Sie auf &quot;Abschließen&quot;, um die Organisation zu
-        erstellen und die Einladungen zu versenden.
+        Click &quot;Finish&quot; to create the organization and send the
+        invitations.
       </p>
     </div>
   );
@@ -426,9 +426,9 @@ export default function OnboardingWizardPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-8 p-6">
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-text">B2B-Onboarding</h1>
+        <h1 className="text-2xl font-bold text-text">B2B Onboarding</h1>
         <p className="mt-1 text-sm text-text-tertiary">
-          Richten Sie Ihr Team in wenigen Schritten ein.
+          Set up your team in just a few steps.
         </p>
       </div>
 
@@ -482,7 +482,7 @@ export default function OnboardingWizardPage() {
           className="inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium text-text-secondary hover:bg-surface-secondary disabled:invisible"
         >
           <ArrowLeft aria-hidden="true" className="h-4 w-4" />
-          Zurück
+          Back
         </button>
 
         {step === "confirm" ? (
@@ -497,7 +497,7 @@ export default function OnboardingWizardPage() {
             ) : (
               <CheckCircle2 aria-hidden="true" className="h-4 w-4" />
             )}
-            Abschließen
+            Finish
           </button>
         ) : (
           <button
@@ -506,7 +506,7 @@ export default function OnboardingWizardPage() {
             disabled={!canProceed()}
             className="inline-flex items-center gap-2 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
           >
-            Weiter
+            Next
             <ArrowRight aria-hidden="true" className="h-4 w-4" />
           </button>
         )}

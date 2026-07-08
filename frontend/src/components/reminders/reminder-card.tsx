@@ -13,12 +13,12 @@ const TYPE_CONFIG = {
   follow_up: { icon: Clock, label: "Follow-up", color: "text-indigo-600" },
   inactive_topic: {
     icon: AlertTriangle,
-    label: "Inaktives Thema",
+    label: "Inactive Topic",
     color: "text-amber-600",
   },
   open_question: {
     icon: HelpCircle,
-    label: "Offene Frage",
+    label: "Open Question",
     color: "text-purple-600",
   },
 } as const;
@@ -35,11 +35,11 @@ function timeAgo(dateString: string): string {
   const diffMs = now - then;
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-  if (diffDays === 0) return "heute";
-  if (diffDays === 1) return "gestern";
-  if (diffDays < 7) return `vor ${diffDays} Tagen`;
-  if (diffDays < 30) return `vor ${Math.floor(diffDays / 7)} Wochen`;
-  return `vor ${Math.floor(diffDays / 30)} Monaten`;
+  if (diffDays === 0) return "today";
+  if (diffDays === 1) return "yesterday";
+  if (diffDays < 7) return `${diffDays} days ago`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+  return `${Math.floor(diffDays / 30)} months ago`;
 }
 
 export function ReminderCard({
@@ -90,17 +90,17 @@ export function ReminderCard({
         {reminder.due_at && (
           <span className="flex items-center gap-1">
             <Clock aria-hidden="true" className="h-3 w-3" />
-            Fällig: {new Date(reminder.due_at).toLocaleDateString("de-DE")}
+            Due: {new Date(reminder.due_at).toLocaleDateString("de-DE")}
           </span>
         )}
         {reminder.source_document_id && (
           <span className="flex items-center gap-1">
             <FileText aria-hidden="true" className="h-3 w-3" />
-            Quellenreferenz
+            Source reference
           </span>
         )}
         {reminder.responsible_person && (
-          <span>Verantwortlich: {reminder.responsible_person}</span>
+          <span>Owner: {reminder.responsible_person}</span>
         )}
       </div>
 
@@ -111,21 +111,21 @@ export function ReminderCard({
           disabled={isPending}
           className="rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
         >
-          Noch relevant
+          Still relevant
         </button>
         <button
           onClick={() => onAction(reminder.id, "dismissed")}
           disabled={isPending}
           className="rounded-md border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-secondary disabled:opacity-50"
         >
-          Erledigt
+          Done
         </button>
         <button
           onClick={() => onAction(reminder.id, "snoozed")}
           disabled={isPending}
           className="rounded-md border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface-secondary disabled:opacity-50"
         >
-          Später erinnern
+          Remind me later
         </button>
       </div>
     </div>

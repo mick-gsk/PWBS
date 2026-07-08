@@ -8,17 +8,17 @@ import { EmptyState } from "@/components/ui/empty-states";
 import type { PluginType, SortField } from "@/types/marketplace";
 
 const CATEGORY_OPTIONS: { value: PluginType | ""; label: string }[] = [
-  { value: "", label: "Alle Kategorien" },
-  { value: "connector", label: "Konnektoren" },
-  { value: "briefing_template", label: "Briefing-Templates" },
+  { value: "", label: "All Categories" },
+  { value: "connector", label: "Connectors" },
+  { value: "briefing_template", label: "Briefing Templates" },
   { value: "processing", label: "Processing" },
-  { value: "agent", label: "Agenten" },
+  { value: "agent", label: "Agents" },
 ];
 
 const SORT_OPTIONS: { value: SortField; label: string }[] = [
-  { value: "popularity", label: "Beliebtheit" },
-  { value: "date", label: "Neueste" },
-  { value: "rating", label: "Bewertung" },
+  { value: "popularity", label: "Popularity" },
+  { value: "date", label: "Newest" },
+  { value: "rating", label: "Rating" },
 ];
 
 const PAGE_SIZE = 12;
@@ -55,7 +55,7 @@ export default function MarketplacePage() {
               setPage(0);
             }}
             className="rounded-md border border-border bg-surface px-3 py-1.5 text-sm text-text-secondary"
-            aria-label="Sortierung"
+            aria-label="Sort by"
           >
             {SORT_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
@@ -75,14 +75,14 @@ export default function MarketplacePage() {
           />
           <input
             type="search"
-            placeholder="Plugins durchsuchen…"
+            placeholder="Search plugins…"
             value={search}
             onChange={(e) => {
               setSearch(e.target.value);
               setPage(0);
             }}
             className="w-full rounded-md border border-border py-2 pl-9 pr-3 text-sm placeholder:text-text-tertiary focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-            aria-label="Plugins durchsuchen"
+            aria-label="Search plugins"
           />
         </div>
         <div className="flex gap-2">
@@ -118,8 +118,8 @@ export default function MarketplacePage() {
       ) : isError ? (
         <EmptyState
           icon={<Store className="h-10 w-10" />}
-          title="Fehler beim Laden"
-          description="Die Plugin-Liste konnte nicht geladen werden."
+          title="Loading failed"
+          description="The plugin list could not be loaded."
         />
       ) : data && data.plugins.length > 0 ? (
         <>
@@ -137,17 +137,17 @@ export default function MarketplacePage() {
                 disabled={page === 0}
                 className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-text-secondary hover:bg-surface-secondary disabled:opacity-50"
               >
-                Zurück
+                Previous
               </button>
               <span className="text-sm text-text-secondary">
-                Seite {page + 1} von {totalPages}
+                Page {page + 1} of {totalPages}
               </span>
               <button
                 onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
                 disabled={page >= totalPages - 1}
                 className="rounded-md border border-border px-3 py-1.5 text-sm font-medium text-text-secondary hover:bg-surface-secondary disabled:opacity-50"
               >
-                Weiter
+                Next
               </button>
             </div>
           )}
@@ -155,8 +155,8 @@ export default function MarketplacePage() {
       ) : (
         <EmptyState
           icon={<Store className="h-10 w-10" />}
-          title="Keine Plugins gefunden"
-          description="Versuche andere Suchbegriffe oder entferne Filter."
+          title="No plugins found"
+          description="Try different search terms or remove filters."
         />
       )}
     </div>

@@ -58,7 +58,7 @@ function ListEditor({
           type="button"
           onClick={add}
           className="rounded-lg border border-border px-2 py-1.5 text-text-secondary hover:bg-surface-secondary"
-          aria-label="Eintrag hinzufügen"
+          aria-label="Add item"
         >
           <Plus aria-hidden="true" className="h-4 w-4" />
         </button>
@@ -75,7 +75,7 @@ function ListEditor({
                 type="button"
                 onClick={() => remove(i)}
                 className="ml-2 text-text-tertiary hover:text-red-500"
-                aria-label="Eintrag entfernen"
+                aria-label="Remove item"
               >
                 <X aria-hidden="true" className="h-3.5 w-3.5" />
               </button>
@@ -123,11 +123,11 @@ export function DecisionForm() {
           type="button"
           onClick={() => router.push("/decisions")}
           className="rounded p-1 text-text-tertiary hover:text-text-secondary"
-          aria-label="Zurück zur Übersicht"
+          aria-label="Back to overview"
         >
           <ArrowLeft aria-hidden="true" className="h-5 w-5" />
         </button>
-        <h1 className="text-xl font-bold text-text">Neue Entscheidung</h1>
+        <h1 className="text-xl font-bold text-text">New Decision</h1>
       </div>
 
       {/* Summary */}
@@ -136,7 +136,7 @@ export function DecisionForm() {
           htmlFor="summary"
           className="mb-1 block text-sm font-medium text-text-secondary"
         >
-          Zusammenfassung *
+          Summary *
         </label>
         <textarea
           id="summary"
@@ -145,7 +145,7 @@ export function DecisionForm() {
           required
           maxLength={2000}
           rows={3}
-          placeholder="Was wurde entschieden?"
+          placeholder="What was decided?"
           className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
       </div>
@@ -165,9 +165,9 @@ export function DecisionForm() {
             onChange={(e) => setStatus(e.target.value as DecisionStatus)}
             className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           >
-            <option value="pending">Ausstehend</option>
-            <option value="made">Entschieden</option>
-            <option value="revised">Revidiert</option>
+            <option value="pending">Pending</option>
+            <option value="made">Decided</option>
+            <option value="revised">Revised</option>
           </select>
         </div>
         <div>
@@ -175,14 +175,14 @@ export function DecisionForm() {
             htmlFor="decidedBy"
             className="mb-1 block text-sm font-medium text-text-secondary"
           >
-            Entschieden von
+            Decided by
           </label>
           <input
             id="decidedBy"
             type="text"
             value={decidedBy}
             onChange={(e) => setDecidedBy(e.target.value)}
-            placeholder="Name oder Rolle"
+            placeholder="Name or role"
             className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
           />
         </div>
@@ -191,32 +191,32 @@ export function DecisionForm() {
       {/* Pro/Contra */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <ListEditor
-          label="Pro-Argumente"
+          label="Pros"
           items={proArgs}
           onChange={setProArgs}
-          placeholder="Argument hinzuf&uuml;gen..."
+          placeholder="Add argument..."
         />
         <ListEditor
-          label="Contra-Argumente"
+          label="Cons"
           items={contraArgs}
           onChange={setContraArgs}
-          placeholder="Argument hinzuf&uuml;gen..."
+          placeholder="Add argument..."
         />
       </div>
 
       {/* Assumptions & Dependencies */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <ListEditor
-          label="Annahmen"
+          label="Assumptions"
           items={assumptions}
           onChange={setAssumptions}
-          placeholder="Annahme hinzuf&uuml;gen..."
+          placeholder="Add assumption..."
         />
         <ListEditor
-          label="Abh&auml;ngigkeiten"
+          label="Dependencies"
           items={dependencies}
           onChange={setDependencies}
-          placeholder="Abh&auml;ngigkeit hinzuf&uuml;gen..."
+          placeholder="Add dependency..."
         />
       </div>
 
@@ -230,13 +230,13 @@ export function DecisionForm() {
           {createMutation.isPending && (
             <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
           )}
-          Entscheidung erstellen
+          Create Decision
         </button>
       </div>
 
       {createMutation.isError && (
         <p className="text-sm text-red-600">
-          Fehler beim Erstellen: {createMutation.error.message}
+          Failed to create decision: {createMutation.error.message}
         </p>
       )}
     </form>

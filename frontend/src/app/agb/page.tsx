@@ -2,8 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Allgemeine Geschäftsbedingungen – PWBS",
-  description: "Allgemeine Geschäftsbedingungen für die Nutzung von PWBS.",
+  title: "Terms of Service – PWBS",
+  description: "Terms of Service governing the use of PWBS.",
 };
 
 export default function AGBPage() {
@@ -18,71 +18,71 @@ export default function AGBPage() {
             href="/"
             className="text-sm text-text-tertiary hover:text-text transition-colors"
           >
-            Zurück zur Startseite
+            Back to home
           </Link>
         </div>
       </nav>
 
       <main className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
         <h1 className="text-3xl font-bold text-text sm:text-4xl">
-          Allgemeine Geschäftsbedingungen
+          Terms of Service
         </h1>
-        <p className="mt-2 text-sm text-text-tertiary">Stand: Juli 2025</p>
+        <p className="mt-2 text-sm text-text-tertiary">Last updated: July 2025</p>
 
         <div className="mt-8 space-y-10 text-text-secondary leading-relaxed">
           {/* 1 */}
           <section>
             <h2 className="text-xl font-semibold text-text">
-              1. Geltungsbereich
+              1. Scope
             </h2>
             <p className="mt-2">
-              Diese Allgemeinen Geschäftsbedingungen (AGB) gelten für die
-              Nutzung des Dienstes &quot;PWBS – Persönliches
-              Wissens-Betriebssystem&quot;, betrieben von Mick Gajewski
-              (nachfolgend &quot;Anbieter&quot;).
+              These Terms of Service govern the use of the service
+              &quot;PWBS – Personal Knowledge Operating System&quot;,
+              operated by Mick Gajewski (hereinafter the
+              &quot;Provider&quot;).
             </p>
             <p className="mt-2">
-              Mit der Registrierung oder Nutzung des Dienstes erkennen Sie diese
-              AGB an.
+              By registering for or using the service, you accept these
+              Terms of Service.
             </p>
           </section>
 
           {/* 2 */}
           <section>
             <h2 className="text-xl font-semibold text-text">
-              2. Leistungsbeschreibung
+              2. Description of the Service
             </h2>
             <p className="mt-2">
-              PWBS ist eine KI-gestützte Plattform, die persönliche
-              Wissensdaten aus verschiedenen Quellen (Kalender, Notizen,
-              Meeting-Transkripte) zusammenführt, semantisch analysiert und als
-              kontextbezogene Briefings aufbereitet.
+              PWBS is an AI-powered platform that consolidates personal
+              knowledge data from various sources (calendars, notes,
+              meeting transcripts), analyzes it semantically, and turns it
+              into contextual briefings.
             </p>
             <p className="mt-2">
-              Der Dienst befindet sich derzeit in der{" "}
-              <strong>Beta-Phase</strong>. Funktionsumfang und Verfügbarkeit
-              können sich ändern.
+              The service is currently in{" "}
+              <strong>beta</strong>. Features and availability
+              may change.
             </p>
           </section>
 
           {/* 3 */}
           <section>
             <h2 className="text-xl font-semibold text-text">
-              3. Registrierung und Konto
+              3. Registration and Account
             </h2>
             <ul className="mt-2 list-disc pl-6 space-y-1">
               <li>
-                Sie müssen wahrheitsgemäße Angaben bei der Registrierung machen
+                You must provide accurate information when registering
               </li>
               <li>
-                Sie sind für die Sicherheit Ihrer Zugangsdaten verantwortlich
+                You are responsible for keeping your login credentials secure
               </li>
               <li>
-                Ein Konto ist persönlich und darf nicht an Dritte weitergegeben
-                werden
+                An account is personal and may not be shared with third
+                parties
               </li>
               <li>
-                Der Anbieter kann Konten bei Verstoß gegen diese AGB sperren
+                The Provider may suspend accounts that violate these Terms
               </li>
             </ul>
           </section>
@@ -90,25 +90,25 @@ export default function AGBPage() {
           {/* 4 */}
           <section>
             <h2 className="text-xl font-semibold text-text">
-              4. Beta-Bedingungen
+              4. Beta Terms
             </h2>
-            <p className="mt-2">Während der Beta-Phase gilt zusätzlich:</p>
+            <p className="mt-2">During the beta phase, the following also applies:</p>
             <ul className="mt-2 list-disc pl-6 space-y-1">
               <li>
-                Der Dienst wird &quot;wie besehen&quot; (as-is) bereitgestellt
+                The service is provided &quot;as is&quot;
               </li>
               <li>
-                Es besteht kein Anspruch auf eine bestimmte Verfügbarkeit oder
-                Funktionalität
+                There is no entitlement to any particular availability or
+                functionality
               </li>
               <li>
-                Der Anbieter kann den Dienst jederzeit ändern, einschränken
-                oder einstellen
+                The Provider may modify, restrict, or discontinue the service
+                at any time
               </li>
               <li>
-                Ihre Daten werden auch bei Einstellung des Dienstes nicht ohne
-                Vorankündigung gelöscht – Sie erhalten mindestens 30 Tage Zeit
-                für einen Export
+                Even if the service is discontinued, your data will not be
+                deleted without prior notice – you will have at least 30 days
+                to export it
               </li>
             </ul>
           </section>
@@ -116,21 +116,20 @@ export default function AGBPage() {
           {/* 5 */}
           <section>
             <h2 className="text-xl font-semibold text-text">
-              5. Nutzungsrechte und -pflichten
+              5. User Rights and Obligations
             </h2>
-            <p className="mt-2">Der Nutzer verpflichtet sich:</p>
+            <p className="mt-2">The user agrees to:</p>
             <ul className="mt-2 list-disc pl-6 space-y-1">
-              <li>Den Dienst nicht für rechtswidrige Zwecke zu verwenden</li>
+              <li>Not use the service for unlawful purposes</li>
               <li>
-                Keine automatisierten Massenabfragen (Scraping, Bots)
-                durchzuführen
+                Not perform automated bulk requests (scraping, bots)
               </li>
               <li>
-                Keine Sicherheitsmechanismen zu umgehen oder zu manipulieren
+                Not circumvent or tamper with any security mechanisms
               </li>
               <li>
-                Nur eigene Daten oder Daten, für die eine
-                Verarbeitungsberechtigung besteht, zu übermitteln
+                Only submit their own data, or data they are authorized to
+                have processed
               </li>
             </ul>
           </section>
@@ -138,44 +137,44 @@ export default function AGBPage() {
           {/* 6 */}
           <section>
             <h2 className="text-xl font-semibold text-text">
-              6. Geistiges Eigentum
+              6. Intellectual Property
             </h2>
             <p className="mt-2">
-              Alle Rechte an der Software, dem Design und den Inhalten von PWBS
-              liegen beim Anbieter. Die vom Nutzer eingebrachten Daten
-              verbleiben im Eigentum des Nutzers.
+              All rights to the software, design, and content of PWBS
+              belong to the Provider. Data submitted by the user
+              remains the property of the user.
             </p>
             <p className="mt-2">
-              Der Anbieter erhält kein Nutzungsrecht an den Inhalten des
-              Nutzers über die zur Diensterbringung notwendige Verarbeitung
-              hinaus.
+              The Provider acquires no rights to use the user&apos;s content
+              beyond the processing necessary to provide the service.
             </p>
           </section>
 
           {/* 7 */}
           <section>
             <h2 className="text-xl font-semibold text-text">
-              7. Haftungsbeschränkung
+              7. Limitation of Liability
             </h2>
             <p className="mt-2">
-              Der Anbieter haftet unbeschränkt für Vorsatz und grobe
-              Fahrlässigkeit. Bei leichter Fahrlässigkeit haftet der Anbieter
-              nur bei Verletzung wesentlicher Vertragspflichten und nur bis zur
-              Höhe des vorhersehbaren, vertragstypischen Schadens.
+              The Provider is liable without limitation for intent and gross
+              negligence. In cases of slight negligence, the Provider is
+              liable only for breaches of essential contractual obligations
+              and only up to the amount of foreseeable damage typical for
+              this type of contract.
             </p>
-            <p className="mt-2">Der Anbieter haftet nicht für:</p>
+            <p className="mt-2">The Provider is not liable for:</p>
             <ul className="mt-2 list-disc pl-6 space-y-1">
               <li>
-                Inhaltliche Richtigkeit der KI-generierten Briefings und
-                Zusammenfassungen
+                The factual accuracy of AI-generated briefings and
+                summaries
               </li>
               <li>
-                Datenverlust durch hoehe Gewalt, Serverausfälle Dritter oder
-                Handlungen des Nutzers
+                Data loss caused by force majeure, third-party server
+                outages, or actions of the user
               </li>
               <li>
-                Entscheidungen, die auf Basis der bereitgestellten Informationen
-                getroffen werden
+                Decisions made on the basis of the information
+                provided
               </li>
             </ul>
           </section>
@@ -183,36 +182,37 @@ export default function AGBPage() {
           {/* 8 */}
           <section>
             <h2 className="text-xl font-semibold text-text">
-              8. Datenschutz
+              8. Data Protection
             </h2>
             <p className="mt-2">
-              Die Verarbeitung personenbezogener Daten erfolgt gemäß unserer{" "}
+              Personal data is processed in accordance with our{" "}
               <Link
                 href="/datenschutz"
                 className="text-indigo-600 hover:underline"
               >
-                Datenschutzerklärung
+                Privacy Policy
               </Link>
-              , die Bestandteil dieser AGB ist.
+              , which forms part of these Terms of Service.
             </p>
           </section>
 
           {/* 9 */}
           <section>
             <h2 className="text-xl font-semibold text-text">
-              9. Kündigung
+              9. Termination
             </h2>
             <ul className="mt-2 list-disc pl-6 space-y-1">
               <li>
-                Sie können Ihr Konto jederzeit in den Einstellungen löschen
+                You can delete your account at any time in the settings
               </li>
               <li>
-                Bei Kontolöschung werden alle Ihre Daten unwiderruflich
-                entfernt (Dokumente, Embeddings, Knowledge Graph, Audit-Logs)
+                When you delete your account, all of your data is
+                irrevocably removed (documents, embeddings, knowledge graph,
+                audit logs)
               </li>
               <li>
-                Der Anbieter kann den Zugang bei schwerwiegenden Verstößen
-                gegen diese AGB mit sofortiger Wirkung kündigen
+                The Provider may terminate access with immediate effect in
+                the event of serious violations of these Terms
               </li>
             </ul>
           </section>
@@ -220,38 +220,39 @@ export default function AGBPage() {
           {/* 10 */}
           <section>
             <h2 className="text-xl font-semibold text-text">
-              10. Änderungen der AGB
+              10. Changes to These Terms
             </h2>
             <p className="mt-2">
-              Der Anbieter behält sich vor, diese AGB zu ändern. Änderungen
-              werden per E-Mail oder in-App-Benachrichtigung mitgeteilt.
-              Widerspricht der Nutzer nicht innerhalb von 30 Tagen, gelten die
-              geänderten AGB als angenommen.
+              The Provider reserves the right to amend these Terms of
+              Service. Changes will be communicated by email or in-app
+              notification. If the user does not object within 30 days, the
+              amended Terms are deemed accepted.
             </p>
           </section>
 
           {/* 11 */}
           <section>
             <h2 className="text-xl font-semibold text-text">
-              11. Anwendbares Recht und Gerichtsstand
+              11. Governing Law and Jurisdiction
             </h2>
             <p className="mt-2">
-              Es gilt das Recht der Bundesrepublik Deutschland unter Ausschluss
-              des UN-Kaufrechts. Gerichtsstand ist, soweit gesetzlich zulässig,
-              der Wohnsitz des Anbieters.
+              The law of the Federal Republic of Germany applies, excluding
+              the UN Convention on Contracts for the International Sale of
+              Goods (CISG). To the extent permitted by law, the place of
+              jurisdiction is the Provider&apos;s place of residence.
             </p>
           </section>
 
           {/* 12 */}
           <section>
             <h2 className="text-xl font-semibold text-text">
-              12. Salvatorische Klausel
+              12. Severability
             </h2>
             <p className="mt-2">
-              Sollte eine Bestimmung dieser AGB unwirksam sein oder werden, so
-              bleibt die Wirksamkeit der übrigen Bestimmungen unberührt. An
-              die Stelle der unwirksamen Bestimmung tritt eine wirksame
-              Regelung, die dem wirtschaftlichen Zweck am nächsten kommt.
+              Should any provision of these Terms of Service be or become
+              invalid, the validity of the remaining provisions shall not be
+              affected. The invalid provision shall be replaced by a valid
+              provision that most closely reflects its economic purpose.
             </p>
           </section>
         </div>
@@ -261,23 +262,23 @@ export default function AGBPage() {
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <span className="text-sm text-text-tertiary">
-              &copy; {new Date().getFullYear()} PWBS. Alle Rechte vorbehalten.
+              &copy; {new Date().getFullYear()} PWBS. All rights reserved.
             </span>
             <div className="flex gap-6 text-sm text-text-tertiary">
               <Link
                 href="/impressum"
                 className="hover:text-text transition-colors"
               >
-                Impressum
+                Legal Notice
               </Link>
               <Link
                 href="/datenschutz"
                 className="hover:text-text transition-colors"
               >
-                Datenschutz
+                Privacy Policy
               </Link>
               <Link href="/agb" className="font-medium text-text">
-                AGB
+                Terms of Service
               </Link>
             </div>
           </div>

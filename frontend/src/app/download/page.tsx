@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Download – PWBS Desktop App",
   description:
-    "Laden Sie die PWBS Desktop-App herunter – verfuegbar fuer Windows, macOS und Linux.",
+    "Download the PWBS desktop app – available for Windows, macOS, and Linux.",
 };
 
 const GITHUB_RELEASE = "https://github.com/sauremilk/PWBS/releases/latest";
@@ -16,7 +16,7 @@ const PLATFORMS = [
     icon: "🪟",
     file: ".exe",
     description: "Windows 10/11 (64-Bit)",
-    requirements: "WebView2 (in Windows 10/11 enthalten)",
+    requirements: "WebView2 (included in Windows 10/11)",
   },
   {
     name: "macOS",
@@ -50,14 +50,14 @@ export default function DownloadPage() {
               href="/login"
               className="text-sm text-text-secondary hover:text-text transition-colors"
             >
-              Web-App
+              Web App
             </Link>
             <Link
               href="/login"
               className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white
                 hover:bg-indigo-700 transition-colors"
             >
-              Anmelden
+              Sign in
             </Link>
           </div>
         </div>
@@ -69,11 +69,11 @@ export default function DownloadPage() {
           PWBS Desktop App
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-text-secondary">
-          Ihr Wissens-Betriebssystem als native App – mit System-Tray, nativen
-          Benachrichtigungen und Offline-Modus.
+          Your knowledge operating system as a native app – with system tray,
+          native notifications, and offline mode.
         </p>
         <p className="mt-2 text-sm text-text-tertiary">
-          Aktuell in der Beta. Kostenlos fuer alle registrierten Nutzer.
+          Currently in beta. Free for all registered users.
         </p>
       </section>
 
@@ -95,7 +95,7 @@ export default function DownloadPage() {
                 {platform.description}
               </p>
               <p className="mt-2 text-xs text-text-tertiary">
-                Voraussetzung: {platform.requirements}
+                Requires: {platform.requirements}
               </p>
               <div className="mt-auto pt-6">
                 <a
@@ -105,7 +105,7 @@ export default function DownloadPage() {
                   className="block w-full rounded-lg bg-indigo-600 px-4 py-3 text-center text-sm
                     font-medium text-white hover:bg-indigo-700 transition-colors"
                 >
-                  Download fuer {platform.name} ({platform.file})
+                  Download for {platform.name} ({platform.file})
                 </a>
               </div>
             </div>
@@ -117,7 +117,7 @@ export default function DownloadPage() {
       <section className="border-t border-border bg-surface-secondary py-16 sm:py-24">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <h2 className="text-center text-2xl font-bold text-text sm:text-3xl">
-            Warum die Desktop-App?
+            Why the desktop app?
           </h2>
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div className="text-center">
@@ -125,28 +125,28 @@ export default function DownloadPage() {
                 🔔
               </div>
               <h3 className="mt-3 font-semibold text-text">
-                Native Benachrichtigungen
+                Native Notifications
               </h3>
               <p className="mt-1 text-sm text-text-secondary">
-                Briefings und Erinnerungen direkt auf dem Desktop.
+                Briefings and reminders delivered right to your desktop.
               </p>
             </div>
             <div className="text-center">
               <div className="text-3xl" aria-hidden="true">
                 📡
               </div>
-              <h3 className="mt-3 font-semibold text-text">Offline-Modus</h3>
+              <h3 className="mt-3 font-semibold text-text">Offline Mode</h3>
               <p className="mt-1 text-sm text-text-secondary">
-                Briefings und Suche funktionieren auch ohne Internetverbindung.
+                Briefings and search work even without an internet connection.
               </p>
             </div>
             <div className="text-center">
               <div className="text-3xl" aria-hidden="true">
                 ⚡
               </div>
-              <h3 className="mt-3 font-semibold text-text">System-Tray</h3>
+              <h3 className="mt-3 font-semibold text-text">System Tray</h3>
               <p className="mt-1 text-sm text-text-secondary">
-                Schnellzugriff auf Dashboard, Suche und Briefings.
+                Quick access to dashboard, search, and briefings.
               </p>
             </div>
             <div className="text-center">
@@ -155,7 +155,7 @@ export default function DownloadPage() {
               </div>
               <h3 className="mt-3 font-semibold text-text">~10 MB</h3>
               <p className="mt-1 text-sm text-text-secondary">
-                Schlankes Binary dank Tauri – kein Chromium-Overhead.
+                Lightweight binary thanks to Tauri – no Chromium overhead.
               </p>
             </div>
           </div>
@@ -166,18 +166,18 @@ export default function DownloadPage() {
       <section className="py-16 sm:py-24">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
           <h2 className="text-2xl font-bold text-text">
-            Keine Installation noetig?
+            Prefer no installation?
           </h2>
           <p className="mt-4 text-text-secondary">
-            PWBS laeuft auch komplett im Browser. Nutzen Sie die Web-App ohne
-            Download.
+            PWBS also runs entirely in your browser. Use the web app without
+            downloading anything.
           </p>
           <Link
             href="/login"
             className="mt-6 inline-block rounded-lg border border-border px-6 py-3 text-sm
               font-medium text-text-secondary hover:bg-surface-secondary transition-colors"
           >
-            Zur Web-App →
+            Go to Web App →
           </Link>
         </div>
       </section>
@@ -187,23 +187,23 @@ export default function DownloadPage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <span className="text-sm text-text-tertiary">
-              &copy; {new Date().getFullYear()} PWBS. Alle Rechte vorbehalten.
+              &copy; {new Date().getFullYear()} PWBS. All rights reserved.
             </span>
             <div className="flex gap-6 text-sm text-text-tertiary">
               <Link
                 href="/impressum"
                 className="hover:text-text transition-colors"
               >
-                Impressum
+                Legal Notice
               </Link>
               <Link
                 href="/datenschutz"
                 className="hover:text-text transition-colors"
               >
-                Datenschutz
+                Privacy Policy
               </Link>
               <Link href="/agb" className="hover:text-text transition-colors">
-                AGB
+                Terms of Service
               </Link>
             </div>
           </div>

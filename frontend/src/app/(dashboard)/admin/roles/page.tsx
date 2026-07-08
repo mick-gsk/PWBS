@@ -38,11 +38,11 @@ interface AuditEntry {
 // ---- Role labels & styling --------------------------------------------------
 
 const ROLE_LABELS: Record<string, string> = {
-  owner: "Eigentümer",
+  owner: "Owner",
   admin: "Administrator",
   manager: "Manager",
-  member: "Mitglied",
-  viewer: "Betrachter",
+  member: "Member",
+  viewer: "Viewer",
 };
 
 const ROLE_COLORS: Record<string, string> = {
@@ -54,21 +54,21 @@ const ROLE_COLORS: Record<string, string> = {
 };
 
 const PERM_LABELS: Record<string, string> = {
-  "org:delete": "Organisation löschen",
-  "org:edit": "Organisation bearbeiten",
-  "org:view": "Organisation anzeigen",
-  "members:invite": "Mitglieder einladen",
-  "members:remove": "Mitglieder entfernen",
-  "members:change_role": "Rollen ändern",
-  "members:view": "Mitglieder anzeigen",
-  "connectors:manage": "Konnektoren verwalten",
-  "connectors:share": "Konnektoren teilen",
-  "connectors:view": "Konnektoren anzeigen",
-  "documents:manage_visibility": "Sichtbarkeit verwalten",
-  "documents:view_team": "Team-Dokumente anzeigen",
-  "briefings:generate": "Briefings erstellen",
-  "briefings:view": "Briefings anzeigen",
-  "audit:view": "Audit-Log anzeigen",
+  "org:delete": "Delete organization",
+  "org:edit": "Edit organization",
+  "org:view": "View organization",
+  "members:invite": "Invite members",
+  "members:remove": "Remove members",
+  "members:change_role": "Change roles",
+  "members:view": "View members",
+  "connectors:manage": "Manage connectors",
+  "connectors:share": "Share connectors",
+  "connectors:view": "View connectors",
+  "documents:manage_visibility": "Manage visibility",
+  "documents:view_team": "View team documents",
+  "briefings:generate": "Generate briefings",
+  "briefings:view": "View briefings",
+  "audit:view": "View audit log",
 };
 
 // ---- Component --------------------------------------------------------------
@@ -97,7 +97,7 @@ export default function RolesPage() {
       const data = await res.json();
       setRoles(data.roles);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Fehler beim Laden");
+      setError(e instanceof Error ? e.message : "Failed to load");
     } finally {
       setLoading(false);
     }
@@ -156,20 +156,20 @@ export default function RolesPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <h1 className="mb-6 text-2xl font-bold text-text">
-        Rollen & Berechtigungen
+        Roles & Permissions
       </h1>
 
       {/* Org selector */}
       <div className="mb-6 flex items-center gap-3">
         <label htmlFor="org-id" className="text-sm font-medium text-text-secondary">
-          Organisations-ID:
+          Organization ID:
         </label>
         <input
           id="org-id"
           type="text"
           value={orgId}
           onChange={(e) => setOrgId(e.target.value.trim())}
-          placeholder="UUID der Organisation"
+          placeholder="Organization UUID"
           className="rounded-md border border-border px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
         />
       </div>
@@ -181,7 +181,7 @@ export default function RolesPage() {
       )}
 
       {/* Tabs */}
-      <div role="tablist" aria-label="Berechtigungsverwaltung" className="mb-6 flex gap-1 rounded-lg bg-surface-secondary p-1">
+      <div role="tablist" aria-label="Permission management" className="mb-6 flex gap-1 rounded-lg bg-surface-secondary p-1">
         {(["roles", "members", "audit"] as const).map((tab) => (
           <button
             key={tab}
@@ -194,12 +194,12 @@ export default function RolesPage() {
                 : "text-text-secondary hover:text-text"
             }`}
           >
-            {tab === "roles" ? "Rollenübersicht" : tab === "members" ? "Mitglieder" : "Audit-Log"}
+            {tab === "roles" ? "Role Overview" : tab === "members" ? "Members" : "Audit Log"}
           </button>
         ))}
       </div>
 
-      {loading && <p role="status" className="text-sm text-text-tertiary">Laden</p>}
+      {loading && <p role="status" className="text-sm text-text-tertiary">Loading…</p>}
 
       {/* Roles tab */}
       {activeTab === "roles" && (
@@ -214,7 +214,7 @@ export default function RolesPage() {
                 >
                   {ROLE_LABELS[r.role] ?? r.role}
                 </span>
-                <span className="text-xs text-text-tertiary">Rang {r.rank}</span>
+                <span className="text-xs text-text-tertiary">Rank {r.rank}</span>
               </div>
               <div className="flex flex-wrap gap-1">
                 {r.permissions.map((p) => (
@@ -230,7 +230,7 @@ export default function RolesPage() {
           ))}
           {roles.length === 0 && !loading && (
             <p className="text-sm text-text-tertiary">
-              Gib eine Organisations-ID ein, um Rollen zu laden.
+              Enter an organization ID to load roles.
             </p>
           )}
         </div>
@@ -260,7 +260,7 @@ export default function RolesPage() {
                   onClick={() => fetchMemberPermissions(m.user_id)}
                   className="rounded-md border border-border px-3 py-1 text-xs text-text-secondary hover:bg-surface-secondary"
                 >
-                  Berechtigungen
+                  Permissions
                 </button>
               </div>
             </div>
@@ -270,12 +270,12 @@ export default function RolesPage() {
           {selectedMember && (
             <div className="mt-4 rounded-lg border-2 border-indigo-200 bg-indigo-50 p-4">
               <h3 className="mb-2 font-medium text-text">
-                Berechtigungen für {selectedMember.user_id.slice(0, 8)}
+                Permissions for {selectedMember.user_id.slice(0, 8)}
               </h3>
               <p className="mb-2 text-sm text-text-secondary">
-                Rolle:{" "}
+                Role:{" "}
                 <span className="font-medium">
-                  {ROLE_LABELS[selectedMember.role ?? ""] ?? selectedMember.role ?? "Kein Mitglied"}
+                  {ROLE_LABELS[selectedMember.role ?? ""] ?? selectedMember.role ?? "Not a member"}
                 </span>
               </p>
               <div className="flex flex-wrap gap-1">
@@ -292,13 +292,13 @@ export default function RolesPage() {
                 onClick={() => setSelectedMember(null)}
                 className="mt-2 text-xs text-indigo-600 hover:underline"
               >
-                Schließen
+                Close
               </button>
             </div>
           )}
 
           {members.length === 0 && !loading && (
-            <p className="text-sm text-text-tertiary">Keine Mitglieder gefunden.</p>
+            <p className="text-sm text-text-tertiary">No members found.</p>
           )}
         </div>
       )}
@@ -316,7 +316,7 @@ export default function RolesPage() {
                   {e.action.replace("_", " ")}
                 </span>
                 <span className="text-xs text-text-tertiary">
-                  {new Date(e.created_at).toLocaleString("de-DE")}
+                  {new Date(e.created_at).toLocaleString("en-US")}
                 </span>
               </div>
               <div className="mt-1 text-xs text-text-tertiary">
@@ -330,14 +330,14 @@ export default function RolesPage() {
                 </span>
                 {e.metadata_?.target_user_id && (
                   <span className="ml-2 text-text-tertiary">
-                    Nutzer: {e.metadata_.target_user_id.slice(0, 8)}
+                    User: {e.metadata_.target_user_id.slice(0, 8)}
                   </span>
                 )}
               </div>
             </div>
           ))}
           {auditLog.length === 0 && !loading && (
-            <p className="text-sm text-text-tertiary">Keine Einträge im Audit-Log.</p>
+            <p className="text-sm text-text-tertiary">No audit log entries.</p>
           )}
         </div>
       )}

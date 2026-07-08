@@ -22,17 +22,17 @@ export function KnowledgeProgress({ className = "" }: { className?: string }) {
 
   const milestones: Milestone[] = [
     {
-      label: "Datenquelle verbunden",
+      label: "Data source connected",
       done: activeCount > 0,
       href: "/connectors",
     },
     {
-      label: "Dokumente synchronisiert",
+      label: "Documents synced",
       done: totalDocs > 0,
       href: "/connectors",
     },
     {
-      label: "Erstes Briefing generiert",
+      label: "First briefing generated",
       done: hasBriefing,
       href: "/briefings",
     },
@@ -57,11 +57,11 @@ export function KnowledgeProgress({ className = "" }: { className?: string }) {
             </div>
             <div>
               <p className="text-sm font-semibold text-text">
-                Wissensbasis aktiv
+                Knowledge base active
               </p>
               <p className="text-xs text-text-tertiary">
-                {activeCount} Quellen · {totalDocs.toLocaleString("de-DE")}{" "}
-                Dokumente
+                {activeCount} sources · {totalDocs.toLocaleString("en-US")}{" "}
+                documents
               </p>
             </div>
           </div>
@@ -73,7 +73,7 @@ export function KnowledgeProgress({ className = "" }: { className?: string }) {
             <div className="flex items-center gap-1.5">
               <FileText className="h-3.5 w-3.5 text-text-tertiary" />
               <span className="text-sm font-bold text-text">
-                {totalDocs.toLocaleString("de-DE")}
+                {totalDocs.toLocaleString("en-US")}
               </span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -93,9 +93,9 @@ export function KnowledgeProgress({ className = "" }: { className?: string }) {
       className={`rounded-xl border border-border bg-surface p-5 ${className}`}
     >
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-text">Einrichtung</h3>
+        <h3 className="text-sm font-semibold text-text">Setup</h3>
         <span className="text-xs font-medium text-text-tertiary">
-          {completedCount}/{milestones.length} erledigt
+          {completedCount}/{milestones.length} done
         </span>
       </div>
 

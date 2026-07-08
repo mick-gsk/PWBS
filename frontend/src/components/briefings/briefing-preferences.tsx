@@ -44,7 +44,7 @@ function TagInput({
               type="button"
               onClick={() => onChange(value.filter((t) => t !== tag))}
               className="ml-0.5 rounded-full p-0.5 hover:bg-indigo-100"
-              aria-label={`${tag} entfernen`}
+              aria-label={`Remove ${tag}`}
             >
               <X aria-hidden="true" className="h-3 w-3" />
             </button>
@@ -69,7 +69,7 @@ function TagInput({
           type="button"
           onClick={addTag}
           disabled={!input.trim()}
-          aria-label="Hinzufügen"
+          aria-label="Add"
           className="inline-flex items-center gap-1 rounded-md border border-border px-2.5 py-1.5 text-sm text-text-secondary hover:bg-surface-secondary disabled:opacity-40"
         >
           <Plus aria-hidden="true" className="h-3.5 w-3.5" />
@@ -116,7 +116,7 @@ export default function BriefingPreferencesPanel() {
       >
         <span className="flex items-center gap-2 text-sm font-semibold text-text">
           <Settings aria-hidden="true" className="h-4 w-4 text-text-tertiary" />
-          Briefing-Personalisierung
+          Briefing Personalization
         </span>
         <span
           className={`text-xs text-text-tertiary transition-transform ${open ? "rotate-180" : ""}`}
@@ -129,22 +129,22 @@ export default function BriefingPreferencesPanel() {
       {open && (
         <div className="space-y-4 border-t border-border px-4 py-4">
           <TagInput
-            label="Fokus-Projekte"
+            label="Focus Projects"
             value={focusProjects}
             onChange={setFocusProjects}
-            placeholder="Projektname eingeben…"
+            placeholder="Enter project name…"
           />
           <TagInput
-            label="Prioritäts-Themen"
+            label="Priority Topics"
             value={priorityTopics}
             onChange={setPriorityTopics}
-            placeholder="Thema eingeben…"
+            placeholder="Enter topic…"
           />
           <TagInput
-            label="Ausgeschlossene Quellen"
+            label="Excluded Sources"
             value={excludedSources}
             onChange={setExcludedSources}
-            placeholder="z.B. slack, gmail…"
+            placeholder="e.g. slack, gmail…"
           />
           <div className="flex justify-end">
             <button
@@ -159,12 +159,12 @@ export default function BriefingPreferencesPanel() {
                   className="h-3.5 w-3.5 animate-spin"
                 />
               )}
-              Speichern
+              Save
             </button>
           </div>
           {update.isSuccess && (
             <p className="text-xs text-green-600">
-              Präferenzen gespeichert.
+              Preferences saved.
             </p>
           )}
         </div>

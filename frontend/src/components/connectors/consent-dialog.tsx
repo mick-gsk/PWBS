@@ -37,7 +37,7 @@ export function ConsentDialog({
             aria-hidden="true"
             className="h-8 w-8 animate-spin text-text-tertiary"
           />
-          <span className="sr-only">Wird geladen</span>
+          <span className="sr-only">Loading</span>
         </div>
       </div>
     );
@@ -59,13 +59,13 @@ export function ConsentDialog({
               id="consent-dialog-title"
               className="text-lg font-semibold text-text"
             >
-              Datenverarbeitung: {connectorName}
+              Data Processing: {connectorName}
             </h2>
           </div>
           <button
             onClick={onCancel}
             className="rounded-md p-1 text-text-tertiary hover:bg-surface-secondary hover:text-text-secondary"
-            aria-label="Schließen"
+            aria-label="Close"
           >
             <X aria-hidden="true" className="h-5 w-5" />
           </button>
@@ -76,7 +76,7 @@ export function ConsentDialog({
           {/* Data types */}
           <div>
             <h3 className="mb-2 text-sm font-semibold text-text">
-              Welche Daten werden importiert?
+              What data will be imported?
             </h3>
             <ul className="space-y-1">
               {consent?.data_types.map((dt) => (
@@ -94,7 +94,7 @@ export function ConsentDialog({
           {/* Processing purpose */}
           <div>
             <h3 className="mb-1 text-sm font-semibold text-text">
-              Verarbeitungszweck
+              Processing Purpose
             </h3>
             <p className="text-sm text-text-secondary">
               {consent?.processing_purpose}
@@ -104,7 +104,7 @@ export function ConsentDialog({
           {/* LLM providers */}
           <div>
             <h3 className="mb-2 text-sm font-semibold text-text">
-              KI-Provider für die Verarbeitung
+              AI Providers Used for Processing
             </h3>
             <ul className="space-y-1">
               {consent?.llm_providers.map((lp) => (
@@ -127,9 +127,9 @@ export function ConsentDialog({
                 className="mt-0.5 h-4 w-4 flex-shrink-0 text-amber-600"
               />
               <p className="text-xs text-amber-800">
-                Du kannst deine Einwilligung jederzeit unter Konnektoren
-                widerrufen. Beim Widerruf werden alle importierten Daten dieser
-                Quelle unwiderruflich gelöscht.
+                You can revoke your consent at any time under Connectors.
+                Revoking consent permanently deletes all data imported from
+                this source.
               </p>
             </div>
           </div>
@@ -143,9 +143,9 @@ export function ConsentDialog({
               className="mt-0.5 h-4 w-4 rounded border-border text-indigo-600 focus:ring-indigo-500"
             />
             <span className="text-sm text-text-secondary">
-              Ich stimme der Verarbeitung meiner Daten zu den oben genannten
-              Zwecken zu. Ich bin mir bewusst, dass meine Daten an die
-              aufgeführten KI-Provider übermittelt werden.
+              I consent to the processing of my data for the purposes stated
+              above. I understand that my data will be transmitted to the AI
+              providers listed.
             </span>
           </label>
         </div>
@@ -156,7 +156,7 @@ export function ConsentDialog({
             onClick={onCancel}
             className="rounded-md border border-border px-4 py-2 text-sm font-medium text-text-secondary hover:bg-surface-secondary"
           >
-            Abbrechen
+            Cancel
           </button>
           <button
             onClick={handleGrant}
@@ -166,7 +166,7 @@ export function ConsentDialog({
             {grantMutation.isPending && (
               <Loader2 aria-hidden="true" className="h-4 w-4 animate-spin" />
             )}
-            Einwilligung erteilen & Verbinden
+            Grant Consent & Connect
           </button>
         </div>
       </div>

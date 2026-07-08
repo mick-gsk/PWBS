@@ -18,10 +18,10 @@ import { useBriefingDetail, useBriefingFeedback } from "@/hooks/use-briefings";
 import type { SourceRefResponse, BriefingType } from "@/types/api";
 
 const BRIEFING_TYPE_LABELS: Record<BriefingType, string> = {
-  morning: "Morgen-Briefing",
-  meeting: "Meeting-Briefing",
-  project: "Projekt-Briefing",
-  weekly: "Wochen-Briefing",
+  morning: "Morning Briefing",
+  meeting: "Meeting Briefing",
+  project: "Project Briefing",
+  weekly: "Weekly Briefing",
 };
 
 function SourceCard({ source }: { source: SourceRefResponse }) {
@@ -43,7 +43,7 @@ function SourceCard({ source }: { source: SourceRefResponse }) {
             {source.source_type}
           </span>
           <Calendar aria-hidden="true" className="h-3 w-3" />
-          <span>{new Date(source.date).toLocaleDateString("de-DE")}</span>
+          <span>{new Date(source.date).toLocaleDateString("en-US")}</span>
           <span className="ml-auto text-xs font-medium text-indigo-700">
             {Math.round(source.relevance * 100)}%
           </span>
@@ -51,7 +51,7 @@ function SourceCard({ source }: { source: SourceRefResponse }) {
       </div>
       <a
         href={`/documents/${source.chunk_id}`}
-        aria-label="Original öffnen"
+        aria-label="Open original"
         className="flex-shrink-0 text-text-tertiary hover:text-text-secondary"
       >
         <ExternalLink aria-hidden="true" className="h-4 w-4" />
@@ -97,7 +97,7 @@ export default function BriefingDetailPage() {
           aria-hidden="true"
           className="h-8 w-8 animate-spin text-text-tertiary"
         />
-        <span className="sr-only">Wird geladen</span>
+        <span className="sr-only">Loading</span>
       </div>
     );
   }
@@ -106,13 +106,13 @@ export default function BriefingDetailPage() {
     return (
       <div className="rounded-lg border border-border bg-surface p-8 text-center">
         <h3 className="text-sm font-semibold text-text">
-          Briefing nicht gefunden
+          Briefing not found
         </h3>
         <button
           onClick={() => router.push("/briefings")}
           className="mt-3 text-sm text-indigo-600 hover:underline"
         >
-          Zur\u00fcck zur \u00dcbersicht
+          Back to overview
         </button>
       </div>
     );
@@ -127,7 +127,7 @@ export default function BriefingDetailPage() {
           className="mb-3 inline-flex items-center gap-1 text-sm text-text-tertiary hover:text-text-secondary"
         >
           <ArrowLeft aria-hidden="true" className="h-4 w-4" />
-          Zur\u00fcck
+          Back
         </button>
         <h1 className="text-2xl font-bold text-text">{briefing.title}</h1>
         <div className="mt-1 flex items-center gap-2 text-sm text-text-tertiary">
@@ -136,7 +136,7 @@ export default function BriefingDetailPage() {
           </span>
           <Calendar aria-hidden="true" className="h-4 w-4" />
           <span>
-            {new Date(briefing.generated_at).toLocaleDateString("de-DE", {
+            {new Date(briefing.generated_at).toLocaleDateString("en-US", {
               weekday: "long",
               year: "numeric",
               month: "long",
@@ -172,7 +172,7 @@ export default function BriefingDetailPage() {
       {/* Feedback */}
       <div className="rounded-lg border border-border bg-surface p-4">
         <p className="mb-3 text-sm font-medium text-text-secondary">
-          War dieses Briefing hilfreich?
+          Was this briefing helpful?
         </p>
         <div className="flex items-center gap-2">
           <button
@@ -185,7 +185,7 @@ export default function BriefingDetailPage() {
             } disabled:opacity-50`}
           >
             <ThumbsUp aria-hidden="true" className="h-4 w-4" />
-            Hilfreich
+            Helpful
           </button>
           <button
             onClick={() => handleFeedback("negative")}
@@ -199,7 +199,7 @@ export default function BriefingDetailPage() {
             } disabled:opacity-50`}
           >
             <ThumbsDown aria-hidden="true" className="h-4 w-4" />
-            Nicht hilfreich
+            Not helpful
           </button>
         </div>
         {showComment && (
@@ -209,7 +209,7 @@ export default function BriefingDetailPage() {
               className="flex items-center gap-1 text-sm text-text-secondary"
             >
               <MessageSquare aria-hidden="true" className="h-3.5 w-3.5" />
-              Was k\u00f6nnte verbessert werden?
+              What could be improved?
             </label>
             <textarea
               id="feedback-comment"
@@ -217,20 +217,20 @@ export default function BriefingDetailPage() {
               onChange={(e) => setComment(e.target.value)}
               rows={3}
               className="w-full rounded-md border border-border px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-              placeholder="Optionaler Kommentar\u2026"
+              placeholder="Optional comment\u2026"
             />
             <button
               onClick={submitComment}
               disabled={feedback.isPending}
               className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-50"
             >
-              Absenden
+              Submit
             </button>
           </div>
         )}
         {feedback.isSuccess && (
           <p className="mt-2 text-sm text-green-600">
-            Vielen Dank f\u00fcr dein Feedback!
+            Thank you for your feedback!
           </p>
         )}
       </div>
@@ -239,7 +239,7 @@ export default function BriefingDetailPage() {
       {briefing.sources.length > 0 && (
         <div>
           <h2 className="mb-3 text-lg font-semibold text-text">
-            Quellen ({briefing.sources.length})
+            Sources ({briefing.sources.length})
           </h2>
           <div className="space-y-2">
             {briefing.sources.map((source) => (

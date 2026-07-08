@@ -8,40 +8,40 @@ import type { BriefingDetailResponse } from "@/types/api";
 export const DEMO_BRIEFING: BriefingDetailResponse = {
   id: "demo-briefing",
   briefing_type: "morning",
-  title: "Dein erstes Morgen-Briefing (Demo)",
-  content: `## Guten Morgen! 👋
+  title: "Your First Morning Briefing (Demo)",
+  content: `## Good morning! 👋
 
-Dies ist ein **Demo-Briefing**, das dir zeigt, wie dein persönliches Wissens-Briefing aussehen wird.
+This is a **demo briefing** that shows you what your personal knowledge briefing will look like.
 
-### Dein heutiger Überblick
+### Today's Overview
 
-- **3 anstehende Termine** aus deinem Kalender
-- **2 aktualisierte Notion-Seiten** seit gestern
-- **1 neues Zoom-Transkript** mit Zusammenfassung
+- **3 upcoming events** from your calendar
+- **2 updated Notion pages** since yesterday
+- **1 new Zoom transcript** with summary
 
-### Nächster Termin: Team-Standup (10:00 Uhr)
+### Next Event: Team Standup (10:00 AM)
 
-Relevante Informationen aus deinen verbundenen Quellen:
+Relevant information from your connected sources:
 
-> *In der letzten Woche wurden im Notion-Workspace drei neue Aufgaben erstellt, die mit dem aktuellen Sprint zusammenhängen. Die Zoom-Aufnahme vom Freitag enthält eine Entscheidung zur API-Architektur.*
+> *Last week, three new tasks related to the current sprint were created in the Notion workspace. Friday's Zoom recording includes a decision on the API architecture.*
 
-### Projekt-Update: PWBS MVP
+### Project Update: PWBS MVP
 
-Basierend auf deinen Notion-Seiten und Kalendereinträgen:
+Based on your Notion pages and calendar entries:
 
-- Sprint-Fortschritt: 7 von 12 Tasks abgeschlossen
-- Nächster Meilenstein: Beta-Launch in 2 Wochen
-- Offene Entscheidung: Deployment-Strategie (ECS vs. Kubernetes)
+- Sprint progress: 7 of 12 tasks completed
+- Next milestone: Beta launch in 2 weeks
+- Open decision: Deployment strategy (ECS vs. Kubernetes)
 
-### Empfohlene Aktionen
+### Recommended Actions
 
-1. Zoom-Transkript vom Freitag durchsehen (Architektur-Entscheidung)
-2. Notion-Roadmap aktualisieren (3 neue Tasks)
-3. Meeting-Vorbereitung für Team-Standup
+1. Review Friday's Zoom transcript (architecture decision)
+2. Update the Notion roadmap (3 new tasks)
+3. Prepare for the team standup meeting
 
 ---
 
-*Sobald deine Daten synchronisiert sind, wird dieses Demo-Briefing durch dein persönliches Briefing ersetzt.*`,
+*Once your data has been synced, this demo briefing will be replaced with your personal briefing.*`,
   source_chunks: [],
   source_entities: [],
   trigger_context: { demo: true },
@@ -50,21 +50,21 @@ Basierend auf deinen Notion-Seiten und Kalendereinträgen:
   sources: [
     {
       chunk_id: "demo-source-1",
-      doc_title: "Google Calendar – Termine diese Woche",
+      doc_title: "Google Calendar – This Week's Events",
       source_type: "google_calendar",
       date: new Date().toISOString(),
       relevance: 0.95,
     },
     {
       chunk_id: "demo-source-2",
-      doc_title: "Notion – Sprint-Board",
+      doc_title: "Notion – Sprint Board",
       source_type: "notion",
       date: new Date().toISOString(),
       relevance: 0.88,
     },
     {
       chunk_id: "demo-source-3",
-      doc_title: "Zoom – Team-Meeting Transkript",
+      doc_title: "Zoom – Team Meeting Transcript",
       source_type: "zoom",
       date: new Date().toISOString(),
       relevance: 0.82,

@@ -3,27 +3,27 @@ import { ProductPreview } from "@/components/landing/product-preview";
 
 const FEATURES = [
   {
-    title: "Kontextbriefings",
+    title: "Context Briefings",
     description:
-      "Jeden Morgen ein maßgeschneidertes Briefing aus all Ihren Datenquellen – automatisch, mit Quellenbelegen.",
+      "A tailored briefing from all your data sources every morning – automatic, with source citations.",
     icon: "📋",
   },
   {
-    title: "Semantische Suche",
+    title: "Semantic Search",
     description:
-      "Finden Sie Informationen nach Bedeutung, nicht nur nach Stichworten. Über alle Quellen hinweg.",
+      "Find information by meaning, not just keywords. Across all your sources.",
     icon: "🔍",
   },
   {
     title: "Knowledge Graph",
     description:
-      "Automatische Vernetzung Ihrer Notizen, E-Mails, Kalender und Dokumente zu einem persönlichen Wissensnetz.",
+      "Automatically connects your notes, emails, calendars, and documents into a personal knowledge network.",
     icon: "🕸️",
   },
   {
-    title: "DSGVO by Design",
+    title: "GDPR by Design",
     description:
-      "Ihre Daten gehören Ihnen. Verschlüsselung, Löschbarkeit und Transparenz sind Grundstruktur.",
+      "Your data belongs to you. Encryption, deletability, and transparency are built into the foundation.",
     icon: "🔒",
   },
 ] as const;
@@ -31,21 +31,21 @@ const FEATURES = [
 const SOCIAL_PROOF = [
   {
     quote:
-      "PWBS hat meine Meetingvorbereitung revolutioniert. Statt 30 Minuten brauche ich jetzt 2 Minuten.",
+      "PWBS has revolutionized my meeting prep. What used to take 30 minutes now takes 2.",
     author: "Dr. Sabine M.",
-    role: "Unternehmensberaterin",
+    role: "Management Consultant",
   },
   {
     quote:
-      "Endlich ein Tool, das meine Notizen, E-Mails und Kalender zusammenbringt – datenschutzkonform.",
+      "Finally a tool that brings my notes, emails, and calendar together – fully privacy-compliant.",
     author: "Thomas K.",
-    role: "Forschungsleiter",
+    role: "Head of Research",
   },
   {
     quote:
-      "Die semantische Suche findet Zusammenhänge, die mir vorher entgangen sind.",
+      "The semantic search uncovers connections I would have missed before.",
     author: "Lisa R.",
-    role: "Produktmanagerin",
+    role: "Product Manager",
   },
 ] as const;
 
@@ -67,14 +67,14 @@ export default function LandingPage() {
               href="/login"
               className="text-sm font-medium text-text-secondary hover:text-text transition-colors"
             >
-              Anmelden
+              Sign in
             </Link>
             <Link
               href="/register"
               className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white
                 hover:bg-indigo-700 transition-colors"
             >
-              Kostenlos starten
+              Start for free
             </Link>
           </div>
         </div>
@@ -83,13 +83,12 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="mx-auto max-w-6xl px-4 py-16 text-center sm:px-6 sm:py-24 lg:py-32">
         <h1 className="text-4xl font-extrabold tracking-tight text-text sm:text-5xl lg:text-6xl">
-          Ihr persönliches{" "}
-          <span className="text-indigo-600">Wissens-Betriebssystem</span>
+          Your personal{" "}
+          <span className="text-indigo-600">Knowledge Operating System</span>
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-text-secondary sm:text-xl">
-          PWBS verbindet Ihre Datenquellen, erkennt Zusammenhänge und liefert
-          Ihnen täglich kontextbezogene Briefings – damit Sie bessere
-          Entscheidungen treffen.
+          PWBS connects your data sources, uncovers relationships, and delivers
+          context-aware briefings every day – so you make better decisions.
         </p>
 
         <div className="mx-auto mt-10 flex flex-col items-center gap-4">
@@ -99,29 +98,29 @@ export default function LandingPage() {
               hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/50
               transition-colors shadow-lg shadow-indigo-600/25"
           >
-            Jetzt kostenlos starten
+            Get started for free
           </Link>
           <Link
             href="/login"
             className="text-sm text-text-secondary hover:text-text transition-colors"
           >
-            Bereits ein Konto? Anmelden
+            Already have an account? Sign in
           </Link>
         </div>
 
         <p className="mt-4 text-sm text-text-tertiary">
-          Kostenlos · Keine Kreditkarte nötig
+          Free · No credit card required
         </p>
       </section>
 
       {/* Product Preview */}
       <section
         className="bg-surface py-12 sm:py-16"
-        aria-label="Produktvorschau"
+        aria-label="Product preview"
       >
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <p className="mb-8 text-center text-sm font-medium uppercase tracking-wider text-text-tertiary">
-            So sieht Ihr persönliches Wissens-Betriebssystem aus
+            This is what your personal knowledge operating system looks like
           </p>
           <ProductPreview />
         </div>
@@ -130,15 +129,15 @@ export default function LandingPage() {
       {/* Features Section */}
       <section
         className="bg-surface-secondary py-16 sm:py-24"
-        aria-label="Funktionen"
+        aria-label="Features"
       >
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <h2 className="text-center text-3xl font-bold text-text sm:text-4xl">
-            Ihre Daten. Intelligent vernetzt.
+            Your data. Intelligently connected.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-center text-text-secondary">
-            PWBS führt heterogene Datenquellen zusammen und macht Wissen
-            kontextbezogen verfügbar.
+            PWBS brings heterogeneous data sources together and makes knowledge
+            available in context.
           </p>
           <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {FEATURES.map((feature) => (
@@ -162,10 +161,10 @@ export default function LandingPage() {
       </section>
 
       {/* Social Proof Section */}
-      <section className="py-16 sm:py-24" aria-label="Erfahrungen">
+      <section className="py-16 sm:py-24" aria-label="Testimonials">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <h2 className="text-center text-3xl font-bold text-text sm:text-4xl">
-            Was Wissensarbeiter sagen
+            What knowledge workers are saying
           </h2>
           <div className="mt-12 grid gap-8 sm:grid-cols-3">
             {SOCIAL_PROOF.map((item) => (
@@ -190,10 +189,10 @@ export default function LandingPage() {
       <section className="bg-gray-900 py-16 sm:py-24">
         <div className="mx-auto max-w-3xl px-4 text-center sm:px-6">
           <h2 className="text-3xl font-bold text-white sm:text-4xl">
-            Bereit für intelligenteres Arbeiten?
+            Ready to work smarter?
           </h2>
           <p className="mt-4 text-gray-300">
-            Für alle offen. Kostenlos. Keine Warteliste.
+            Open to everyone. Free. No waitlist.
           </p>
           <div className="mx-auto mt-8">
             <Link
@@ -202,7 +201,7 @@ export default function LandingPage() {
                 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2
                 focus:ring-indigo-500/50 transition-colors shadow-lg shadow-indigo-600/25"
             >
-              Jetzt kostenlos registrieren
+              Sign up for free
             </Link>
           </div>
         </div>
@@ -213,23 +212,23 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <span className="text-sm text-text-tertiary">
-              &copy; {new Date().getFullYear()} PWBS. Alle Rechte vorbehalten.
+              &copy; {new Date().getFullYear()} PWBS. All rights reserved.
             </span>
             <div className="flex gap-6 text-sm text-text-tertiary">
               <Link
                 href="/impressum"
                 className="hover:text-text transition-colors"
               >
-                Impressum
+                Legal Notice
               </Link>
               <Link
                 href="/datenschutz"
                 className="hover:text-text transition-colors"
               >
-                Datenschutz
+                Privacy Policy
               </Link>
               <Link href="/agb" className="hover:text-text transition-colors">
-                AGB
+                Terms of Service
               </Link>
             </div>
           </div>

@@ -41,19 +41,19 @@ export function OnboardingSkipBanner() {
     <div className="mb-4 flex items-center gap-3 rounded-xl border border-indigo-200 bg-indigo-50 px-4 py-3">
       <Cable aria-hidden="true" className="h-5 w-5 shrink-0 text-indigo-600" />
       <p className="flex-1 text-sm text-indigo-900">
-        Verbinde deine erste Quelle, um dein Wissenssystem zu aktivieren.
+        Connect your first source to activate your knowledge system.
       </p>
       <Link
         href="/connectors"
         className="inline-flex shrink-0 items-center gap-1 rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-indigo-700"
       >
-        Jetzt verbinden
+        Connect now
         <ArrowRight aria-hidden="true" className="h-3 w-3" />
       </Link>
       <button
         onClick={handleDismiss}
         className="shrink-0 rounded-full p-1 text-indigo-400 hover:bg-indigo-100 hover:text-indigo-600"
-        aria-label="Banner schließen"
+        aria-label="Dismiss banner"
       >
         <X aria-hidden="true" className="h-4 w-4" />
       </button>

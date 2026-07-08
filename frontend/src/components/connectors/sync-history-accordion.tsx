@@ -21,10 +21,10 @@ const STATUS_CONFIG: Record<
   string,
   { icon: typeof CheckCircle2; color: string; label: string }
 > = {
-  success: { icon: CheckCircle2, color: "text-green-500", label: "Erfolgreich" },
-  failed: { icon: XCircle, color: "text-red-500", label: "Fehlgeschlagen" },
-  running: { icon: Loader2, color: "text-indigo-500", label: "Läuft" },
-  pending: { icon: Clock, color: "text-text-tertiary", label: "Wartend" },
+  success: { icon: CheckCircle2, color: "text-green-500", label: "Successful" },
+  failed: { icon: XCircle, color: "text-red-500", label: "Failed" },
+  running: { icon: Loader2, color: "text-indigo-500", label: "Running" },
+  pending: { icon: Clock, color: "text-text-tertiary", label: "Pending" },
 };
 
 function formatDate(dateStr: string | null): string {
@@ -98,7 +98,7 @@ function RunRow({ run }: { run: SyncRunItem }) {
         <div className="border-t border-border bg-red-50/50 px-4 py-3 dark:bg-red-900/10">
           <div className="flex items-center gap-2 text-xs font-medium text-red-700 dark:text-red-400">
             <AlertTriangle className="h-3.5 w-3.5" />
-            {run.error_count} Fehler
+            {run.error_count} {run.error_count === 1 ? "error" : "errors"}
           </div>
           <ul className="mt-2 space-y-1">
             {run.errors_json!.map((err, i) => (
@@ -126,7 +126,7 @@ export function SyncHistoryAccordion({
     return (
       <div className="flex items-center justify-center py-6 text-sm text-text-tertiary">
         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-        Lade Sync-Verlauf...
+        Loading sync history...
       </div>
     );
   }
@@ -134,7 +134,7 @@ export function SyncHistoryAccordion({
   if (!data || data.runs.length === 0) {
     return (
       <div className="py-6 text-center text-sm text-text-tertiary">
-        Noch kein Sync durchgeführt
+        No syncs yet
       </div>
     );
   }
@@ -142,7 +142,7 @@ export function SyncHistoryAccordion({
   return (
     <div className="mt-3 overflow-hidden rounded-lg border border-border">
       <div className="bg-surface-secondary px-4 py-2 text-xs font-medium text-text-tertiary">
-        Letzte Syncs ({data.total} insgesamt)
+        Recent syncs ({data.total} total)
       </div>
       {data.runs.map((run) => (
         <RunRow key={run.id} run={run} />

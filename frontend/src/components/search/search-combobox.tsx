@@ -25,7 +25,7 @@ export function SearchCombobox({
   value,
   onChange,
   onSuggestionSelect,
-  placeholder = "Dokumente, Personen, Projekte durchsuchen…",
+  placeholder = "Search documents, people, projects…",
 }: SearchComboboxProps) {
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<
@@ -100,7 +100,7 @@ export function SearchCombobox({
         aria-expanded={open && hasContent ? "true" : "false"}
         aria-controls="search-listbox"
         aria-haspopup="listbox"
-        aria-label="Suchfeld"
+        aria-label="Search field"
         value={value}
         onChange={handleInputChange}
         onFocus={() => setOpen(true)}
@@ -122,7 +122,7 @@ export function SearchCombobox({
               }`}
             >
               <SearchIcon aria-hidden className="mr-1 inline h-3 w-3" />
-              Vorschläge
+              Suggestions
             </button>
             <button
               type="button"
@@ -134,7 +134,7 @@ export function SearchCombobox({
               }`}
             >
               <Clock aria-hidden className="mr-1 inline h-3 w-3" />
-              Verlauf
+              History
             </button>
             <button
               type="button"
@@ -146,7 +146,7 @@ export function SearchCombobox({
               }`}
             >
               <Bookmark aria-hidden className="mr-1 inline h-3 w-3" />
-              Gespeichert
+              Saved
             </button>
           </div>
 
@@ -155,7 +155,7 @@ export function SearchCombobox({
             <ul
               id="search-listbox"
               role="listbox"
-              aria-label="Suchvorschläge"
+              aria-label="Search suggestions"
               className="max-h-60 overflow-y-auto py-1"
             >
               {suggestions.map((item) => (
@@ -199,8 +199,8 @@ export function SearchCombobox({
                   />
                   <span className="flex-1 text-text">{item.query}</span>
                   <span className="text-xs text-text-tertiary">
-                    {item.result_count} Ergebnis
-                    {item.result_count !== 1 ? "se" : ""}
+                    {item.result_count} result
+                    {item.result_count !== 1 ? "s" : ""}
                   </span>
                 </div>
               ))}
@@ -235,7 +235,7 @@ export function SearchCombobox({
                       e.stopPropagation();
                       deleteSaved.mutate(item.id);
                     }}
-                    aria-label={`Gespeicherte Suche "${item.name}" löschen`}
+                    aria-label={`Delete saved search "${item.name}"`}
                     className="rounded p-1 text-text-tertiary hover:bg-surface-secondary hover:text-text-secondary"
                   >
                     <X aria-hidden className="h-3.5 w-3.5" />
@@ -250,12 +250,12 @@ export function SearchCombobox({
             <p className="px-3 py-4 text-center text-sm text-text-tertiary">
               {activeTab === "suggestions" &&
                 value.length < 2 &&
-                "Mindestens 2 Zeichen eingeben…"}
+                "Type at least 2 characters…"}
               {activeTab === "suggestions" &&
                 value.length >= 2 &&
-                "Keine Vorschläge"}
-              {activeTab === "history" && "Noch kein Suchverlauf"}
-              {activeTab === "saved" && "Noch keine gespeicherten Suchen"}
+                "No suggestions"}
+              {activeTab === "history" && "No search history yet"}
+              {activeTab === "saved" && "No saved searches yet"}
             </p>
           )}
         </div>

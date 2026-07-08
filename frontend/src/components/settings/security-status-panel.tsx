@@ -13,7 +13,7 @@ export function SecurityStatusPanel() {
           aria-hidden="true"
           className="h-6 w-6 animate-spin text-text-tertiary"
         />
-        <span className="sr-only">Wird geladen</span>
+        <span className="sr-only">Loading</span>
       </div>
     );
   }
@@ -25,7 +25,7 @@ export function SecurityStatusPanel() {
       <div className="flex items-center gap-2">
         <Shield aria-hidden="true" className="h-5 w-5 text-green-600" />
         <h3 className="text-sm font-semibold text-text">
-          Verschl\u00fcsselungsstatus
+          Encryption Status
         </h3>
       </div>
 
@@ -47,8 +47,8 @@ export function SecurityStatusPanel() {
             <div className="text-right">
               <span className="text-sm text-text-secondary">
                 {layer.encrypted
-                  ? (layer.encryption_type ?? "Verschl\u00fcsselt")
-                  : "Nicht verschl\u00fcsselt"}
+                  ? (layer.encryption_type ?? "Encrypted")
+                  : "Not encrypted"}
               </span>
               {layer.note && (
                 <p className="text-xs text-text-tertiary">{layer.note}</p>
@@ -61,7 +61,7 @@ export function SecurityStatusPanel() {
       <div className="space-y-2 pt-2">
         <div className="flex items-center gap-2 text-sm text-text-secondary">
           <MapPin aria-hidden="true" className="h-4 w-4 text-indigo-500" />
-          <span>Datenstandort: {data.data_location}</span>
+          <span>Data location: {data.data_location}</span>
         </div>
         <div className="flex items-center gap-2 text-sm text-text-secondary">
           <Brain aria-hidden="true" className="h-4 w-4 text-purple-500" />

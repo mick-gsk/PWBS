@@ -2,8 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Impressum – PWBS",
-  description: "Impressum und Anbieterkennzeichnung gemäß § 5 TMG.",
+  title: "Legal Notice – PWBS",
+  description:
+    "Legal Notice and provider identification pursuant to Section 5 of the German Telemedia Act (TMG).",
 };
 
 export default function ImpressumPage() {
@@ -18,37 +19,39 @@ export default function ImpressumPage() {
             href="/"
             className="text-sm text-text-tertiary hover:text-text transition-colors"
           >
-            Zurück zur Startseite
+            Back to home
           </Link>
         </div>
       </nav>
 
       <main className="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16">
         <h1 className="text-3xl font-bold text-text sm:text-4xl">
-          Impressum
+          Legal Notice
         </h1>
-        <p className="mt-2 text-sm text-text-tertiary">Angaben gemäß § 5 TMG</p>
+        <p className="mt-2 text-sm text-text-tertiary">
+          Information pursuant to Section 5 of the German Telemedia Act (TMG)
+        </p>
 
         <div className="mt-8 space-y-8 text-text-secondary leading-relaxed">
           <section>
-            <h2 className="text-lg font-semibold text-text">Anbieter</h2>
+            <h2 className="text-lg font-semibold text-text">Provider</h2>
             <p className="mt-2">
-              PWBS – Persönliches Wissens-Betriebssystem
+              PWBS – Personal Knowledge Operating System
               <br />
               Mick Gajewski
               <br />
-              [Straße und Hausnummer]
+              [Street and house number]
               <br />
-              [PLZ Ort]
+              [Postal code, city]
               <br />
-              Deutschland
+              Germany
             </p>
           </section>
 
           <section>
-            <h2 className="text-lg font-semibold text-text">Kontakt</h2>
+            <h2 className="text-lg font-semibold text-text">Contact</h2>
             <p className="mt-2">
-              E-Mail:{" "}
+              Email:{" "}
               <a
                 href="mailto:kontakt@pwbs.app"
                 className="text-indigo-600 hover:underline"
@@ -60,24 +63,25 @@ export default function ImpressumPage() {
 
           <section>
             <h2 className="text-lg font-semibold text-text">
-              Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV
+              Responsible for content pursuant to Section 55(2) of the German
+              Interstate Broadcasting Treaty (RStV)
             </h2>
             <p className="mt-2">
               Mick Gajewski
               <br />
-              [Straße und Hausnummer]
+              [Street and house number]
               <br />
-              [PLZ Ort]
+              [Postal code, city]
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-text">
-              EU-Streitschlichtung
+              EU Dispute Resolution
             </h2>
             <p className="mt-2">
-              Die Europäische Kommission stellt eine Plattform zur
-              Online-Streitbeilegung (OS) bereit:{" "}
+              The European Commission provides a platform for online dispute
+              resolution (ODR):{" "}
               <a
                 href="https://ec.europa.eu/consumers/odr/"
                 target="_blank"
@@ -86,48 +90,47 @@ export default function ImpressumPage() {
               >
                 https://ec.europa.eu/consumers/odr/
               </a>
-              . Wir sind nicht bereit oder verpflichtet, an
-              Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle
-              teilzunehmen.
+              . We are neither willing nor obliged to participate in dispute
+              resolution proceedings before a consumer arbitration board.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-text">
-              Haftung für Inhalte
+              Liability for Content
             </h2>
             <p className="mt-2">
-              Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene
-              Inhalte auf diesen Seiten nach den allgemeinen Gesetzen
-              verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter
-              jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde
-              Informationen zu überwachen oder nach Umständen zu forschen, die
-              auf eine rechtswidrige Tätigkeit hinweisen.
+              As a service provider, we are responsible for our own content on
+              these pages under general law pursuant to Section 7(1) TMG.
+              However, pursuant to Sections 8 to 10 TMG, we are not obliged as
+              a service provider to monitor transmitted or stored third-party
+              information or to investigate circumstances that indicate
+              unlawful activity.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-text">
-              Haftung für Links
+              Liability for Links
             </h2>
             <p className="mt-2">
-              Unser Angebot enthält Links zu externen Websites Dritter, auf
-              deren Inhalte wir keinen Einfluss haben. Für die Inhalte der
-              verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber
-              der Seiten verantwortlich.
+              Our website contains links to external third-party websites over
+              whose content we have no control. The respective provider or
+              operator of the linked pages is always responsible for their
+              content.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-text">
-              Urheberrecht
+              Copyright
             </h2>
             <p className="mt-2">
-              Die durch die Seitenbetreiber erstellten Inhalte und Werke auf
-              diesen Seiten unterliegen dem deutschen Urheberrecht. Die
-              Vervielfältigung, Bearbeitung, Verbreitung und jede Art der
-              Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der
-              schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.
+              The content and works created by the site operators on these
+              pages are subject to German copyright law. Reproduction,
+              editing, distribution, and any kind of use beyond the limits of
+              copyright law require the written consent of the respective
+              author or creator.
             </p>
           </section>
         </div>
@@ -137,23 +140,23 @@ export default function ImpressumPage() {
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
             <span className="text-sm text-text-tertiary">
-              &copy; {new Date().getFullYear()} PWBS. Alle Rechte vorbehalten.
+              &copy; {new Date().getFullYear()} PWBS. All rights reserved.
             </span>
             <div className="flex gap-6 text-sm text-text-tertiary">
               <Link href="/impressum" className="font-medium text-text">
-                Impressum
+                Legal Notice
               </Link>
               <Link
                 href="/datenschutz"
                 className="hover:text-text transition-colors"
               >
-                Datenschutz
+                Privacy Policy
               </Link>
               <Link
                 href="/agb"
                 className="hover:text-text transition-colors"
               >
-                AGB
+                Terms of Service
               </Link>
             </div>
           </div>

@@ -35,7 +35,7 @@ const STATUS_CONFIG: Record<
     icon: (
       <CheckCircle2 aria-hidden="true" className="h-4 w-4 text-green-500" />
     ),
-    label: "Verbunden",
+    label: "Connected",
     color: "text-green-700 bg-green-50",
   },
   syncing: {
@@ -45,19 +45,19 @@ const STATUS_CONFIG: Record<
         className="h-4 w-4 animate-spin text-indigo-500"
       />
     ),
-    label: "Synchronisiert\u2026",
+    label: "Syncing\u2026",
     color: "text-indigo-700 bg-indigo-50",
   },
   error: {
     icon: <XCircle aria-hidden="true" className="h-4 w-4 text-red-500" />,
-    label: "Fehler",
+    label: "Error",
     color: "text-red-700 bg-red-50",
   },
   paused: {
     icon: (
       <AlertTriangle aria-hidden="true" className="h-4 w-4 text-yellow-500" />
     ),
-    label: "Pausiert",
+    label: "Paused",
     color: "text-yellow-700 bg-yellow-50",
   },
 };
@@ -119,24 +119,24 @@ function ConnectedCard({
             className="inline-flex items-center gap-1 rounded-md border border-orange-200 px-2.5 py-1.5 text-xs font-medium text-orange-600 hover:bg-orange-50"
           >
             <ShieldOff aria-hidden="true" className="h-3.5 w-3.5" />
-            Widerruf
+            Revoke
           </button>
           <button
             onClick={() => setShowConfirm(true)}
             className="inline-flex items-center gap-1 rounded-md border border-red-200 px-2.5 py-1.5 text-xs font-medium text-red-600 hover:bg-red-50"
           >
             <Trash2 aria-hidden="true" className="h-3.5 w-3.5" />
-            Trennen
+            Disconnect
           </button>
         </div>
       </div>
 
       <div className="mt-3 flex items-center gap-4 text-xs text-text-tertiary">
-        <span>{connection.doc_count} Dokumente</span>
+        <span>{connection.doc_count} documents</span>
         {connection.last_sync && (
           <span>
-            Letzter Sync:{" "}
-            {new Date(connection.last_sync).toLocaleString("de-DE")}
+            Last sync:{" "}
+            {new Date(connection.last_sync).toLocaleString("en-US")}
           </span>
         )}
       </div>
@@ -151,8 +151,7 @@ function ConnectedCard({
       {showConfirm && (
         <div className="mt-3 rounded-md border border-red-200 bg-red-50 p-3">
           <p className="text-sm text-red-800">
-            Alle importierten Daten dieser Quelle werden unwiderruflich
-            gel&#246;scht.
+            All imported data from this source will be permanently deleted.
           </p>
           <div className="mt-2 flex items-center gap-2">
             <button
@@ -162,13 +161,13 @@ function ConnectedCard({
               }}
               className="rounded-md bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700"
             >
-              Endg&#252;ltig trennen
+              Disconnect permanently
             </button>
             <button
               onClick={() => setShowConfirm(false)}
               className="rounded-md border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface"
             >
-              Abbrechen
+              Cancel
             </button>
           </div>
         </div>
@@ -178,8 +177,8 @@ function ConnectedCard({
       {showRevokeConfirm && (
         <div className="mt-3 rounded-md border border-orange-200 bg-orange-50 p-3">
           <p className="text-sm text-orange-800">
-            Einwilligung widerrufen? Alle importierten Daten und die Verbindung
-            werden unwiderruflich gel&#246;scht.
+            Revoke consent? All imported data and the connection will be
+            permanently deleted.
           </p>
           <div className="mt-2 flex items-center gap-2">
             <button
@@ -193,13 +192,13 @@ function ConnectedCard({
               {isRevoking && (
                 <Loader2 aria-hidden="true" className="h-3 w-3 animate-spin" />
               )}
-              Einwilligung widerrufen
+              Revoke consent
             </button>
             <button
               onClick={() => setShowRevokeConfirm(false)}
               className="rounded-md border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-surface"
             >
-              Abbrechen
+              Cancel
             </button>
           </div>
         </div>
@@ -232,11 +231,11 @@ function AvailableConnectorCard({
   function handleObsidianUpload(file: File) {
     const name = file.name.toLowerCase();
     if (!name.endsWith(".zip") && !name.endsWith(".md")) {
-      setUploadError("Nur .zip oder .md Dateien erlaubt.");
+      setUploadError("Only .zip or .md files are allowed.");
       return;
     }
     if (file.size > 50 * 1024 * 1024) {
-      setUploadError("Datei darf maximal 50 MB groß sein.");
+      setUploadError("File must not exceed 50 MB.");
       return;
     }
     setUploadError(null);
@@ -249,7 +248,7 @@ function AvailableConnectorCard({
         });
       },
       onError: () => {
-        setUploadError("Upload fehlgeschlagen. Bitte versuche es erneut.");
+        setUploadError("Upload failed. Please try again.");
       },
     });
   }
@@ -290,7 +289,7 @@ function AvailableConnectorCard({
             ) : (
               <Plug aria-hidden="true" className="h-3.5 w-3.5" />
             )}
-            Verbinden
+            Connect
           </button>
         )}
       </div>
@@ -322,17 +321,17 @@ function AvailableConnectorCard({
             )}
             <p className="text-xs text-text-secondary">
               {uploadMutation.isPending
-                ? "Wird hochgeladen\u2026"
-                : "ZIP-Archiv oder .md-Datei hier ablegen oder klicken"}
+                ? "Uploading\u2026"
+                : "Drop a ZIP archive or .md file here, or click to browse"}
             </p>
-            <p className="text-xs text-text-tertiary">Maximal 50 MB</p>
+            <p className="text-xs text-text-tertiary">Max 50 MB</p>
           </div>
           <input
             ref={fileInputRef}
             type="file"
             accept=".zip,.md"
             className="hidden"
-            aria-label="Obsidian Vault hochladen"
+            aria-label="Upload Obsidian vault"
             onChange={(e) => {
               const file = e.target.files?.[0];
               if (file) handleObsidianUpload(file);
@@ -342,9 +341,9 @@ function AvailableConnectorCard({
           {uploadError && <p className="text-xs text-red-600">{uploadError}</p>}
           {uploadResult && (
             <p className="text-xs text-green-600">
-              {uploadResult.document_count} Dokument(e) importiert
+              {uploadResult.document_count} document(s) imported
               {uploadResult.deleted_count > 0 &&
-                `, ${uploadResult.deleted_count} gelöscht`}
+                `, ${uploadResult.deleted_count} deleted`}
             </p>
           )}
         </div>
@@ -374,20 +373,20 @@ export default function ConnectorsPage() {
           aria-hidden="true"
           className="h-8 w-8 animate-spin text-text-tertiary"
         />
-        <span className="sr-only">Wird geladen</span>
+        <span className="sr-only">Loading</span>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold text-text">Konnektoren</h1>
+      <h1 className="text-2xl font-bold text-text">Connectors</h1>
 
       {/* Connected Connectors */}
       {status && status.connections.length > 0 && (
         <div>
           <h2 className="mb-3 text-lg font-semibold text-text">
-            Verbundene Quellen
+            Connected sources
           </h2>
           <div className="space-y-3">
             {status.connections.map((conn) => (
@@ -414,7 +413,7 @@ export default function ConnectorsPage() {
       {availableConnectors.length > 0 && (
         <div>
           <h2 className="mb-3 text-lg font-semibold text-text">
-            Verf\u00fcgbare Quellen
+            Available sources
           </h2>
           <div className="space-y-3">
             {availableConnectors.map((connector) => (
@@ -440,10 +439,10 @@ export default function ConnectorsPage() {
             className="mx-auto mb-3 h-10 w-10 text-text-tertiary"
           />
           <h3 className="mb-1 text-sm font-semibold text-text">
-            Keine Konnektoren verf\u00fcgbar
+            No connectors available
           </h3>
           <p className="text-sm text-text-tertiary">
-            Konnektoren werden bald hinzugef&#252;gt.
+            Connectors will be added soon.
           </p>
         </div>
       )}

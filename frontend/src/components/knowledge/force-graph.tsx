@@ -187,7 +187,7 @@ export function ForceGraph({
       height={height}
       className="border border-border rounded-lg bg-surface"
       role="img"
-      aria-label="Knowledge-Graph-Visualisierung"
+      aria-label="Knowledge graph visualization"
     />
   );
 }

@@ -156,8 +156,8 @@ export function CommandBar({
 
   const intentHint = value.trim()
     ? intent.type === "briefing"
-      ? "Enter → Briefing generieren"
-      : "Enter → Suchen"
+      ? "Enter → Generate briefing"
+      : "Enter → Search"
     : null;
 
   return (
@@ -191,15 +191,15 @@ export function CommandBar({
           onKeyDown={handleKeyDown}
           placeholder={
             compact
-              ? "Suchen oder fragen… (⌘K)"
-              : "Was möchtest du wissen? Suche, stelle Fragen oder generiere ein Briefing…"
+              ? "Search or ask… (⌘K)"
+              : "What would you like to know? Search, ask questions, or generate a briefing…"
           }
           className={`
             flex-1 bg-transparent text-text placeholder:text-text-tertiary
             focus:outline-none
             ${compact ? "text-sm" : "text-base"}
           `}
-          aria-label="PWBS Kommandozeile"
+          aria-label="PWBS command bar"
           role="combobox"
           aria-expanded={showDropdown || undefined}
           aria-haspopup="listbox"
@@ -211,7 +211,7 @@ export function CommandBar({
             disabled={isProcessing}
             className="flex items-center gap-1.5 rounded-xl bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-indigo-500 disabled:opacity-50"
             aria-label={
-              intent.type === "briefing" ? "Briefing generieren" : "Suchen"
+              intent.type === "briefing" ? "Generate briefing" : "Search"
             }
           >
             {isProcessing ? (
@@ -222,7 +222,7 @@ export function CommandBar({
               <ArrowRight className="h-3.5 w-3.5" />
             )}
             <span className="hidden sm:inline">
-              {intent.type === "briefing" ? "Generieren" : "Suchen"}
+              {intent.type === "briefing" ? "Generate" : "Search"}
             </span>
           </button>
         )}
@@ -243,7 +243,7 @@ export function CommandBar({
         <ul
           id="command-bar-listbox"
           role="listbox"
-          aria-label="Suchvorschläge"
+          aria-label="Search suggestions"
           className="absolute left-0 right-0 z-50 mt-2 max-h-64 overflow-y-auto rounded-xl border border-border bg-surface shadow-xl"
         >
           {suggestions.map((item) => (

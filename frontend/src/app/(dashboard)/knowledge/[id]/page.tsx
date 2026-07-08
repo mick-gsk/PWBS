@@ -30,13 +30,13 @@ const TYPE_CONFIG: Record<
   Project: {
     icon: FolderKanban,
     color: "bg-green-100 text-green-800",
-    label: "Projekt",
+    label: "Project",
   },
-  Topic: { icon: Hash, color: "bg-amber-100 text-amber-800", label: "Thema" },
+  Topic: { icon: Hash, color: "bg-amber-100 text-amber-800", label: "Topic" },
   Decision: {
     icon: FileText,
     color: "bg-red-100 text-red-800",
-    label: "Entscheidung",
+    label: "Decision",
   },
 };
 
@@ -66,7 +66,7 @@ export default function EntityDetailPage({
     return (
       <div role="status" className="flex justify-center py-20">
         <Spinner className="h-8 w-8" />
-        <span className="sr-only">Wird geladen</span>
+        <span className="sr-only">Loading</span>
       </div>
     );
   }
@@ -74,7 +74,7 @@ export default function EntityDetailPage({
   if (entityError) {
     return (
       <ErrorCard
-        message="Entität konnte nicht geladen werden."
+        message="Failed to load entity."
         onRetry={() => void refetchEntity()}
       />
     );
@@ -98,7 +98,7 @@ export default function EntityDetailPage({
           className="mb-4 flex items-center gap-1 text-sm text-text-tertiary hover:text-text"
         >
           <ArrowLeft aria-hidden="true" className="h-4 w-4" />
-          Zurück
+          Back
         </button>
 
         <div className="flex items-start justify-between">
@@ -110,8 +110,8 @@ export default function EntityDetailPage({
               <div>
                 <h1 className="text-3xl font-bold text-text">{entity.name}</h1>
                 <p className="text-sm text-text-tertiary">
-                  {typeConfig.label} · {entity.mention_count} Erwähnung
-                  {entity.mention_count !== 1 ? "en" : ""}
+                  {typeConfig.label} · {entity.mention_count} mention
+                  {entity.mention_count !== 1 ? "s" : ""}
                 </p>
               </div>
             </div>
@@ -121,7 +121,7 @@ export default function EntityDetailPage({
             className="flex items-center gap-1.5 rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
           >
             <Network aria-hidden="true" className="h-4 w-4" />
-            Im Graph anzeigen
+            View in graph
           </Link>
         </div>
       </div>
@@ -131,16 +131,16 @@ export default function EntityDetailPage({
         <div className="rounded-lg border border-border bg-surface p-6">
           <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold text-text">
             <Calendar aria-hidden="true" className="h-5 w-5" />
-            Zeitleiste
+            Timeline
           </h2>
           <div className="flex gap-8">
             {entity.first_seen && (
               <div>
                 <p className="text-xs font-medium uppercase text-text-tertiary">
-                  Erstmals gesehen
+                  First seen
                 </p>
                 <p className="text-sm font-medium text-text">
-                  {new Date(entity.first_seen).toLocaleDateString("de-DE", {
+                  {new Date(entity.first_seen).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
@@ -151,10 +151,10 @@ export default function EntityDetailPage({
             {entity.last_seen && (
               <div>
                 <p className="text-xs font-medium uppercase text-text-tertiary">
-                  Zuletzt gesehen
+                  Last seen
                 </p>
                 <p className="text-sm font-medium text-text">
-                  {new Date(entity.last_seen).toLocaleDateString("de-DE", {
+                  {new Date(entity.last_seen).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
                     day: "numeric",
@@ -170,7 +170,7 @@ export default function EntityDetailPage({
       {entity.related_entities.length > 0 && (
         <div className="rounded-lg border border-border bg-surface p-6">
           <h2 className="mb-4 text-lg font-semibold text-text">
-            Verknüpfte Entitäten ({entity.related_entities.length})
+            Related entities ({entity.related_entities.length})
           </h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {entity.related_entities.map((rel: RelatedEntityItem) => {
@@ -193,8 +193,8 @@ export default function EntityDetailPage({
                     <p className="truncate font-medium text-text">{rel.name}</p>
                     <p className="text-xs text-text-tertiary">
                       {rel.relation ?? relConfig.label} · {rel.mention_count}{" "}
-                      Erwähnung
-                      {rel.mention_count !== 1 ? "en" : ""}
+                      mention
+                      {rel.mention_count !== 1 ? "s" : ""}
                     </p>
                   </div>
                 </Link>
@@ -208,7 +208,7 @@ export default function EntityDetailPage({
       <div className="rounded-lg border border-border bg-surface p-6">
         <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold text-text">
           <FileText aria-hidden="true" className="h-5 w-5" />
-          Zugehörige Dokumente
+          Related documents
           {documentsData && (
             <span className="text-sm font-normal text-text-tertiary">
               ({documentsData.total})
@@ -219,20 +219,20 @@ export default function EntityDetailPage({
         {docsLoading && (
           <div role="status" className="flex justify-center py-8">
             <Spinner className="h-6 w-6" />
-            <span className="sr-only">Wird geladen</span>
+            <span className="sr-only">Loading</span>
           </div>
         )}
 
         {docsError && (
           <ErrorCard
-            message="Dokumente konnten nicht geladen werden."
+            message="Failed to load documents."
             onRetry={() => void refetchDocs()}
           />
         )}
 
         {documentsData && documentsData.documents.length === 0 && (
           <p className="text-sm text-text-tertiary">
-            Keine verknüpften Dokumente gefunden.
+            No related documents found.
           </p>
         )}
 
@@ -246,11 +246,11 @@ export default function EntityDetailPage({
               >
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-medium text-text">
-                    {doc.title ?? "Unbenanntes Dokument"}
+                    {doc.title ?? "Untitled document"}
                   </p>
                   <p className="text-xs text-text-tertiary">
                     {doc.source_type} ·{" "}
-                    {new Date(doc.created_at).toLocaleDateString("de-DE")}
+                    {new Date(doc.created_at).toLocaleDateString("en-US")}
                   </p>
                 </div>
                 <ExternalLink

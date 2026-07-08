@@ -17,17 +17,17 @@ const STATUS_CONFIG: Record<
   { label: string; icon: typeof Clock; className: string }
 > = {
   pending: {
-    label: "Ausstehend",
+    label: "Pending",
     icon: Clock,
     className: "bg-yellow-100 text-yellow-800",
   },
   made: {
-    label: "Entschieden",
+    label: "Decided",
     icon: CheckCircle2,
     className: "bg-green-100 text-green-800",
   },
   revised: {
-    label: "Revidiert",
+    label: "Revised",
     icon: RotateCcw,
     className: "bg-indigo-100 text-indigo-800",
   },
@@ -58,7 +58,7 @@ function DecisionCard({ decision }: { decision: DecisionListItem }) {
             {decision.summary}
           </h3>
           <div className="mt-1 flex items-center gap-3 text-xs text-text-tertiary">
-            {decision.decided_by && <span>von {decision.decided_by}</span>}
+            {decision.decided_by && <span>by {decision.decided_by}</span>}
             <span>
               {new Date(decision.created_at).toLocaleDateString("de-DE")}
             </span>
@@ -91,14 +91,14 @@ export function DecisionList({
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <p className="text-sm text-text-tertiary">
-          {total} Entscheidung{total !== 1 ? "en" : ""}
+          {total} decision{total !== 1 ? "s" : ""}
         </p>
         <Link
           href="/decisions/new"
           className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-700"
         >
           <Plus aria-hidden="true" className="h-4 w-4" />
-          Neue Entscheidung
+          New Decision
         </Link>
       </div>
 
@@ -118,18 +118,18 @@ export function DecisionList({
             onClick={() => onPageChange(page - 1)}
             disabled={page <= 1}
             className="rounded p-1 text-text-tertiary hover:text-text-secondary disabled:opacity-30"
-            aria-label="Vorherige Seite"
+            aria-label="Previous page"
           >
             <ChevronLeft aria-hidden="true" className="h-5 w-5" />
           </button>
           <span className="text-sm text-text-secondary">
-            Seite {page} von {totalPages}
+            Page {page} of {totalPages}
           </span>
           <button
             onClick={() => onPageChange(page + 1)}
             disabled={page >= totalPages}
             className="rounded p-1 text-text-tertiary hover:text-text-secondary disabled:opacity-30"
-            aria-label="Nächste Seite"
+            aria-label="Next page"
           >
             <ChevronRight aria-hidden="true" className="h-5 w-5" />
           </button>
