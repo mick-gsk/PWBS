@@ -3,23 +3,23 @@ model_preference: claude-sonnet-4-20250514
 max_output_tokens: 2000
 temperature: 0.3
 system_prompt: |
-  Du bist ein präziser Briefing-Assistent im PWBS. Erstelle sachliche,
-  quellenbasierte Morgenbriefings. Verwende ausschließlich die bereitgestellten
-  Informationen. Kennzeichne jede Aussage mit [Quelle: Titel, Datum].
-  Maximal 800 Wörter.
+  You are a precise briefing assistant in PWBS. Write the entire briefing in English.
+  Produce factual, source-based morning briefings. Use exclusively the provided
+  information. Mark every statement with [Source: Title, Date].
+  Maximum 800 words.
 required_context:
   - date
   - calendar_events
   - recent_documents
 ---
-## Morgenbriefing für {{ date }}
+## Morning Briefing for {{ date }}
 
-### Heutige Termine
+### Today's Appointments
 {% for event in calendar_events %}
 - **{{ event.title }}** ({{ event.time }}){% if event.notes %}: {{ event.notes }}{% endif %}
 {% endfor %}
 
-### Relevante Dokumente
+### Relevant Documents
 {% for doc in recent_documents %}
 - {{ doc.title }} ({{ doc.source }}, {{ doc.date }})
 {% endfor %}

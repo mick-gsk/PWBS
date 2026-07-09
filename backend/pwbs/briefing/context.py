@@ -14,6 +14,7 @@ D1 Section 3.5, D4 F-017.  Context priority:
 from __future__ import annotations
 
 import logging
+import re
 import uuid
 from dataclasses import dataclass, field
 from datetime import UTC, date, datetime, timedelta
@@ -26,6 +27,41 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from pwbs.search.service import SemanticSearchResult, SemanticSearchService
 
 logger = logging.getLogger(__name__)
+
+
+def _fmt_date(value: object) -> str:
+    """Format a document date (datetime or ISO string) as 'Jun 12, 2026'.
+
+    Search results carry ``created_at`` as an ISO string, but calendar
+    paths may pass a ``datetime``; handle both and never raise.
+    """
+    if value is None:
+        return ""
+    if hasattr(value, "strftime"):
+        return value.strftime("%b %d, %Y")  # type: ignore[attr-defined]
+    text_value = str(value)
+    try:
+        return datetime.fromisoformat(text_value.replace("Z", "+00:00")).strftime(
+            "%b %d, %Y"
+        )
+    except ValueError:
+        return text_value[:10]
+
+
+def _clean_preview(text: str, limit: int = 300) -> str:
+    """Sanitise a document snippet for inclusion in a briefing.
+
+    Strips Markdown heading markers and table pipes and collapses
+    whitespace, so a source document's internal structure never leaks
+    into the briefing as spurious top-level headings.
+    """
+    if not text:
+        return ""
+    cleaned = re.sub(r"(?m)^\s{0,3}#{1,6}\s*", "", text)
+    cleaned = cleaned.replace("|", " ")
+    cleaned = re.sub(r"\s+", " ", cleaned).strip()
+    return cleaned[:limit]
+
 
 __all__ = [
     "CalendarEvent",
@@ -491,7 +527,7 @@ class MorningContextAssembler:
         for ev in events:
             parts.append(ev.title)
         if not parts:
-            parts.append(f"Relevante Themen {today.isoformat()}")
+            parts.append(f"Relevant topics {today.isoformat()}")
         return " ".join(parts[:10])  # Cap to avoid overly long queries
 
     # ------------------------------------------------------------------
@@ -525,9 +561,12 @@ class MorningContextAssembler:
             {
                 "title": doc.title,
                 "source": doc.source_type,
-                "date": doc.created_at,
-                "content": doc.content[:300],  # Preview
+                "date": _fmt_date(doc.created_at),
+                "content": _clean_preview(doc.content),  # Preview (markdown-safe)
                 "score": doc.score,
+                # Keep the chunk id so the route can persist structured
+                # source references (briefing.sources / SourceCard UI).
+                "chunk_id": doc.chunk_id,
             }
             for doc in recent_docs
         ]
@@ -535,8 +574,8 @@ class MorningContextAssembler:
         decision_dicts = [
             {
                 "title": d.title,
-                "project": d.project or "Kein Projekt",
-                "created": d.created_date or "unbekannt",
+                "project": d.project or "No project",
+                "created": d.created_date or "unknown",
                 "context": d.context[:200] if d.context else "",
             }
             for d in decisions

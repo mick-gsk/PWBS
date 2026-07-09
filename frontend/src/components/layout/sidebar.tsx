@@ -107,7 +107,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 
       {/* Navigation */}
       <nav
-        className="flex-1 space-y-0.5 px-3 py-3"
+        className="min-h-0 flex-1 space-y-0.5 overflow-y-auto px-3 py-3"
         aria-label="Main navigation"
       >
         {NAV_ITEMS.map(({ href, label, icon: Icon }) => {

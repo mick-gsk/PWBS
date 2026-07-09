@@ -35,192 +35,192 @@ DEMO_USER_ID = uuid.UUID("00000000-0000-4000-a000-000000000001")
 DEMO_PASSWORD = "DemoPwbs2026!"  # only for local dev
 
 # ---------------------------------------------------------------------------
-# Document templates (German, realistic knowledge-worker content)
+# Document templates (English, realistic knowledge-worker content)
 # ---------------------------------------------------------------------------
 
 _CALENDAR_EVENTS = [
     (
-        "Produkt-Sync mit Team Alpha",
-        "Fortschritt der API-Migration besprechen. Thomas hat Bedenken zur Abwaertskompatibilitaet.",
+        "Product Sync with Team Alpha",
+        "Discuss progress on the API migration. Thomas has concerns about backward compatibility.",
     ),
     (
-        "1:1 mit Teamlead Maria",
-        "Quartals-Review vorbereiten. Feedback zum neuen Onboarding-Prozess sammeln.",
+        "1:1 with Team Lead Maria",
+        "Prepare the quarterly review. Collect feedback on the new onboarding process.",
     ),
     (
-        "Sprint Retrospektive Q1",
-        "Was lief gut: Deployment-Automatisierung. Action Items aus letztem Retro pruefen.",
+        "Sprint Retrospective Q1",
+        "What went well: deployment automation. Review action items from the last retro.",
     ),
     (
-        "Architektur-Review: Microservices",
-        "Entscheidung ob monolithische Architektur beibehalten oder auf Microservices migriert wird.",
+        "Architecture Review: Microservices",
+        "Decide whether to keep the monolithic architecture or migrate to microservices.",
     ),
     (
-        "Kunden-Demo Projekt Phoenix",
-        "Neues Dashboard-Feature vorstellen. Live-Demo der Echtzeit-Datenvisualisierung.",
+        "Client Demo Project Phoenix",
+        "Present the new dashboard feature. Live demo of real-time data visualization.",
     ),
     (
-        "DevOps-Workshop: Kubernetes Basics",
-        "Einfuehrung in Container-Orchestrierung. Hands-on mit kubectl.",
+        "DevOps Workshop: Kubernetes Basics",
+        "Introduction to container orchestration. Hands-on with kubectl.",
     ),
     (
-        "Budget-Planung 2026 H2",
-        "Cloud-Kosten optimieren. Neue Tooling-Investitionen: Monitoring, Testing.",
+        "Budget Planning 2026 H2",
+        "Optimize cloud costs. New tooling investments: monitoring, testing.",
     ),
     (
-        "Onboarding: Neue Entwicklerin Sarah",
-        "Entwicklungsumgebung einrichten. Git-Workflow erklaeren.",
+        "Onboarding: New Developer Sarah",
+        "Set up the development environment. Explain the Git workflow.",
     ),
     (
-        "Security Audit Vorbereitung",
-        "OWASP Top 10 Checkliste durchgehen. DSGVO-Compliance-Status pruefen.",
+        "Security Audit Preparation",
+        "Go through the OWASP Top 10 checklist. Check GDPR compliance status.",
     ),
     (
-        "Quartals-OKR-Review",
-        "Objectives und Key Results fuer Q2 besprechen. Team-Velocity analysieren.",
+        "Quarterly OKR Review",
+        "Discuss objectives and key results for Q2. Analyze team velocity.",
     ),
     (
-        "Stakeholder-Praesentation ML-Pipeline",
-        "Ergebnisse des ML-PoC vorstellen. ROI-Berechnung praesentieren.",
+        "Stakeholder Presentation ML Pipeline",
+        "Present the results of the ML PoC. Walk through the ROI calculation.",
     ),
-    ("Pair-Programming Session: Auth-Modul", "JWT-Refresh-Token-Logik implementieren mit Sarah."),
-    ("Team-Standup Woche 12", "Blocker: CI/CD Pipeline instabil. Sarah uebernimmt Deployment-Fix."),
+    ("Pair Programming Session: Auth Module", "Implement JWT refresh token logic with Sarah."),
+    ("Team Standup Week 12", "Blocker: CI/CD pipeline unstable. Sarah takes over the deployment fix."),
 ]
 
 _NOTION_PAGES = [
     (
-        "Projektplan Q2 2026",
-        "## Meilensteine\n- MVP-Launch: 15. April\n- Beta-Test: 1. Mai\n- GA-Release: 15. Juni\n\n## Risiken\n- Abhaengigkeit von externem API-Provider\n- Personalengpass im Frontend-Team",
+        "Project Plan Q2 2026",
+        "## Milestones\n- MVP launch: April 15\n- Beta test: May 1\n- GA release: June 15\n\n## Risks\n- Dependency on external API provider\n- Staffing shortage in the frontend team",
     ),
     (
-        "Meeting-Notizen: Architektur-Board",
-        "### Entscheidung\nModularer Monolith bleibt bestehen. Service-Split erst ab Phase 3.\n\n### Begruendung\n- Team-Groesse rechtfertigt keinen Microservice-Overhead\n- Latenz-Vorteile bei In-Process-Kommunikation",
+        "Meeting Notes: Architecture Board",
+        "### Decision\nThe modular monolith stays. Service split not before Phase 3.\n\n### Rationale\n- Team size does not justify microservice overhead\n- Latency benefits of in-process communication",
     ),
     (
-        "DSGVO-Checkliste Datenverarbeitung",
-        "- [x] Datenschutzerklaerung aktualisiert\n- [x] Auftragsverarbeitungsvertrag mit Cloud-Provider\n- [ ] Cookie-Banner implementieren\n- [ ] Loeschkonzept dokumentieren",
+        "GDPR Checklist Data Processing",
+        "- [x] Privacy policy updated\n- [x] Data processing agreement with cloud provider\n- [ ] Implement cookie banner\n- [ ] Document data deletion policy",
     ),
     (
-        "Onboarding-Guide Neue Entwickler",
-        "## Tag 1\n1. Laptop einrichten\n2. Git-Zugang und Branch-Konventionen\n3. Docker Compose starten\n\n## Tag 2\n1. Code-Walkthrough Backend\n2. Pair-Programming mit Mentor",
+        "Onboarding Guide for New Developers",
+        "## Day 1\n1. Set up laptop\n2. Git access and branch conventions\n3. Start Docker Compose\n\n## Day 2\n1. Backend code walkthrough\n2. Pair programming with mentor",
     ),
     (
-        "API-Design-Guidelines",
-        "## Versionierung\nAlle Endpunkte unter `/api/v1/`. Breaking Changes erfordern neue Version.\n\n## Pagination\nCursor-basiert mit `after`-Parameter. Maximal 100 Elemente pro Seite.",
+        "API Design Guidelines",
+        "## Versioning\nAll endpoints under `/api/v1/`. Breaking changes require a new version.\n\n## Pagination\nCursor-based with `after` parameter. Maximum 100 items per page.",
     ),
     (
-        "Sprint-Review Ergebnisse W11",
-        "### Abgeschlossene Stories\n- TASK-142: Briefing-Generierung optimiert\n- TASK-145: Search-API mit Hybrid-Modus\n\n### Offene Punkte\n- Performance-Test steht noch aus",
+        "Sprint Review Results W11",
+        "### Completed Stories\n- TASK-142: Briefing generation optimized\n- TASK-145: Search API with hybrid mode\n\n### Open Items\n- Performance test still pending",
     ),
     (
-        "Technische Schulden Backlog",
-        "| Technische Schuld | Prioritaet | Aufwand |\n|---|---|---|\n| Legacy-Auth migrieren | Hoch | 3 Tage |\n| Test-Coverage erhoehen | Mittel | 5 Tage |",
+        "Technical Debt Backlog",
+        "| Technical Debt | Priority | Effort |\n|---|---|---|\n| Migrate legacy auth | High | 3 days |\n| Increase test coverage | Medium | 5 days |",
     ),
     (
-        "Incident Report: API-Ausfall 2026-03-10",
-        "## Timeline\n- 14:23 Alarm ausgeloest\n- 14:25 On-Call benachrichtigt\n- 14:40 Root Cause identifiziert: DB Connection Pool exhausted\n- 14:55 Fix deployed, Service wieder verfuegbar",
+        "Incident Report: API Outage 2026-03-10",
+        "## Timeline\n- 14:23 Alert triggered\n- 14:25 On-call notified\n- 14:40 Root cause identified: DB connection pool exhausted\n- 14:55 Fix deployed, service available again",
     ),
     (
-        "Wissensmanagement-Strategie",
-        "## Vision\nJeder Mitarbeiter findet relevantes Wissen in unter 30 Sekunden.\n\n## Massnahmen\n1. Zentrales Knowledge-Base-System (PWBS)\n2. Automatische Briefings vor Meetings",
+        "Knowledge Management Strategy",
+        "## Vision\nEvery employee finds relevant knowledge in under 30 seconds.\n\n## Initiatives\n1. Central knowledge base system (PWBS)\n2. Automatic briefings before meetings",
     ),
     (
-        "Performance-Benchmarks Q1",
-        "| Metrik | Ziel | Ist |\n|---|---|---|\n| API P95 Latenz | <200ms | 145ms |\n| Search P95 | <500ms | 380ms |\n| Briefing-Generierung | <5s | 3.2s |",
+        "Performance Benchmarks Q1",
+        "| Metric | Target | Actual |\n|---|---|---|\n| API P95 latency | <200ms | 145ms |\n| Search P95 | <500ms | 380ms |\n| Briefing generation | <5s | 3.2s |",
     ),
     (
-        "Code-Review-Richtlinien",
-        "## Pflicht-Checks\n1. Typing vollstaendig (kein `Any`)\n2. owner_id Filter in jeder DB-Query\n3. Idempotente Writes (UPSERT statt INSERT)\n4. Keine Secrets im Code",
+        "Code Review Guidelines",
+        "## Mandatory Checks\n1. Complete typing (no `Any`)\n2. owner_id filter in every DB query\n3. Idempotent writes (UPSERT instead of INSERT)\n4. No secrets in code",
     ),
     (
         "Roadmap 2026 H2",
-        "## Fokus\n- Konnektoren: Gmail, Slack, Outlook\n- Knowledge Graph: Neo4j-Integration vertiefen\n- Enterprise: SSO, RBAC, Multi-Tenancy",
+        "## Focus\n- Connectors: Gmail, Slack, Outlook\n- Knowledge graph: deepen Neo4j integration\n- Enterprise: SSO, RBAC, multi-tenancy",
     ),
 ]
 
 _OBSIDIAN_NOTES = [
     (
-        "Gedanken zur Wissensarbeit",
-        "Die groesste Herausforderung moderner Wissensarbeit ist nicht der Mangel an Information, sondern deren Fragmentierung. Notizen in 5 verschiedenen Tools, Meetings ohne Kontext, Entscheidungen die niemand dokumentiert.",
+        "Thoughts on Knowledge Work",
+        "The biggest challenge in modern knowledge work is not the lack of information but its fragmentation. Notes in 5 different tools, meetings without context, decisions nobody documents.",
     ),
     (
-        "Ideen fuer Briefing-Verbesserungen",
-        "- Kontext aus vorherigen Meetings einbeziehen\n- Projekt-Timeline als visuelle Komponente\n- Automatische Erkennung von Entscheidungen vs. offenen Fragen",
+        "Ideas for Briefing Improvements",
+        "- Include context from previous meetings\n- Project timeline as a visual component\n- Automatic detection of decisions vs. open questions",
     ),
     (
-        "Reflexion: Teamdynamik Q1",
-        "Das Team hat sich gut eingespielt. Sarah bringt frischen Wind in die Code-Reviews. Thomas' Bedenken zur Architektur waren berechtigt und haben uns vor einem teuren Refactoring bewahrt.",
+        "Reflection: Team Dynamics Q1",
+        "The team has really gelled. Sarah brings fresh energy to code reviews. Thomas' concerns about the architecture were justified and saved us from an expensive refactoring.",
     ),
     (
-        "Lernnotizen: Vector Databases",
-        "## Konzepte\n- HNSW Index: Hierarchical Navigable Small World\n- Cosine Similarity vs. Euclidean Distance\n- Hybrid Search: Kombination aus Vektor- und Keyword-Suche\n\nWeaviate nutzt HNSW standardmaessig.",
+        "Study Notes: Vector Databases",
+        "## Concepts\n- HNSW index: Hierarchical Navigable Small World\n- Cosine similarity vs. Euclidean distance\n- Hybrid search: combination of vector and keyword search\n\nWeaviate uses HNSW by default.",
     ),
     (
-        "Buchnotizen: Team Topologies",
-        "Vier Team-Typen: Stream-aligned, Enabling, Complicated Subsystem, Platform.\nUnsere Backend-Crew ist stream-aligned. DevOps-Team ist ein Platform-Team. Klare Boundaries definieren!",
+        "Book Notes: Team Topologies",
+        "Four team types: stream-aligned, enabling, complicated subsystem, platform.\nOur backend crew is stream-aligned. The DevOps team is a platform team. Define clear boundaries!",
     ),
     (
-        "Tagesnotiz 2026-03-15",
-        "Produktiver Tag. Briefing-Feature fast fertig. Search-Relevanz muss noch getuned werden. Abends: Paper zu RAG-Architekturen gelesen.",
+        "Daily Note 2026-03-15",
+        "Productive day. Briefing feature almost done. Search relevance still needs tuning. Evening: read a paper on RAG architectures.",
     ),
     (
-        "Wochenrueckblick KW11",
-        "- Erfolgreich: E2E-Pipeline-Test implementiert\n- Gelernt: Circuit Breaker Pattern spart viel Debugging-Zeit\n- Naechste Woche: DSGVO-Export fertigstellen",
+        "Weekly Review W11",
+        "- Success: implemented E2E pipeline test\n- Learned: the circuit breaker pattern saves a lot of debugging time\n- Next week: finish the GDPR export",
     ),
     (
-        "Meeting-Prep: Investoren-Update",
-        "## Key Metrics\n- MAU: 47 Early Adopters\n- Retention 30d: 78%\n- NPS: 62\n\n## Highlights\n- Hybrid-Suche 3x schneller als GPT-only\n- DSGVO-Compliance vollstaendig",
+        "Meeting Prep: Investor Update",
+        "## Key Metrics\n- MAU: 47 early adopters\n- Retention 30d: 78%\n- NPS: 62\n\n## Highlights\n- Hybrid search 3x faster than GPT-only\n- GDPR compliance complete",
     ),
     (
-        "Technische Vision 2027",
-        "Langfristig: PWBS als persoenliches Betriebssystem fuer Wissensarbeit. Nicht nur Suche, sondern proaktive Kontextualisierung. Der Knowledge Graph wird zur zentralen Denkstruktur.",
+        "Technical Vision 2027",
+        "Long term: PWBS as a personal operating system for knowledge work. Not just search, but proactive contextualization. The knowledge graph becomes the central thinking structure.",
     ),
     (
-        "Debugging-Notizen: Memory Leak",
-        "Problem: Weaviate-Client haelt Connections offen.\nLoesung: Connection Pool mit max_connections=10 und idle_timeout=300s.\nGelernt: Immer async context manager verwenden!",
+        "Debugging Notes: Memory Leak",
+        "Problem: Weaviate client keeps connections open.\nSolution: connection pool with max_connections=10 and idle_timeout=300s.\nLearned: always use async context managers!",
     ),
     (
-        "Rezept: Gutes Standup",
-        "1. Max 15 Min\n2. Jeder: Was gestern, was heute, Blocker\n3. Details offline klaeren\n4. Standup-Notiz automatisch ins Wiki",
+        "Recipe: A Good Standup",
+        "1. Max 15 minutes\n2. Everyone: what yesterday, what today, blockers\n3. Take details offline\n4. Standup note automatically goes to the wiki",
     ),
     (
-        "Prompt Engineering Notizen",
-        "- Structured Output mit JSON Schema erzwingen\n- Temperature 0.3 fuer sachliche Inhalte\n- Quellenreferenzen immer als separate Liste anfuegen",
+        "Prompt Engineering Notes",
+        "- Enforce structured output with JSON schema\n- Temperature 0.3 for factual content\n- Always append source references as a separate list",
     ),
 ]
 
 _ZOOM_TRANSCRIPTS = [
     (
-        "Sprint Planning - Transkript",
-        "Moderator: Ok, lasst uns die Stories fuer Sprint 12 durchgehen. Thomas, kannst du TASK-201 schaetzen? Thomas: Ich wuerde sagen M, also 2-3 Tage. Der Reranker braucht gutes Benchmarking. Maria: Einverstanden. Sarah, uebernimmst du TASK-202? Sarah: Ja, der DSGVO-Export ist klar definiert. Ich schaetze S.",
+        "Sprint Planning - Transcript",
+        "Moderator: Ok, let's go through the stories for Sprint 12. Thomas, can you estimate TASK-201? Thomas: I'd say M, so 2-3 days. The reranker needs solid benchmarking. Maria: Agreed. Sarah, will you take TASK-202? Sarah: Yes, the GDPR export is clearly defined. I'd estimate S.",
     ),
     (
-        "Architektur-Diskussion Transkript",
-        "Lena: Die Frage ist ob wir Neo4j im MVP brauchen. Thomas: Ich plaediere fuer optional. Wir koennen mit NullGraphService fallbacken. Maria: Guter Punkt. Dann machen wir es optional mit Docker Profile.",
+        "Architecture Discussion Transcript",
+        "Lena: The question is whether we need Neo4j in the MVP. Thomas: I'd argue for optional. We can fall back to NullGraphService. Maria: Good point. Then we'll make it optional with a Docker profile.",
     ),
     (
-        "Retro-Transkript KW10",
-        "Facilitator: Was lief gut? Sarah: Die neuen Unit-Tests haben 3 Bugs beim Refactoring gefangen. Thomas: CI/CD ist jetzt stabil. Was kann besser? Maria: Code-Reviews dauern manchmal 3 Tage. Vorschlag: SLA von 24h.",
+        "Retro Transcript W10",
+        "Facilitator: What went well? Sarah: The new unit tests caught 3 bugs during the refactoring. Thomas: CI/CD is stable now. What could be better? Maria: Code reviews sometimes take 3 days. Proposal: a 24h SLA.",
     ),
     (
-        "Kunden-Interview Transkript",
-        "Interviewer: Wie managen Sie aktuell Ihr Wissen? Kunde: Ehrlich gesagt gar nicht systematisch. Notion fuer Notizen, Google Calendar fuer Termine, Slack fuer Kommunikation. Nichts davon ist verbunden.",
+        "Customer Interview Transcript",
+        "Interviewer: How do you currently manage your knowledge? Customer: Honestly, not systematically at all. Notion for notes, Google Calendar for appointments, Slack for communication. None of it is connected.",
     ),
     (
-        "Standup-Zusammenfassung Transkript",
-        "Sarah: Gestern TASK-200 abgeschlossen, heute starte ich mit TASK-202. Blocker: Brauche Zugang zum Test-Mailserver. Thomas: Ich arbeite weiter an der Search-Relevanz. Kein Blocker. Maria: Bin im Kunden-Call bis 14 Uhr.",
+        "Standup Summary Transcript",
+        "Sarah: Finished TASK-200 yesterday, starting TASK-202 today. Blocker: I need access to the test mail server. Thomas: I'm continuing to work on search relevance. No blockers. Maria: I'm in a client call until 2pm.",
     ),
     (
-        "Tech-Talk: Embedding-Modelle",
-        "Referent: Sentence Transformers sind fuer deutsche Texte gut geeignet. Wir nutzen paraphrase-multilingual-MiniLM-L12-v2. Frage: Wie ist die Performance? Referent: ~50ms pro Embedding auf GPU, ~200ms auf CPU.",
+        "Tech Talk: Embedding Models",
+        "Speaker: Sentence Transformers work well for multilingual text. We use paraphrase-multilingual-MiniLM-L12-v2. Question: How is the performance? Speaker: ~50ms per embedding on GPU, ~200ms on CPU.",
     ),
     (
-        "Projekt-Phoenix Statusmeeting",
-        "PM: Wir liegen im Zeitplan. Der MVP ist zu 85% fertig. Offene Punkte: Search-Tuning und DSGVO-Export. Beides ist fuer diese Woche eingeplant. Risiko: Frontend-Redesign koennte sich verzoegern.",
+        "Project Phoenix Status Meeting",
+        "PM: We're on schedule. The MVP is 85% complete. Open items: search tuning and GDPR export. Both are planned for this week. Risk: the frontend redesign could slip.",
     ),
     (
-        "1:1 Maria-Thomas Transkript",
-        "Maria: Wie geht es dir mit der neuen Architektur? Thomas: Gut. Der modulare Monolith war die richtige Entscheidung. Die klaren Modul-Grenzen helfen enorm. Maria: Freut mich. Und das Onboarding von Sarah? Thomas: Sie ist super. Hat schon eigenstaendig den Circuit Breaker implementiert.",
+        "1:1 Maria-Thomas Transcript",
+        "Maria: How are you doing with the new architecture? Thomas: Good. The modular monolith was the right decision. The clear module boundaries help enormously. Maria: Glad to hear it. And Sarah's onboarding? Thomas: She's great. Already implemented the circuit breaker on her own.",
     ),
 ]
 
@@ -248,31 +248,36 @@ def generate_documents(
         ("zoom", _ZOOM_TRANSCRIPTS),
     ]
 
+    # Per-source template counters so each connector cycles through its own
+    # templates independently — this yields unique documents until a source's
+    # template pool is exhausted, instead of duplicating early on a shared index.
+    per_source_count = {source_type: 0 for source_type, _ in sources}
     idx = 0
     while len(docs) < count:
         for source_type, templates in sources:
             if len(docs) >= count:
                 break
-            tpl_idx = idx % len(templates)
+            i = per_source_count[source_type]
+            tpl_idx = i % len(templates)
             title, content = templates[tpl_idx]
 
             # Make each document unique even when cycling
-            cycle = idx // len(templates)
+            cycle = i // len(templates)
             if cycle > 0:
                 title = f"{title} (#{cycle + 1})"
-                content = f"{content}\n\n[Wiederholung {cycle + 1}]"
+                content = f"{content}\n\n[Repeat {cycle + 1}]"
 
-            doc_id = _doc_id(source_type, idx)
+            doc_id = _doc_id(source_type, i)
             docs.append(
                 {
                     "id": doc_id,
                     "user_id": user_id,
                     "source_type": source_type,
-                    "source_id": f"seed-{source_type}-{idx:04d}",
+                    "source_id": f"seed-{source_type}-{i:04d}",
                     "title": title,
                     "content": content,
                     "content_hash": _content_hash(content),
-                    "language": "de",
+                    "language": "en",
                     "chunk_count": 0,
                     "processing_status": "pending",
                     "visibility": "private",
@@ -280,7 +285,58 @@ def generate_documents(
                     "updated_at": now,
                 }
             )
+            per_source_count[source_type] = i + 1
             idx += 1
+
+    # Today's calendar events (created_at = today) so the morning briefing's
+    # "Today's Agenda" is populated. Participants use the "Participants:" line
+    # the context assembler parses. Indices are offset (9000+) to avoid
+    # colliding with the cycled events above.
+    today_events = [
+        (
+            "Team Standup",
+            "09:00",
+            "Participants: Sarah, Thomas, Maria\n"
+            "Daily sync. Blockers: CI/CD pipeline still flaky. Sarah needs access "
+            "to the test mail server. Review the 2 open action items from the sprint retro.",
+        ),
+        (
+            "Architecture Review: Microservices vs. Monolith",
+            "11:30",
+            "Participants: Thomas, Lena, Maria\n"
+            "Decide whether to keep the modular monolith or start the service split. "
+            "Thomas favours staying monolithic until Phase 3; Lena wants Neo4j kept optional.",
+        ),
+        (
+            "1:1 with Sarah - Onboarding Check-in",
+            "15:00",
+            "Participants: Sarah\n"
+            "Review onboarding progress. Sarah implemented the JWT refresh-token logic "
+            "and the circuit breaker. Next: pair on the GDPR export module.",
+        ),
+    ]
+    for offset, (title, time_str, content) in enumerate(today_events):
+        event_idx = 9000 + offset
+        # Encode the start time in created_at so the agenda shows a sensible hour.
+        hour, minute = (int(x) for x in time_str.split(":"))
+        start_at = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+        docs.append(
+            {
+                "id": _doc_id("google_calendar", event_idx),
+                "user_id": user_id,
+                "source_type": "google_calendar",
+                "source_id": f"seed-google_calendar-{event_idx:04d}",
+                "title": title,
+                "content": content,
+                "content_hash": _content_hash(content),
+                "language": "en",
+                "chunk_count": 0,
+                "processing_status": "pending",
+                "visibility": "private",
+                "created_at": start_at,
+                "updated_at": now,
+            }
+        )
 
     return docs
 

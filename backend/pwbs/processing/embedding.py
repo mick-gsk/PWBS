@@ -41,8 +41,8 @@ class EmbeddingConfig:
     batch size 64, per-input limit 8191 tokens.
     """
 
-    model: str = "text-embedding-3-small"
-    dimensions: int = 1536
+    model: str = "nomic-embed-text"
+    dimensions: int = 768
     max_batch_size: int = 64
     max_tokens_per_input: int = 8191
     max_retries: int = 3

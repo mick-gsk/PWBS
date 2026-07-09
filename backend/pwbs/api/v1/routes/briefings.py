@@ -176,7 +176,7 @@ async def _resolve_sources(
     sources = []
     for row in rows:
         rank = chunk_order.get(row.id, len(source_chunk_ids))
-        relevance = max(0.0, min(1.0, 1.0 - (rank * 0.05)))
+        relevance = max(0.35, min(1.0, 1.0 - (rank * 0.07)))
         sources.append(
             SourceRefResponse(
                 chunk_id=row.id,
@@ -186,6 +186,8 @@ async def _resolve_sources(
                 relevance=round(relevance, 2),
             )
         )
+    # DB rows come back unordered; present cards by descending relevance.
+    sources.sort(key=lambda s: s.relevance, reverse=True)
     return sources
 
 
@@ -391,13 +393,33 @@ async def _run_briefing_generation(
         from pwbs.briefing.context import MorningContextAssembler
         from pwbs.briefing.generator import BriefingGenerator
         from pwbs.briefing.persistence import BriefingPersistenceService
-        from pwbs.core.llm_gateway import LLMGateway
-        from pwbs.db.postgres import async_session_factory  # type: ignore[attr-defined]
+        from pwbs.core.config import get_settings
+        from pwbs.core.llm_gateway import LLMConfig, LLMGateway, LLMProvider
+        from pwbs.db.postgres import get_session_factory
         from pwbs.prompts.registry import PromptRegistry
 
-        async with async_session_factory()() as session:
+        _settings = get_settings()
+        _provider_map = {
+            "claude": LLMProvider.CLAUDE,
+            "gpt4": LLMProvider.GPT4,
+            "ollama": LLMProvider.OLLAMA,
+        }
+        _default_provider = _provider_map.get(_settings.llm_provider, LLMProvider.CLAUDE)
+        _llm_config = LLMConfig(
+            claude_api_key=_settings.anthropic_api_key.get_secret_value()
+            if _settings.llm_provider == "claude"
+            else "",
+            openai_api_key=_settings.openai_api_key.get_secret_value()
+            if _settings.llm_provider == "gpt4"
+            else "",
+            ollama_base_url=_settings.ollama_base_url,
+            ollama_model=_settings.ollama_model,
+            default_provider=_default_provider,
+        )
+
+        async with get_session_factory()() as session:
             # Build services
-            llm = LLMGateway()  # type: ignore[call-arg]
+            llm = LLMGateway(_llm_config)
             registry = PromptRegistry()
             generator = BriefingGenerator(llm, registry)
 
@@ -412,10 +434,17 @@ async def _run_briefing_generation(
             # For morning briefings, assemble context via MorningContextAssembler
             if briefing_type == BriefingType.MORNING:
                 from pwbs.db.neo4j_client import get_neo4j_driver as _get_neo4j
+                from pwbs.db.weaviate_client import get_weaviate_client as _get_weaviate
                 from pwbs.graph.query_service import Neo4jGraphQueryService
+                from pwbs.processing.embedding import EmbeddingService as _EmbSvc
                 from pwbs.search.service import SemanticSearchService as _MornSearchSvc
 
-                morn_search_svc = _MornSearchSvc(session)  # type: ignore[call-arg]
+                morn_search_svc = _MornSearchSvc(
+                    weaviate_client=_get_weaviate(),
+                    embedding_service=_EmbSvc(
+                        api_key=_settings.openai_api_key.get_secret_value()
+                    ),
+                )
                 morn_assembler = MorningContextAssembler(
                     session=session,
                     search_service=morn_search_svc,
@@ -514,7 +543,13 @@ async def _run_briefing_generation(
                 briefing_type=briefing_type,
                 title=f"{briefing_type.value.replace('_', ' ').title()} Briefing",
                 content=llm_result.content,
-                source_chunks=[],
+                # Top source chunks (already relevance-ordered by the assembler),
+                # capped so the UI shows a clean, curated source list.
+                source_chunks=[
+                    d["chunk_id"]
+                    for d in (context.get("recent_documents") or [])
+                    if isinstance(d, dict) and d.get("chunk_id")
+                ][:8],
                 trigger_context=trigger_context,
                 briefing_id=briefing_id,
             )
