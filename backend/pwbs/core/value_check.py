@@ -66,6 +66,7 @@ class ValueSource:
 
     title: str
     text: str
+    group: str = ""  # the context key it came from, e.g. "calendar_events"
 
 
 @dataclass(frozen=True, slots=True)
@@ -97,9 +98,9 @@ class ValueSources:
                 for item in value:
                     if isinstance(item, Mapping):
                         title = str(item.get("title") or item.get("entity") or "")
-                        sources.append(ValueSource(title, _flatten(item)))
+                        sources.append(ValueSource(title, _flatten(item), key))
                     elif item is not None:
-                        sources.append(ValueSource("", str(item)))
+                        sources.append(ValueSource("", str(item), key))
             elif isinstance(value, Mapping):
                 title = str(value.get("title") or "")
                 sources.append(ValueSource(title, _flatten(value)))
@@ -163,7 +164,8 @@ def verify(text: str, sources: ValueSources) -> ValueReport:
     all sources.
     """
     indexed = [
-        _Source(s.title, s.text, extract(s.text), normalise_text(s.text)) for s in sources.sources
+        _Source(s.title, s.text, extract(s.text), normalise_text(s.text), s.group)
+        for s in sources.sources
     ]
     report = ValueReport()
     for begin, sentence in _statements(text):
@@ -238,6 +240,7 @@ class _Source:
     text: str
     claims: list[Claim]
     plain: str  # normalised text, for quotes
+    group: str = ""
 
     def evidence(self, claim: Claim) -> str:
         """The sentence or line around a claim, for showing where a value came from."""
@@ -298,6 +301,9 @@ def _resolve(sentence: str, sources: list[_Source]) -> list[_Source] | None:
     for title in (_normalize_title(m.group(1)) for m in _SOURCE_REF_RE.finditer(sentence)):
         if not title:
             continue
+        if title in _CALENDAR_TITLES:
+            cited += [s for s in _calendar_events(sentence, sources) if s not in cited]
+            continue
         exact = [s for s in sources if _normalize_title(s.title) == title]
         partial = [
             s
@@ -306,6 +312,18 @@ def _resolve(sentence: str, sources: list[_Source]) -> list[_Source] | None:
         ]
         cited += [s for s in exact or partial if s not in cited]
     return cited or None
+
+
+# "[Source: Calendar, 2026-03-14]" names no event; the event is the one the line is about
+_CALENDAR_TITLES = frozenset({"calendar", "kalender"})
+
+
+def _calendar_events(sentence: str, sources: list[_Source]) -> list[_Source]:
+    """The calendar events whose title the statement mentions, or all events if none."""
+    events = [s for s in sources if s.group == "calendar_events"]
+    words = _words(_SOURCE_REF_RE.sub("", sentence))
+    named = [s for s in events if _words(s.title) and _words(s.title) <= words]
+    return named or events
 
 
 def _check(
