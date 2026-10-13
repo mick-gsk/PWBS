@@ -237,3 +237,8 @@ class TestEdgeCases:
             "unsupported"
         ]
         assert verify("Abgabe am 31. März.", sources).grounded
+
+    def test_calendar_annotation_checks_the_named_event(self) -> None:
+        cal = "[Source: Calendar, 2026-03-14]"
+        assert statuses(f"- **10:00 – Sprint Planning** {cal}") == [("10:00", "supported")]
+        assert statuses(f"- **14:30 – Sprint Planning** {cal}") == [("14:30", "wrong_citation")]
