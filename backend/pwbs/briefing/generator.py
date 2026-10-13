@@ -278,8 +278,10 @@ class BriefingGenerator:
                 if retry is not None:
                     usage = _add_usage(usage, retry.usage)
                     retry_report = verify(retry.content, sources)
-                    if len(retry_report.problems) < len(value_report.problems) and _usable_repair(
-                        content, retry.content
+                    if (
+                        len(retry_report.problems) < len(value_report.problems)
+                        and set(retry_report.unresolved) <= set(value_report.unresolved)
+                        and _usable_repair(content, retry.content)
                     ):
                         content, value_report = retry.content, retry_report
                         model, repaired = retry.model, True

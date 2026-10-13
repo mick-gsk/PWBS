@@ -671,3 +671,15 @@ class TestValueCheck:
         result = await gen.generate(BriefingType.MORNING, _budget_context(), USER_ID)
 
         assert result.repaired and result.model == "gpt-4o"
+
+    @pytest.mark.asyncio
+    async def test_repair_citing_a_made_up_source_is_not_used(self) -> None:
+        repair = "Das Q2-Budget beträgt 120.000 € [Quelle: Finanzbericht, 2026-03-13]."
+        gateway = _make_gateway()
+        gateway.generate = AsyncMock(side_effect=[_response(WRONG), _response(repair)])
+        gen = BriefingGenerator(gateway, _make_registry())
+
+        result = await gen.generate(BriefingType.MORNING, _budget_context(), USER_ID)
+
+        assert result.content == WRONG + " ⚠️"
+        assert not result.repaired
