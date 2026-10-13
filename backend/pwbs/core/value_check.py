@@ -334,6 +334,9 @@ def _check(
     sentence: str,
 ) -> tuple[str, str | None, str]:
     context = _words(sentence)
+    if claim.kind == "amount" and claim.unit is None:
+        # a bare number is about the thing named right after it: "3 Blocker" is not "3 Meetings"
+        context = _named_after(claim, sentence) or context
     for scope, status in ((in_scope, "supported"), (others, "wrong_citation")):
         for source in scope:
             match = _find(claim, source, context)
@@ -381,11 +384,16 @@ def _find(claim: Claim, source: _Source, context: set[str]) -> str | None:
             return source.evidence(c)
         if claim.kind == "time" and c.key == claim.key:
             return source.evidence(c)
-        if claim.kind == "amount" and _same(c.value, claim.value) and c.unit == claim.unit:
+        if (
+            claim.kind == "amount"
+            and claim.unit
+            and _same(c.value, claim.value)
+            and c.unit == claim.unit
+        ):
             return source.evidence(c)
         if claim.kind == "amount" and claim.unit is None and _same(c.value, claim.value):
-            # A bare number matches a value with any unit, but only if the source sentence
-            # shares a word with the statement; otherwise "5" would be backed by any
+            # A bare number matches a value with or without a unit, but only if the source
+            # sentence shares a word with the statement; otherwise "5" would be backed by any
             # "5 Minuten" in the context.
             evidence = source.evidence(c)
             if context & _words(evidence):
@@ -393,8 +401,62 @@ def _find(claim: Claim, source: _Source, context: set[str]) -> str | None:
     return None
 
 
+_STOPWORDS = frozenset(
+    [
+        "there",
+        "this",
+        "that",
+        "these",
+        "those",
+        "with",
+        "have",
+        "will",
+        "your",
+        "about",
+        "from",
+        "were",
+        "they",
+        "them",
+        "what",
+        "when",
+        "sind",
+        "gibt",
+        "haben",
+        "wird",
+        "werden",
+        "eine",
+        "einen",
+        "einem",
+        "einer",
+        "nach",
+        "noch",
+        "auch",
+        "oder",
+        "aber",
+        "heute",
+        "today",
+        "dein",
+        "deine",
+        "deinen",
+        "insgesamt",
+        "stehen",
+        "steht",
+    ]
+)
+
+
 def _words(text: str) -> set[str]:
-    return {w[:6] for w in re.findall(r"[^\W\d_]{4,}", text.lower())}
+    words = re.findall(r"[^\W\d_]{4,}", text.lower())
+    return {w[:6] for w in words if w not in _STOPWORDS}
+
+
+def _named_after(claim: Claim, sentence: str) -> set[str]:
+    """Words of the one or two words right after a bare number: what it counts."""
+    at = sentence.find(claim.text)
+    if at < 0:
+        return set()
+    m = re.match(r"\s*((?:[^\W\d_]+[\s-]*){1,2})", sentence[at + len(claim.text) :])
+    return _words(m.group(1)) if m else set()
 
 
 def _same(a: float | None, b: float | None) -> bool:
@@ -472,12 +534,17 @@ def _derive(claim: Claim, facts: Sequence[Claim]) -> str | None:
         return None
     # compare at the precision the text wrote, in the unit it wrote: "251 ml" is not 0.25 l
     scale = target / claim.number
-    written = re.match(r"\d+[.,](\d+)\b", claim.text)
+    written = re.search(r"\d[.,](\d+)\b", claim.text)
     decimals = len(written.group(1)) if written else 0
-    values = {
-        (c.value, c.unit, c.text) for c in facts if c.kind == "amount" and c.value is not None
-    }
-    for (a, ua, ta), (b, ub, tb) in itertools.permutations(values, 2):
+    # every occurrence counts: two line items of 6 € each add up to 12 €
+    amounts = [
+        (c.value, c.unit, c.text, c.start, c.part)
+        for c in facts
+        if c.kind == "amount" and c.value is not None
+    ]
+    for (a, ua, ta, sa, pa), (b, ub, tb, sb, pb) in itertools.permutations(amounts, 2):
+        if (sa, pa, ta) == (sb, pb, tb) and a != b:
+            continue  # two readings of the same number ("1.234")
         candidates = []
         if ua == ub == unit:
             candidates += [(a + b, f"{ta} + {tb}"), (a - b, f"{ta} − {tb}")]
