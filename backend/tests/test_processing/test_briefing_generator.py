@@ -633,3 +633,41 @@ class TestValueCheck:
 
         assert result.content == WRONG
         assert result.value_report is None
+
+    @pytest.mark.asyncio
+    async def test_failed_repair_call_keeps_the_marked_draft(self) -> None:
+        gateway = _make_gateway()
+        gateway.generate = AsyncMock(
+            side_effect=[_response(WRONG), RuntimeError("all providers down")]
+        )
+        gen = BriefingGenerator(gateway, _make_registry())
+
+        result = await gen.generate(BriefingType.MORNING, _budget_context(), USER_ID)
+
+        assert result.content == WRONG + " ⚠️"
+        assert not result.repaired
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("repair", ["", "Das Q2-Budget beträgt 120.000 €."])
+    async def test_repair_without_annotations_or_text_is_not_used(self, repair: str) -> None:
+        gateway = _make_gateway()
+        gateway.generate = AsyncMock(side_effect=[_response(WRONG), _response(repair)])
+        gen = BriefingGenerator(gateway, _make_registry())
+
+        result = await gen.generate(BriefingType.MORNING, _budget_context(), USER_ID)
+
+        assert result.content == WRONG + " ⚠️"
+        assert not result.repaired
+
+    @pytest.mark.asyncio
+    async def test_model_of_the_accepted_repair_is_reported(self) -> None:
+        fallback = LLMResponse(
+            content=RIGHT, usage=MOCK_USAGE, provider=LLMProvider.GPT4, model="gpt-4o"
+        )
+        gateway = _make_gateway()
+        gateway.generate = AsyncMock(side_effect=[_response(WRONG), fallback])
+        gen = BriefingGenerator(gateway, _make_registry())
+
+        result = await gen.generate(BriefingType.MORNING, _budget_context(), USER_ID)
+
+        assert result.repaired and result.model == "gpt-4o"

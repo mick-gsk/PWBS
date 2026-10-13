@@ -15,6 +15,7 @@ Token budgets: Morning (context: 8000, output: 2000), Meeting Prep (context: 600
 from __future__ import annotations
 
 import logging
+import re
 import uuid
 from dataclasses import dataclass
 from datetime import UTC, datetime
@@ -245,6 +246,7 @@ class BriefingGenerator:
         response: LLMResponse = await self._llm.generate(request)
         content = response.content
         usage = response.usage
+        model = response.model
 
         # Step 5: Value check (numbers, dates, times) against the context
         value_report: ValueReport | None = None
@@ -253,21 +255,34 @@ class BriefingGenerator:
         if self._config.value_check != "off" and sources.sources:
             value_report = verify(content, sources)
             if value_report.problems and self._config.value_check == "repair":
-                retry = await self._llm.generate(
-                    LLMRequest(
-                        system_prompt=system_prompt,
-                        user_prompt=(
-                            f"{rendered_prompt}\n\n---\n\nDein bisheriger Entwurf:\n\n"
-                            f"{content}\n\n---\n\n{repair_instructions(value_report)}"
-                        ),
-                        temperature=temperature,
-                        max_tokens=max_tokens,
+                retry: LLMResponse | None = None
+                try:
+                    retry = await self._llm.generate(
+                        LLMRequest(
+                            system_prompt=system_prompt,
+                            user_prompt=(
+                                f"{rendered_prompt}\n\n---\n\nDein bisheriger Entwurf:\n\n"
+                                f"{content}\n\n---\n\n{repair_instructions(value_report)}"
+                            ),
+                            temperature=temperature,
+                            max_tokens=max_tokens,
+                        )
                     )
-                )
-                usage = _add_usage(usage, retry.usage)
-                retry_report = verify(retry.content, sources)
-                if len(retry_report.problems) < len(value_report.problems):
-                    content, value_report, repaired = retry.content, retry_report, True
+                except Exception:
+                    # the first draft is still usable; it gets marked below
+                    logger.warning(
+                        "Repair call for %s briefing failed, keeping the first draft",
+                        briefing_type.value,
+                        exc_info=True,
+                    )
+                if retry is not None:
+                    usage = _add_usage(usage, retry.usage)
+                    retry_report = verify(retry.content, sources)
+                    if len(retry_report.problems) < len(value_report.problems) and _usable_repair(
+                        content, retry.content
+                    ):
+                        content, value_report = retry.content, retry_report
+                        model, repaired = retry.model, True
             if value_report.problems:
                 logger.warning(
                     "Briefing %s has %d unbacked values after the value check",
@@ -298,7 +313,7 @@ class BriefingGenerator:
             briefing_type=briefing_type,
             grounding_result=grounding_result,
             usage=usage,
-            model=response.model,
+            model=model,
             template_id=template.id,
             generated_at=datetime.now(UTC),
             word_count=word_count,
@@ -325,6 +340,19 @@ class BriefingGenerator:
         if briefing_type == BriefingType.QUARTERLY:
             return self._config.quarterly_max_output_tokens
         return self._config.meeting_max_output_tokens
+
+
+_SOURCE_ANNOTATION_RE = re.compile(r"\[(?:Quelle|Source):")
+
+
+def _usable_repair(draft: str, repair: str) -> bool:
+    """A repair replaces the draft only if it is still a full briefing: not empty or cut off,
+    and still annotated with its sources. Fewer problems alone is not enough; a repair
+    without annotations would be checked against all sources and pass too easily."""
+    if len(repair.split()) < len(draft.split()) / 2:
+        return False
+    annotations = len(_SOURCE_ANNOTATION_RE.findall(draft))
+    return len(_SOURCE_ANNOTATION_RE.findall(repair)) >= annotations / 2
 
 
 def _add_usage(first: LLMUsage, second: LLMUsage) -> LLMUsage:
