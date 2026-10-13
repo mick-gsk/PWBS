@@ -5,6 +5,7 @@ Implements the briefing generation pipeline:
 2. Render context into Jinja2 template
 3. Send to LLM Gateway with grounding instructions
 4. Parse structured Markdown output with source annotations
+5. Check numbers, dates and times against the context; one repair round if needed
 
 D1 Section 3.4 / 3.5, D4 F-017 / F-018.
 Temperature: 0.3 for factual content.
@@ -14,18 +15,27 @@ Token budgets: Morning (context: 8000, output: 2000), Meeting Prep (context: 600
 from __future__ import annotations
 
 import logging
+import re
 import uuid
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from enum import Enum
-from typing import Any
+from typing import Any, Literal
 
 from pwbs.core.grounding import (
+    GroundingConfig,
     GroundingResult,
     GroundingService,
     build_grounding_system_prompt,
 )
 from pwbs.core.llm_gateway import LLMGateway, LLMRequest, LLMResponse, LLMUsage
+from pwbs.core.value_check import (
+    ValueReport,
+    ValueSources,
+    mark_problems,
+    repair_instructions,
+    verify,
+)
 from pwbs.prompts.registry import PromptRegistry, PromptTemplate
 from pwbs.verticals.profiles import get_vertical_config
 
@@ -84,6 +94,9 @@ class BriefingGeneratorConfig:
     weekly_max_output_tokens: int = 1500
     quarterly_max_output_tokens: int = 4000
     enable_grounding: bool = True
+    # "repair": one correction call when values are not backed by the context, then mark
+    # what is still wrong; "flag": only mark; "off": skip the check
+    value_check: Literal["repair", "flag", "off"] = "repair"
 
 
 # ------------------------------------------------------------------
@@ -103,6 +116,8 @@ class BriefingLLMResult:
     template_id: str
     generated_at: datetime
     word_count: int
+    value_report: ValueReport | None = None
+    repaired: bool = False
 
 
 # ------------------------------------------------------------------
@@ -118,7 +133,8 @@ class BriefingGenerator:
     2. Context rendering via Jinja2
     3. Grounding system prompt augmentation
     4. LLM Gateway call
-    5. Grounding analysis of the output
+    5. Value check against the context, with one repair call
+    6. Grounding analysis of the output
 
     Parameters
     ----------
@@ -228,14 +244,63 @@ class BriefingGenerator:
         )
 
         response: LLMResponse = await self._llm.generate(request)
+        content = response.content
+        usage = response.usage
+        model = response.model
 
-        # Step 5: Grounding analysis
+        # Step 5: Value check (numbers, dates, times) against the context
+        value_report: ValueReport | None = None
+        repaired = False
+        sources = ValueSources.from_context(context)
+        if self._config.value_check != "off" and sources.sources:
+            value_report = verify(content, sources)
+            if value_report.problems and self._config.value_check == "repair":
+                retry: LLMResponse | None = None
+                try:
+                    retry = await self._llm.generate(
+                        LLMRequest(
+                            system_prompt=system_prompt,
+                            user_prompt=(
+                                f"{rendered_prompt}\n\n---\n\nDein bisheriger Entwurf:\n\n"
+                                f"{content}\n\n---\n\n{repair_instructions(value_report)}"
+                            ),
+                            temperature=temperature,
+                            max_tokens=max_tokens,
+                        )
+                    )
+                except Exception:
+                    # the first draft is still usable; it gets marked below
+                    logger.warning(
+                        "Repair call for %s briefing failed, keeping the first draft",
+                        briefing_type.value,
+                        exc_info=True,
+                    )
+                if retry is not None:
+                    usage = _add_usage(usage, retry.usage)
+                    retry_report = verify(retry.content, sources)
+                    if (
+                        len(retry_report.problems) < len(value_report.problems)
+                        and set(retry_report.unresolved) <= set(value_report.unresolved)
+                        and _usable_repair(content, retry.content)
+                    ):
+                        content, value_report = retry.content, retry_report
+                        model, repaired = retry.model, True
+            if value_report.problems:
+                logger.warning(
+                    "Briefing %s has %d unbacked values after the value check",
+                    briefing_type.value,
+                    len(value_report.problems),
+                )
+
+        # Step 6: Grounding analysis
         grounding_result: GroundingResult | None = None
         if self._config.enable_grounding and known_sources:
             grounding_svc = GroundingService(known_sources=known_sources)
-            grounding_result = grounding_svc.analyze(response.content)
+            grounding_result = grounding_svc.analyze(content)
 
-        word_count = len(response.content.split())
+        word_count = len(content.split())
+        if value_report and value_report.problems:
+            content = mark_problems(content, value_report, GroundingConfig().low_confidence_marker)
 
         if word_count > max_words:
             logger.warning(
@@ -246,14 +311,16 @@ class BriefingGenerator:
             )
 
         return BriefingLLMResult(
-            content=response.content,
+            content=content,
             briefing_type=briefing_type,
             grounding_result=grounding_result,
-            usage=response.usage,
-            model=response.model,
+            usage=usage,
+            model=model,
             template_id=template.id,
             generated_at=datetime.now(UTC),
             word_count=word_count,
+            value_report=value_report,
+            repaired=repaired,
         )
 
     def _get_max_output_tokens(
@@ -275,3 +342,28 @@ class BriefingGenerator:
         if briefing_type == BriefingType.QUARTERLY:
             return self._config.quarterly_max_output_tokens
         return self._config.meeting_max_output_tokens
+
+
+_SOURCE_ANNOTATION_RE = re.compile(r"\[(?:Quelle|Source):")
+
+
+def _usable_repair(draft: str, repair: str) -> bool:
+    """A repair replaces the draft only if it is still a full briefing: not empty or cut off,
+    and still annotated with its sources. Fewer problems alone is not enough; a repair
+    without annotations would be checked against all sources and pass too easily."""
+    if len(repair.split()) < len(draft.split()) / 2:
+        return False
+    annotations = len(_SOURCE_ANNOTATION_RE.findall(draft))
+    return len(_SOURCE_ANNOTATION_RE.findall(repair)) >= annotations / 2
+
+
+def _add_usage(first: LLMUsage, second: LLMUsage) -> LLMUsage:
+    """Combined token usage and cost of the generation and the repair call."""
+    return LLMUsage(
+        provider=second.provider,
+        model=second.model,
+        input_tokens=first.input_tokens + second.input_tokens,
+        output_tokens=first.output_tokens + second.output_tokens,
+        duration_ms=first.duration_ms + second.duration_ms,
+        estimated_cost_usd=first.estimated_cost_usd + second.estimated_cost_usd,
+    )

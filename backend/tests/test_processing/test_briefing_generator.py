@@ -523,3 +523,163 @@ class TestQuarterlyBriefingIntegration:
         result = await gen.generate(BriefingType.QUARTERLY, _make_context(), USER_ID)
 
         assert result.briefing_type == BriefingType.QUARTERLY
+
+
+# ------------------------------------------------------------------
+# Value check
+# ------------------------------------------------------------------
+
+
+def _budget_context() -> dict[str, Any]:
+    return {
+        "date": "2026-03-14",
+        "recent_documents": [
+            {
+                "title": "Projektplan Q2",
+                "source": "notion",
+                "date": "2026-03-13",
+                "content": "Das Budget für Q2 beträgt 120.000 €.",
+            }
+        ],
+    }
+
+
+def _response(content: str) -> LLMResponse:
+    return LLMResponse(
+        content=content,
+        usage=MOCK_USAGE,
+        provider=LLMProvider.CLAUDE,
+        model="claude-sonnet-4-20250514",
+    )
+
+
+WRONG = "Das Q2-Budget beträgt 150.000 € [Quelle: Projektplan Q2, 2026-03-13]."
+RIGHT = "Das Q2-Budget beträgt 120.000 € [Quelle: Projektplan Q2, 2026-03-13]."
+
+
+class TestValueCheck:
+    @pytest.mark.asyncio
+    async def test_backed_values_need_no_second_call(self) -> None:
+        gateway = _make_gateway(RIGHT)
+        gen = BriefingGenerator(gateway, _make_registry())
+
+        result = await gen.generate(BriefingType.MORNING, _budget_context(), USER_ID)
+
+        assert gateway.generate.call_count == 1
+        assert result.content == RIGHT
+        assert result.value_report is not None
+        assert result.value_report.grounded
+        assert not result.repaired
+
+    @pytest.mark.asyncio
+    async def test_wrong_value_is_repaired(self) -> None:
+        gateway = _make_gateway()
+        gateway.generate = AsyncMock(side_effect=[_response(WRONG), _response(RIGHT)])
+        gen = BriefingGenerator(gateway, _make_registry())
+
+        result = await gen.generate(BriefingType.MORNING, _budget_context(), USER_ID)
+
+        assert gateway.generate.call_count == 2
+        retry = gateway.generate.call_args_list[1][0][0]
+        assert WRONG in retry.user_prompt
+        assert '"150.000 €" steht in keiner der Quellen' in retry.user_prompt
+        assert result.content == RIGHT
+        assert result.repaired
+        assert result.usage is not None
+        assert result.usage.input_tokens == 2 * MOCK_USAGE.input_tokens
+
+    @pytest.mark.asyncio
+    async def test_value_still_wrong_after_repair_is_marked(self) -> None:
+        gateway = _make_gateway()
+        gateway.generate = AsyncMock(side_effect=[_response(WRONG), _response(WRONG)])
+        gen = BriefingGenerator(gateway, _make_registry())
+
+        result = await gen.generate(BriefingType.MORNING, _budget_context(), USER_ID)
+
+        assert result.content == WRONG + " ⚠️"
+        assert not result.repaired
+        assert result.value_report is not None
+        assert [c.text for c in result.value_report.problems] == ["150.000 €"]
+        assert result.word_count == len(WRONG.split())
+
+    @pytest.mark.asyncio
+    async def test_flag_mode_marks_without_second_call(self) -> None:
+        gateway = _make_gateway(WRONG)
+        config = BriefingGeneratorConfig(value_check="flag")
+        gen = BriefingGenerator(gateway, _make_registry(), config)
+
+        result = await gen.generate(BriefingType.MORNING, _budget_context(), USER_ID)
+
+        assert gateway.generate.call_count == 1
+        assert result.content.endswith(" ⚠️")
+
+    @pytest.mark.asyncio
+    async def test_off_leaves_content_unchanged(self) -> None:
+        gateway = _make_gateway(WRONG)
+        config = BriefingGeneratorConfig(value_check="off")
+        gen = BriefingGenerator(gateway, _make_registry(), config)
+
+        result = await gen.generate(BriefingType.MORNING, _budget_context(), USER_ID)
+
+        assert result.content == WRONG
+        assert result.value_report is None
+
+    @pytest.mark.asyncio
+    async def test_no_context_skips_the_check(self) -> None:
+        gateway = _make_gateway(WRONG)
+        gen = BriefingGenerator(gateway, _make_registry())
+
+        result = await gen.generate(BriefingType.MORNING, {}, USER_ID)
+
+        assert result.content == WRONG
+        assert result.value_report is None
+
+    @pytest.mark.asyncio
+    async def test_failed_repair_call_keeps_the_marked_draft(self) -> None:
+        gateway = _make_gateway()
+        gateway.generate = AsyncMock(
+            side_effect=[_response(WRONG), RuntimeError("all providers down")]
+        )
+        gen = BriefingGenerator(gateway, _make_registry())
+
+        result = await gen.generate(BriefingType.MORNING, _budget_context(), USER_ID)
+
+        assert result.content == WRONG + " ⚠️"
+        assert not result.repaired
+
+    @pytest.mark.asyncio
+    @pytest.mark.parametrize("repair", ["", "Das Q2-Budget beträgt 120.000 €."])
+    async def test_repair_without_annotations_or_text_is_not_used(self, repair: str) -> None:
+        gateway = _make_gateway()
+        gateway.generate = AsyncMock(side_effect=[_response(WRONG), _response(repair)])
+        gen = BriefingGenerator(gateway, _make_registry())
+
+        result = await gen.generate(BriefingType.MORNING, _budget_context(), USER_ID)
+
+        assert result.content == WRONG + " ⚠️"
+        assert not result.repaired
+
+    @pytest.mark.asyncio
+    async def test_model_of_the_accepted_repair_is_reported(self) -> None:
+        fallback = LLMResponse(
+            content=RIGHT, usage=MOCK_USAGE, provider=LLMProvider.GPT4, model="gpt-4o"
+        )
+        gateway = _make_gateway()
+        gateway.generate = AsyncMock(side_effect=[_response(WRONG), fallback])
+        gen = BriefingGenerator(gateway, _make_registry())
+
+        result = await gen.generate(BriefingType.MORNING, _budget_context(), USER_ID)
+
+        assert result.repaired and result.model == "gpt-4o"
+
+    @pytest.mark.asyncio
+    async def test_repair_citing_a_made_up_source_is_not_used(self) -> None:
+        repair = "Das Q2-Budget beträgt 120.000 € [Quelle: Finanzbericht, 2026-03-13]."
+        gateway = _make_gateway()
+        gateway.generate = AsyncMock(side_effect=[_response(WRONG), _response(repair)])
+        gen = BriefingGenerator(gateway, _make_registry())
+
+        result = await gen.generate(BriefingType.MORNING, _budget_context(), USER_ID)
+
+        assert result.content == WRONG + " ⚠️"
+        assert not result.repaired

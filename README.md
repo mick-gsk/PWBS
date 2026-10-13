@@ -14,7 +14,7 @@ A cognitive infrastructure that continuously ingests data from heterogeneous per
 
 ## What I Built and Why It's Interesting
 
-This is a solo-built RAG system with four non-trivial engineering decisions that go beyond standard library glue:
+This is a solo-built RAG system with five non-trivial engineering decisions that go beyond standard library glue:
 
 ### 1. Semantic Coherence Chunking ([ADR-021](docs/adr/021-semantic-coherence-chunking.md))
 
@@ -39,6 +39,12 @@ Three LLM providers (Claude → GPT-4 → Ollama) with automatic failover. Each 
 GDPR requires that deleting a user's account makes their data cryptographically unreadable — without re-encrypting everything. I implemented HKDF-based per-user key derivation (owner_id as salt), Fernet DEK/KEK envelope encryption, and Argon2id password hashing (64 MB memory cost). Deleting the wrapped DEK = effective data erasure.
 
 → [`backend/pwbs/connectors/oauth.py`](backend/pwbs/connectors/oauth.py) + [`backend/pwbs/services/user.py`](backend/pwbs/services/user.py)
+
+### 5. Value Check for Generated Briefings
+
+Requiring `[Source: Title, Date]` on every statement does not stop a model from writing "budget EUR 150,000 [Source: Project plan]" when the project plan says 120,000. The annotation is valid, the number is not. After generation, every amount, unit, date, time and quote in the briefing is compared with the context the model was given, after normalising spellings ("1.8 l" = "1800 ml", "14. März" = "2026-03-14", "drei Wochen" = "3 weeks"). Each value is `supported`, `derived` (one calculation from two context values, or a meeting duration from start and end time), `wrong_citation`, `unit_mismatch` or `unsupported`. Unbacked values go back to the model once with a list of the problems; what is still wrong after that is marked in the briefing.
+
+→ [`backend/pwbs/core/value_check.py`](backend/pwbs/core/value_check.py) + [`value_claims.py`](backend/pwbs/core/value_claims.py), wired into [`briefing/generator.py`](backend/pwbs/briefing/generator.py)
 
 ---
 
