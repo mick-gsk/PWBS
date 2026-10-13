@@ -301,3 +301,10 @@ class TestEdgeCases:
             ValueSources.from_context(CONTEXT),
         )
         assert report.unresolved == ["Erfunden"]
+
+    def test_leading_sign_belongs_to_the_first_end_of_a_range(self) -> None:
+        assert [c.key for c in extract("-5 bis 3 %")] == ["-5 %", "3 %"]
+
+    def test_negative_totals_can_be_derived(self) -> None:
+        sources = ValueSources((ValueSource("Konto", "Gebühr A: -€5. Gebühr B: -€7."),))
+        assert [c.status for c in verify("Insgesamt -€12.", sources).checks] == ["derived"]

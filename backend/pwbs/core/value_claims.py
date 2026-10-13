@@ -423,7 +423,9 @@ def extract(text: str) -> list[Claim]:
         numbers = [m.group("num")] + ([m.group("num2")] if m.group("num2") else [])
         for part, number in enumerate(numbers):
             for value in parse_number(number):
-                value *= scale
+                value *= (
+                    scale if part == 0 else abs(scale)
+                )  # "-5 to 3 %": the sign is the first one's
                 take(
                     Claim(
                         "amount",
