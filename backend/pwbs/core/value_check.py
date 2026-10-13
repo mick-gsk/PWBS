@@ -72,12 +72,13 @@ class ValueSource:
 class ValueSources:
     """All sources of one generation call.
 
-    ``counts`` holds the lengths of the lists in the context. "Du hast heute 3 Termine"
-    is backed by three calendar events even though the number 3 appears nowhere.
+    ``counts`` holds the lengths of the lists in the context, by key. "Du hast heute 3
+    Termine" is backed by three calendar events even though the number 3 appears nowhere,
+    but "3 Blocker" is not.
     """
 
     sources: tuple[ValueSource, ...]
-    counts: frozenset[int] = frozenset()
+    counts: tuple[tuple[str, int], ...] = ()
 
     @classmethod
     def from_context(cls, context: Mapping[str, Any]) -> ValueSources:
@@ -88,11 +89,11 @@ class ValueSources:
         """
         sources: list[ValueSource] = []
         scalars: list[str] = []
-        counts: set[int] = set()
+        counts: list[tuple[str, int]] = []
         for key, value in context.items():
             if isinstance(value, list | tuple):
                 if value:
-                    counts.add(len(value))
+                    counts.append((key, len(value)))
                 for item in value:
                     if isinstance(item, Mapping):
                         title = str(item.get("title") or item.get("entity") or "")
@@ -106,7 +107,7 @@ class ValueSources:
                 scalars.append(f"{key}: {value}")
         if scalars:
             sources.append(ValueSource("", "\n".join(scalars)))
-        return cls(tuple(s for s in sources if s.text.strip()), frozenset(counts))
+        return cls(tuple(s for s in sources if s.text.strip()), tuple(counts))
 
 
 @dataclass(frozen=True, slots=True)
@@ -287,14 +288,23 @@ def _normalize_title(title: str) -> str:
 
 
 def _resolve(sentence: str, sources: list[_Source]) -> list[_Source] | None:
-    """The sources a statement cites, or None if it cites none that can be resolved."""
-    titles = [_normalize_title(m.group(1)) for m in _SOURCE_REF_RE.finditer(sentence)]
-    cited = [
-        s
-        for s in sources
-        if (known := _normalize_title(s.title))
-        and any(t == known or t in known or known in t for t in titles if t)
-    ]
+    """The sources a statement cites, or None if it cites none that can be resolved.
+
+    A title that matches a source exactly cites only that source; a partial match
+    ("Projektplan" for "Projektplan Q2") is used only when no title matches exactly.
+    Otherwise "Project Plan" would also pull in a source called "Plan".
+    """
+    cited: list[_Source] = []
+    for title in (_normalize_title(m.group(1)) for m in _SOURCE_REF_RE.finditer(sentence)):
+        if not title:
+            continue
+        exact = [s for s in sources if _normalize_title(s.title) == title]
+        partial = [
+            s
+            for s in sources
+            if (known := _normalize_title(s.title)) and (title in known or known in title)
+        ]
+        cited += [s for s in exact or partial if s not in cited]
     return cited or None
 
 
@@ -302,7 +312,7 @@ def _check(
     claim: Claim,
     in_scope: list[_Source],
     others: list[_Source],
-    counts: frozenset[int],
+    counts: tuple[tuple[str, int], ...],
     sentence: str,
 ) -> tuple[str, str | None, str]:
     context = _words(sentence)
@@ -314,8 +324,10 @@ def _check(
 
     if claim.kind != "amount" or claim.value is None:
         return "unsupported", None, ""
-    if claim.unit is None and claim.value in counts:
-        return "supported", None, "Anzahl der Einträge im Kontext"
+    if claim.unit is None:
+        counted = _counted(claim.value, counts, context)
+        if counted:
+            return "supported", None, f"Anzahl der Einträge in {counted}"
     for source in in_scope:
         duration = _duration(claim, source.claims)
         if duration:
@@ -371,9 +383,39 @@ def _same(a: float | None, b: float | None) -> bool:
     return a is not None and b is not None and abs(a - b) <= 1e-9 * max(1.0, abs(a), abs(b))
 
 
-def _same_date(a: str, b: str) -> bool:
-    (ya, rest_a), (yb, rest_b) = a.split("-", 1), b.split("-", 1)
-    return rest_a == rest_b and (ya == yb or "*" in (ya, yb))
+def _same_date(source: str, claim: str) -> bool:
+    """The text may leave out the year, but not add one the source does not give."""
+    (ys, rest_s), (yc, rest_c) = source.split("-", 1), claim.split("-", 1)
+    return rest_s == rest_c and (ys == yc or yc == "*")
+
+
+# What the entries of a context list are called in a briefing. A count is only backed by a
+# list whose entries the statement talks about: "3 Termine" by calendar_events, not "3 Blocker".
+_COUNT_WORDS = {
+    "calendar_events": "Termine Termin Meetings Events Besprechungen Kalender",
+    "recent_documents": "Dokumente Dokument Documents Notizen Notes",
+    "open_items": "offene Punkte Aufgaben Tasks Items Todos",
+    "decisions": "Entscheidungen Entscheidung Decisions",
+    "key_decisions": "Entscheidungen Entscheidung Decisions",
+    "pending_decisions": "Entscheidungen Entscheidung Decisions",
+    "participants": "Teilnehmer Teilnehmende Personen Participants People",
+    "assumptions": "Annahmen Assumptions",
+    "patterns": "Muster Patterns",
+    "recurring_patterns": "Muster Patterns",
+    "top_topics": "Themen Topics",
+    "theme_shifts": "Themen Themenwechsel Topics",
+    "timeline": "Ereignisse Events",
+    "project_progress": "Projekte Projects",
+}
+
+
+def _counted(value: float | None, counts: tuple[tuple[str, int], ...], context: set[str]) -> str:
+    """The context key whose list length is ``value`` and whose entries the statement names."""
+    for key, n in counts:
+        words = _words(_COUNT_WORDS.get(key, key.replace("_", " ")))
+        if value == n and words & context:
+            return key
+    return ""
 
 
 def _duration(claim: Claim, facts: Sequence[Claim]) -> str | None:
