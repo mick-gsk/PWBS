@@ -280,3 +280,24 @@ class TestEdgeCases:
             (ValueSource("Rechnung A", "Versand: 6 €."), ValueSource("Rechnung B", "Versand: 6 €."))
         )
         assert [c.status for c in verify("Insgesamt 12 € Versand.", sources).checks] == ["derived"]
+
+    def test_each_bare_number_is_bound_to_its_own_noun(self) -> None:
+        sources = ValueSources((ValueSource("Notiz", "Es gibt 3 Meetings und 7 Blocker."),))
+        report = verify("Es gibt 3 Meetings und 3 Blocker.", sources)
+        assert [c.status for c in report.checks] == ["supported", "unsupported"]
+
+    def test_values_the_template_renders_are_sources(self) -> None:
+        context = {
+            "recent_documents": [{"title": "Plan", "content": "Budget steht.", "score": 0.87}],
+            "assumption_stats": {"open": 4, "confirmed": 8},
+        }
+        sources = ValueSources.from_context(context)
+        assert verify("Der Plan hat eine Relevanz von 87%.", sources).grounded
+        assert verify("Insgesamt 12 Annahmen.", sources).grounded
+
+    def test_made_up_source_titles_are_reported(self) -> None:
+        report = verify(
+            f"Budget 120.000 € [Quelle: Erfunden, 2026-03-01]. Launch {PLAN}.",
+            ValueSources.from_context(CONTEXT),
+        )
+        assert report.unresolved == ["Erfunden"]
