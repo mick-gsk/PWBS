@@ -584,6 +584,6 @@ def _derive(claim: Claim, facts: Sequence[Claim]) -> str | None:
         if ua == unit and ub in _COUNT_UNITS and b >= 2 and b == int(b):
             candidates += [(a * b, f"{ta} × {tb}"), (a / b, f"{ta} / {tb}")]
         for value, how in candidates:
-            if value > 0 and round(value / scale, decimals) == round(claim.number, decimals):
+            if round(value / scale, decimals) == round(claim.number, decimals):
                 return how
     return None
