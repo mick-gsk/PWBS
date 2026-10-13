@@ -7,6 +7,7 @@ from typing import Any
 import pytest
 
 from pwbs.core.value_check import (
+    ValueSource,
     ValueSources,
     mark_problems,
     repair_instructions,
@@ -173,3 +174,66 @@ class TestRepairAndMarking:
         assert report.summary()["supported"] == 1
         assert report.summary()["unsupported"] == 1
         assert not report.grounded
+
+
+class TestEdgeCases:
+    @pytest.mark.parametrize(
+        ("text", "key"),
+        [("-5 %", "-5 %"), ("−5 %", "-5 %"), ("+5 %", "5 %"), ("Saldo: -120 €", "-120 EUR")],
+    )
+    def test_signs_are_kept(self, text: str, key: str) -> None:
+        assert [c.key for c in extract(text)] == [key]
+
+    def test_negative_value_is_not_backed_by_the_positive_one(self) -> None:
+        sources = ValueSources((ValueSource("Bericht", "Der Umsatz stieg um 5 %."),))
+        report = verify("Der Umsatz sank um -5 %.", sources)
+        assert [c.status for c in report.checks] == ["unsupported"]
+
+    @pytest.mark.parametrize(
+        ("text", "key"),
+        [
+            ("9:30 AM", "09:30"),
+            ("9:30 PM", "21:30"),
+            ("2:30 pm", "14:30"),
+            ("5 p.m.", "17:00"),
+            ("12 a.m.", "00:00"),
+            ("um 9:30 am Montag", "09:30"),  # German "am", not a.m.
+        ],
+    )
+    def test_twelve_hour_times(self, text: str, key: str) -> None:
+        assert [c.key for c in extract(text)] == [key]
+
+    def test_all_number_words_up_to_twenty(self) -> None:
+        assert [c.key for c in extract("vierzehn Tage, fourteen days, siebzehn Wochen")] == [
+            "14 day",
+            "14 day",
+            "17 week",
+        ]
+
+    def test_lowercase_currency_code(self) -> None:
+        assert [c.key for c in extract("usd 120")] == ["120 USD"]
+
+    @pytest.mark.parametrize("text", ["120 Mio. €", "120 Millionen Euro", "€120 million"])
+    def test_magnitude_words(self, text: str) -> None:
+        assert [c.key for c in extract(text)] == ["1.2e+08 EUR"]
+
+    def test_exact_title_beats_partial_title(self) -> None:
+        sources = ValueSources(
+            (
+                ValueSource("Plan", "Budget 120.000 €."),
+                ValueSource("Project Plan", "Budget 90.000 €."),
+            )
+        )
+        report = verify("Das Budget beträgt 120.000 € [Quelle: Project Plan, 2026-03-01].", sources)
+        assert [(c.status, c.source) for c in report.checks] == [("wrong_citation", "Plan")]
+
+    def test_count_needs_the_counted_thing(self) -> None:
+        assert statuses("Es gibt 3 kritische Blocker.") == [("3", "unsupported")]
+        assert statuses("Heute stehen 3 Meetings an.") == [("3", "supported")]
+
+    def test_text_may_not_add_a_year(self) -> None:
+        sources = ValueSources((ValueSource("Notiz", "Abgabe am 31. März."),))
+        assert [c.status for c in verify("Abgabe am 31. März 2030.", sources).checks] == [
+            "unsupported"
+        ]
+        assert verify("Abgabe am 31. März.", sources).grounded
