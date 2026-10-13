@@ -242,3 +242,41 @@ class TestEdgeCases:
         cal = "[Source: Calendar, 2026-03-14]"
         assert statuses(f"- **10:00 – Sprint Planning** {cal}") == [("10:00", "supported")]
         assert statuses(f"- **14:30 – Sprint Planning** {cal}") == [("14:30", "wrong_citation")]
+
+    def test_sign_before_the_currency_is_kept(self) -> None:
+        assert [c.key for c in extract("Saldo: -€120, -$5, Kosten-€30")] == [
+            "-120 EUR",
+            "-5 USD",
+            "30 EUR",
+        ]
+
+    @pytest.mark.parametrize(
+        ("text", "key"),
+        [
+            ("one hundred days", "100 day"),
+            ("twenty-one days", "21 day"),
+            ("a hundred and five days", "105 day"),
+            ("einundzwanzig Tage", "21 day"),
+            ("zweihundert Euro", "200 EUR"),
+        ],
+    )
+    def test_composed_number_words_are_one_number(self, text: str, key: str) -> None:
+        assert [c.key for c in extract(text)] == [key]
+
+    def test_bare_number_needs_the_same_counted_thing_in_the_source(self) -> None:
+        sources = ValueSources((ValueSource("Notiz", "There are 3 meetings this week."),))
+        assert [c.status for c in verify("There are 3 blockers.", sources).checks] == [
+            "unsupported"
+        ]
+        assert verify("There are 3 meetings.", sources).grounded
+
+    def test_decimals_after_a_currency_prefix_count(self) -> None:
+        sources = ValueSources((ValueSource("Rechnung", "Posten A: €5. Posten B: €7."),))
+        assert [c.status for c in verify("Total €12.34.", sources).checks] == ["unsupported"]
+        assert [c.status for c in verify("Total €12.", sources).checks] == ["derived"]
+
+    def test_equal_line_items_can_be_added(self) -> None:
+        sources = ValueSources(
+            (ValueSource("Rechnung A", "Versand: 6 €."), ValueSource("Rechnung B", "Versand: 6 €."))
+        )
+        assert [c.status for c in verify("Insgesamt 12 € Versand.", sources).checks] == ["derived"]
