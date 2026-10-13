@@ -98,12 +98,12 @@ class ValueSources:
                 for item in value:
                     if isinstance(item, Mapping):
                         title = str(item.get("title") or item.get("entity") or "")
-                        sources.append(ValueSource(title, _flatten(item), key))
+                        sources.append(ValueSource(title, _flatten(item) + _rendered(item), key))
                     elif item is not None:
                         sources.append(ValueSource("", str(item), key))
             elif isinstance(value, Mapping):
                 title = str(value.get("title") or "")
-                sources.append(ValueSource(title, _flatten(value)))
+                sources.append(ValueSource(title, _flatten(value) + _rendered(value, key)))
             elif value is not None and key not in _SKIP_KEYS:
                 scalars.append(f"{key}: {value}")
         if scalars:
@@ -134,6 +134,8 @@ class ValueReport:
     """All checked values of one text."""
 
     checks: list[ValueCheck] = field(default_factory=list)
+    # cited titles that match no source, e.g. a source the model made up
+    unresolved: list[str] = field(default_factory=list)
 
     @property
     def problems(self) -> list[ValueCheck]:
@@ -169,6 +171,7 @@ def verify(text: str, sources: ValueSources) -> ValueReport:
     ]
     report = ValueReport()
     for begin, sentence in _statements(text):
+        report.unresolved.extend(_unresolved(sentence, indexed))
         cited = _resolve(sentence, indexed)
         in_scope = [s for s in indexed if cited is None or s in cited]
         others = [s for s in indexed if cited is not None and s not in cited]
@@ -250,6 +253,19 @@ class _Source:
         return self.text[start + 1 : end + 1].strip()
 
 
+def _rendered(item: Mapping[str, Any], key: str = "") -> str:
+    """Values the templates compute from the context and show to the model: the relevance
+    of a document in percent, and the total of a table of counts."""
+    lines = []
+    score = item.get("score")
+    if isinstance(score, int | float) and not isinstance(score, bool):
+        lines.append(f"Relevanz {score * 100:.0f} %")
+    counts = list(item.values())
+    if len(counts) > 1 and all(isinstance(v, int) and not isinstance(v, bool) for v in counts):
+        lines.append(f"{sum(counts)} {_COUNT_WORDS.get(key, key.replace('_', ' '))}")
+    return "".join(f"\n{line}" for line in lines)
+
+
 def _flatten(item: Mapping[str, Any]) -> str:
     parts: list[str] = []
     for key, value in item.items():
@@ -312,6 +328,21 @@ def _resolve(sentence: str, sources: list[_Source]) -> list[_Source] | None:
         ]
         cited += [s for s in exact or partial if s not in cited]
     return cited or None
+
+
+def _unresolved(sentence: str, sources: list[_Source]) -> list[str]:
+    """The titles a statement cites that match no source."""
+    found = []
+    for m in _SOURCE_REF_RE.finditer(sentence):
+        title = _normalize_title(m.group(1))
+        if not title or title in _CALENDAR_TITLES:
+            continue
+        if not any(
+            (known := _normalize_title(s.title)) and (title in known or known in title)
+            for s in sources
+        ):
+            found.append(m.group(1).strip())
+    return found
 
 
 # "[Source: Calendar, 2026-03-14]" names no event; the event is the one the line is about
@@ -395,8 +426,10 @@ def _find(claim: Claim, source: _Source, context: set[str]) -> str | None:
             # A bare number matches a value with or without a unit, but only if the source
             # sentence shares a word with the statement; otherwise "5" would be backed by any
             # "5 Minuten" in the context.
+            # A bare source value is likewise about the thing named after it.
             evidence = source.evidence(c)
-            if context & _words(evidence):
+            named = _named_after(c, source.text) if c.unit is None else set()
+            if context & (named or _words(evidence)):
                 return evidence
     return None
 
@@ -452,10 +485,7 @@ def _words(text: str) -> set[str]:
 
 def _named_after(claim: Claim, sentence: str) -> set[str]:
     """Words of the one or two words right after a bare number: what it counts."""
-    at = sentence.find(claim.text)
-    if at < 0:
-        return set()
-    m = re.match(r"\s*((?:[^\W\d_]+[\s-]*){1,2})", sentence[at + len(claim.text) :])
+    m = re.match(r"\s*((?:[^\W\d_]+[\s-]*){1,2})", sentence[claim.end :])
     return _words(m.group(1)) if m else set()
 
 
@@ -480,6 +510,7 @@ _COUNT_WORDS = {
     "pending_decisions": "Entscheidungen Entscheidung Decisions",
     "participants": "Teilnehmer Teilnehmende Personen Participants People",
     "assumptions": "Annahmen Assumptions",
+    "assumption_stats": "Annahmen Assumptions",
     "patterns": "Muster Patterns",
     "recurring_patterns": "Muster Patterns",
     "top_topics": "Themen Topics",
